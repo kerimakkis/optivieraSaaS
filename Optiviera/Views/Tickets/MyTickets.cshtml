@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Optiviera.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div>
+    <div classxfont-weighteighteightgetainer-fluid">
+        <div class="row gy-2">
+            <div class="col-md-12 col">
+                <div class="row col-cols-2 mt-5">
+                    <h1>Dashboard</h1>
+                        <div style='text-align:right'>
+                            <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>Create New Ticket</b></button></a>
+                            <hr style="width:0%; text-align:left;margin-left:0">
+                            <h5>Number of Tickets Assigned: <b>@Model.Count()</b></h5>
+                        </div>
+
+                <table class="table text-muted">
+                    <thead>
+                        <tr class="table-primary">
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th>
+                                First
+                            </th>
+                            <th>
+                                Last
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CCity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CState)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CZip)
+                            </th>
+                            <th>
+                                Updated
+                            </th>
+                            <th>
+                                Scheduled For
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Priority)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Technician)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Support)
+                            </th>
+                            <th></th>
+                         </tr>
+                     </thead>
+                  <tbody>
+
+                @foreach (var item in Model) {
+
+                    if (item.IsArchived == false)
+                    {
+                            <tr>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CFirstName)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CLastName)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CAddress)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CCity)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CState)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CZip)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.FormattedTime)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Priority.Name)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Technician.FullName)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Support.FullName)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning text-muted"><b>Select</b></button></a>   
+                            </td>
+                        </tr>
+                    }
+                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

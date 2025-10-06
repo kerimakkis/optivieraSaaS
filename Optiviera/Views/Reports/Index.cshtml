@@ -1,0 +1,335 @@
+@model Optiviera.Controllers.ReportsViewModel
+
+@{
+    ViewData["Title"] = "Raporlama ve İstatistikler";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary"><i class="fas fa-chart-bar"></i> Raporlama ve İstatistikler</h2>
+                <div class="text-muted">
+                    <small>Son güncelleme: @DateTime.Now.ToString("dd.MM.yyyy HH:mm")</small>
+                </div>
+            </div>
+
+            <!-- Genel İstatistikler -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title">@Model.TotalTickets</h4>
+                                    <p class="card-text">Toplam İş Emri</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-ticket-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title">@Model.CompletedTickets</h4>
+                                    <p class="card-text">Tamamlanan</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title">@Model.InProgressTickets</h4>
+                                    <p class="card-text">Devam Eden</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-clock fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title">@Model.RecentTickets</h4>
+                                    <p class="card-text">Son 30 Gün</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-day fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- İş Emri Durumları - Dairesel Grafik -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-pie"></i> İş Emri Durum Dağılımı</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas id="ticketStatusChart" width="200" height="200"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-success">Tamamlanan</span>
+                                        <strong>@Model.CompletedTickets</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-warning">Devam Eden</span>
+                                        <strong>@Model.InProgressTickets</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-primary">Açık</span>
+                                        <strong>@Model.OpenTickets</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-secondary">Kapatılmış</span>
+                                        <strong>@Model.ClosedTickets</strong>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-info">Toplam</span>
+                                        <strong>@Model.TotalTickets</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Öncelik Dağılımı -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-exclamation-triangle"></i> Öncelik Dağılımı</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-danger">Acil</span>
+                                        <strong>@Model.UrgentTickets</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-warning">Yüksek</span>
+                                        <strong>@Model.HighPriorityTickets</strong>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-info">Orta</span>
+                                        <strong>@Model.MediumPriorityTickets</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-success">Düşük</span>
+                                        <strong>@Model.LowPriorityTickets</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Kullanıcı İstatistikleri -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-users"></i> Kullanıcı İstatistikleri</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-primary">Admin</span>
+                                        <strong>@Model.AdminUsers</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-info">Manager</span>
+                                        <strong>@Model.ManagerUsers</strong>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-success">Employee</span>
+                                        <strong>@Model.EmployeeUsers</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-secondary">Toplam</span>
+                                        <strong>@Model.TotalUsers</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- En Aktif Teknisyenler -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-star"></i> En Aktif Teknisyenler</h5>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.TopTechnicians.Any())
+                            {
+                                @foreach (var tech in Model.TopTechnicians)
+                                {
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>@tech.TechnicianName</span>
+                                        <span class="badge bg-primary">@tech.TicketCount iş emri</span>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted">Henüz atanmış iş emri bulunmuyor.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hızlı Erişim Butonları -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="card-title mb-0"><i class="fas fa-bolt"></i> Hızlı Erişim</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <a asp-controller="Tickets" asp-action="Index" class="btn btn-primary btn-block">
+                                        <i class="fas fa-ticket-alt"></i> Tüm İş Emirleri
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <a asp-controller="UserRoles" asp-action="ManageUserRoles" class="btn btn-info btn-block">
+                                        <i class="fas fa-users"></i> Kullanıcı Yönetimi
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <a asp-controller="Tickets" asp-action="Create" class="btn btn-success btn-block">
+                                        <i class="fas fa-plus"></i> Yeni İş Emri
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-block">
+                                        <i class="fas fa-home"></i> Ana Sayfa
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sayfa yüklendiğinde animasyonlar ve grafikler
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animasyonlar
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // İş Emri Durum Dairesel Grafik
+            const ctx = document.getElementById('ticketStatusChart').getContext('2d');
+            
+            // Toplam tiket sayısını %100 alarak eksik kalanları hesapla
+            const totalTickets = @Model.TotalTickets;
+            const completedTickets = @Model.CompletedTickets;
+            const inProgressTickets = @Model.InProgressTickets;
+            const openTickets = @Model.OpenTickets;
+            const closedTickets = @Model.ClosedTickets;
+            
+            // Eğer toplam 0 ise, tüm tiketleri "Açık" olarak göster
+            let openTicketsAdjusted = openTickets;
+            if (totalTickets > 0 && (completedTickets + inProgressTickets + closedTickets) === 0) {
+                openTicketsAdjusted = totalTickets;
+            }
+            
+            const ticketStatusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Tamamlanan', 'Devam Eden', 'Açık', 'Kapatılmış'],
+                    datasets: [{
+                        data: [completedTickets, inProgressTickets, openTicketsAdjusted, closedTickets],
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.8)',   // Yeşil - Tamamlanan
+                            'rgba(255, 193, 7, 0.8)',    // Sarı - Devam Eden
+                            'rgba(0, 123, 255, 0.8)',    // Mavi - Açık
+                            'rgba(108, 117, 125, 0.8)'   // Gri - Kapatılmış
+                        ],
+                        borderColor: [
+                            'rgba(40, 167, 69, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(0, 123, 255, 1)',
+                            'rgba(108, 117, 125, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '50%'
+                }
+            });
+        });
+    </script>
+}

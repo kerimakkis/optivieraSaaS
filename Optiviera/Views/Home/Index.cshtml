@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Optiviera ERP'ye Hoş Geldiniz</h1>
+    <p class="lead">Küçük İşletmeler İçin Eko Seviye ERP Sistemi</p>
+    <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-ticket-alt fa-3x text-primary"></i>
+                        </div>                        
+                        <p class="card-text">Müşteri iş emirlerini kolayca yönetin, takip edin ve organize edin.</p>
+                        <a asp-controller="Tickets" asp-action="Index" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-right"></i> İş Emirlerine Git
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-users fa-3x text-info"></i>
+                        </div>                        
+                        <p class="card-text">Rol tabanlı yetkilendirme ile güvenli kullanıcı yönetimi.</p>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="UserRoles" asp-action="ManageUserRoles" class="btn btn-info btn-lg">
+                                <i class="fas fa-arrow-right"></i> Kullanıcı Yönetimine Git
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary btn-lg" disabled>
+                                <i class="fas fa-lock"></i> Admin Yetkisi Gerekli
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-bar fa-3x text-success"></i>
+                        </div>                        
+                        <p class="card-text">İş emirlerinizin durumunu ve performansını takip edin.</p>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <a asp-controller="Reports" asp-action="Index" class="btn btn-success btn-lg">
+                                <i class="fas fa-arrow-right"></i> Raporlama Sayfasına Git
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary btn-lg" disabled>
+                                <i class="fas fa-lock"></i> Manager Yetkisi Gerekli
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
