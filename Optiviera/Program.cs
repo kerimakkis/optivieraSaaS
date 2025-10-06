@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -17,7 +17,7 @@ builder.Services.AddIdentity<WaveUser, IdentityRole>(options => options.SignIn.R
 
 builder.Services.AddControllersWithViews();
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+// SQLite doesn't need this switch
 
 builder.Services.AddScoped<ITTicketService, TicketService>();
 

@@ -597,3 +597,4 @@
 /Users/kerimakkis/Projects/Optiviera/Optiviera/obj/Debug/net6.0/Optiviera.pdb
 /Users/kerimakkis/Projects/Optiviera/Optiviera/obj/Debug/net6.0/Optiviera.genruntimeconfig.cache
 /Users/kerimakkis/Projects/Optiviera/Optiviera/obj/Debug/net6.0/ref/Optiviera.dll
+/Users/kerimakkis/Projects/Optiviera/Optiviera/obj/Debug/net6.0/Optiviera.sourcelink.json
