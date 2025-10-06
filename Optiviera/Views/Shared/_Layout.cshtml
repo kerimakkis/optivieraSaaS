@@ -11,7 +11,7 @@
     <link runat="server" rel="icon" href="~/wave.ico" type="image/ico" />
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
@@ -64,13 +64,13 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container flex-grow-1">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="card-footer text-white" style="background-color: var(--optiviera-navy) !important;">
+    <footer class="card-footer text-white mt-auto" style="background-color: var(--optiviera-navy) !important;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
