@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Optiviera")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1d021f9945db0bc3fd397c9a508a42d7108154d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+edac813a8762fd8e6e435e357a7c38bd650b330c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Optiviera")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Optiviera")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
