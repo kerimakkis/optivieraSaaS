@@ -88,4 +88,7 @@
   <data name="ManagerRequired" xml:space="preserve">
     <value>Manager requis</value>
   </data>
+  <data name="WOMModule" xml:space="preserve">
+    <value>Module WOM</value>
+  </data>
 </root>

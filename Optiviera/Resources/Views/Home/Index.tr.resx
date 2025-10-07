@@ -88,4 +88,7 @@
   <data name="ManagerRequired" xml:space="preserve">
     <value>Yönetici Gerekli</value>
   </data>
+  <data name="WOMModule" xml:space="preserve">
+    <value>WOM Modül</value>
+  </data>
 </root>

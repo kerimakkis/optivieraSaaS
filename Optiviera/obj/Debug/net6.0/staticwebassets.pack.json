@@ -9,12 +9,20 @@
       "PackagePath": "staticwebassets/css/site.css"
     },
     {
+      "Id": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
       "Id": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/images/AkkisTechlogo512.png",
       "PackagePath": "staticwebassets/images/AkkisTechlogo512.png"
     },
     {
       "Id": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/images/OptivieraLogo.png",
       "PackagePath": "staticwebassets/images/OptivieraLogo.png"
+    },
+    {
+      "Id": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/images/OptivieraLogo4-Photoroom.png",
+      "PackagePath": "staticwebassets/images/OptivieraLogo4-Photoroom.png"
     },
     {
       "Id": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/images/farbkartelaOptiviera.jpg",

@@ -82,4 +82,10 @@
   <data name="Dashboard" xml:space="preserve">
     <value>Painel de controle</value>
   </data>
+  <data name="FooterDescription" xml:space="preserve">
+    <value>ERP Eco-Nível para Pequenas Empresas</value>
+  </data>
+  <data name="AkkisTech" xml:space="preserve">
+    <value>AkkisTech</value>
+  </data>
 </root>

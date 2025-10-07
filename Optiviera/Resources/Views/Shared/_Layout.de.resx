@@ -160,4 +160,10 @@
   <data name="Archive" xml:space="preserve">
     <value>Archivieren</value>
   </data>
+  <data name="FooterDescription" xml:space="preserve">
+    <value>Öko-Level ERP für kleine Unternehmen</value>
+  </data>
+  <data name="AkkisTech" xml:space="preserve">
+    <value>AkkisTech</value>
+  </data>
 </root>

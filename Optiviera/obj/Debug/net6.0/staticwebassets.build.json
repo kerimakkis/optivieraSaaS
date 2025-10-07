@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5IzwvMG4D6mRlgQXby1sSOkJh4xqW3YTziVKcy88wYs=",
+  "Hash": "EyHiXBfftS2iSaHs+56JDPeiWsD9Jqtc3s3dEGvQyIY=",
   "Source": "Optiviera",
   "BasePath": "_content/Optiviera",
   "Mode": "Default",
@@ -1214,6 +1214,25 @@
       "OriginalItemSpec": "wwwroot/css/site.css"
     },
     {
+      "Identity": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/favicon.png",
+      "SourceId": "Optiviera",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/",
+      "BasePath": "_content/Optiviera",
+      "RelativePath": "favicon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/favicon.png"
+    },
+    {
       "Identity": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/images/AkkisTechlogo512.png",
       "SourceId": "Optiviera",
       "SourceType": "Discovered",
@@ -1269,6 +1288,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/OptivieraLogo.png"
+    },
+    {
+      "Identity": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/images/OptivieraLogo4-Photoroom.png",
+      "SourceId": "Optiviera",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/",
+      "BasePath": "_content/Optiviera",
+      "RelativePath": "images/OptivieraLogo4-Photoroom.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/OptivieraLogo4-Photoroom.png"
     },
     {
       "Identity": "/Users/kerimakkis/Projects/Optiviera/Optiviera/wwwroot/js/site.js",

@@ -1,12 +1,78 @@
 ﻿@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Home"];
+    var reportData = ViewBag.ReportData as Optiviera.Controllers.ReportsViewModel;
 }
 
 <div class="text-center">
     <h1 class="display-4">@Localizer["Welcome"] Optiviera ERP</h1>
+    <h2 class="text-primary mb-3">@Localizer["WOMModule"]</h2>
     <p class="lead">@Localizer["Dashboard"]</p>
     <hr />
+    
+    <!-- İstatistik Özet Barı -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@reportData.TotalTickets</h4>
+                            <p class="card-text">@Localizer["TotalTickets"]</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-ticket-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@reportData.CompletedTickets</h4>
+                            <p class="card-text">@Localizer["Completed"]</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@reportData.InProgressTickets</h4>
+                            <p class="card-text">@Localizer["InProgress"]</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">@reportData.RecentTickets</h4>
+                            <p class="card-text">@Localizer["Last30Days"]</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-calendar-day fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="card h-100 shadow-sm">
