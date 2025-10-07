@@ -1,0 +1,22 @@
+@model Dictionary<string, string>
+
+<div class="dropdown">
+    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @{
+            var currentCulture = ViewBag.CurrentCulture as string ?? ViewData["CurrentCulture"] as string ?? "tr";
+            var currentLanguage = Model.ContainsKey(currentCulture) ? Model[currentCulture] : Model["tr"];
+        }
+        @currentLanguage
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var lang in Model)
+        {
+            <li>
+                <a class="dropdown-item @(lang.Key == currentCulture ? "active" : "")" 
+                   href="#" onclick="changeLanguage('@lang.Key')">
+                    @lang.Value
+                </a>
+            </li>
+        }
+    </ul>
+</div>

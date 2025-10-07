@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
 using Optiviera.Data;
 using Optiviera.Models;
 using Optiviera.Services;
@@ -15,7 +16,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<WaveUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders();
 
-builder.Services.AddControllersWithViews();
+// Add localization services
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
 
 // SQLite doesn't need this switch
 
@@ -41,6 +47,16 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// Configure request localization
+var supportedCultures = new[] { "tr", "en", "de", "fr", "es", "it", "pt", "nl" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("tr")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
 

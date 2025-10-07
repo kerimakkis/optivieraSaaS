@@ -1,7 +1,8 @@
-﻿@model IEnumerable<Optiviera.Models.Ticket>
+﻿@inject IViewLocalizer Localizer
+@model IEnumerable<Optiviera.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Tickets"];
 }
 
 <div>
@@ -9,11 +10,11 @@
         <div class="row gy-2">
             <div class="col-md-12 col">
                 <div class="row col-cols-2 mt-5">
-                    <h1>All Tickets</h1>
+                    <h1>@Localizer["AllTickets"]</h1>
                         <div style='text-align:right'>
-                            <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>Create New Ticket</b></button></a>
+                            <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>@Localizer["CreateNewTicket"]</b></button></a>
                             <hr style="width:0%; text-align:left;margin-left:0">
-                            <h5>Total Number of Tickets: @Model.Count()</h5>
+                            <h5>@Localizer["TotalTickets"]: @Model.Count()</h5>
                         </div>
 
 <table class="table text-muted">
@@ -23,36 +24,36 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                First
+                @Localizer["FirstName"]
             </th>
             <th>
-                Last
+                @Localizer["LastName"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CAddress)
+                @Localizer["Address"]
             </th>
             <th>
-                Updated
+                @Localizer["Updated"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Schedule)
+                @Localizer["Schedule"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsArchived)
+                @Localizer["Archived"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Priority)
+                @Localizer["Priority"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Technician)
+                @Localizer["Technician"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Support)
+                @Localizer["Support"]
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Localizer["Status"]
             </th>
-            <th></th>
+            <th>@Localizer["Actions"]</th>
         </tr>
     </thead>
 <tbody>
@@ -98,15 +99,15 @@
             </span>
         </td>
         <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a> |
             @if(@item.IsArchived)
             {
-                <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                <a asp-action="Restore" asp-route-id="@item.Id">@Localizer["Restore"]</a>
             }
             else
             {
-                <a asp-action="Delete" asp-route-id="@item.Id">Archive</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Archive"]</a>
             }
         </td>
      </tr>

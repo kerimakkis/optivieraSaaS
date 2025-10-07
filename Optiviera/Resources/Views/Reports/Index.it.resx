@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ReportsAndStatistics" xml:space="preserve">
+    <value>Rapporti e statistiche</value>
+  </data>
+  <data name="LastUpdate" xml:space="preserve">
+    <value>Ultimo aggiornamento</value>
+  </data>
+  <data name="TotalTickets" xml:space="preserve">
+    <value>Totale biglietti</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completato</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>In corso</value>
+  </data>
+  <data name="Last30Days" xml:space="preserve">
+    <value>Ultimi 30 giorni</value>
+  </data>
+  <data name="TicketStatusDistribution" xml:space="preserve">
+    <value>Distribuzione stato biglietti</value>
+  </data>
+  <data name="PriorityDistribution" xml:space="preserve">
+    <value>Distribuzione priorità</value>
+  </data>
+  <data name="UserStatistics" xml:space="preserve">
+    <value>Statistiche utenti</value>
+  </data>
+  <data name="MostActiveTechnicians" xml:space="preserve">
+    <value>Tecnici più attivi</value>
+  </data>
+  <data name="QuickAccess" xml:space="preserve">
+    <value>Accesso rapido</value>
+  </data>
+  <data name="AllTickets" xml:space="preserve">
+    <value>Tutti i biglietti</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Gestione utenti</value>
+  </data>
+  <data name="NewTicket" xml:space="preserve">
+    <value>Nuovo biglietto</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Pagina principale</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Aperto</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Chiuso</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Totale</value>
+  </data>
+  <data name="Urgent" xml:space="preserve">
+    <value>Urgente</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Alto</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Medio</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Basso</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Manager" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Dipendente</value>
+  </data>
+  <data name="NoAssignedTickets" xml:space="preserve">
+    <value>Nessun biglietto assegnato trovato ancora.</value>
+  </data>
+  <data name="TicketsCount" xml:space="preserve">
+    <value>biglietti</value>
+  </data>
+</root>

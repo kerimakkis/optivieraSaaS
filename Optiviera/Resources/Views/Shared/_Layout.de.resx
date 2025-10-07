@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Home" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
+  <data name="Tickets" xml:space="preserve">
+    <value>Aufträge</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Berichte</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Benutzer</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
+  <data name="LicensedBy" xml:space="preserve">
+    <value>Lizenziert von</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Willkommen</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="TicketManagementDescription" xml:space="preserve">
+    <value>Verwalten, verfolgen und organisieren Sie Kundenaufträge einfach.</value>
+  </data>
+  <data name="GoToTickets" xml:space="preserve">
+    <value>Zu Aufträgen gehen</value>
+  </data>
+  <data name="UserManagementDescription" xml:space="preserve">
+    <value>Sichere Benutzerverwaltung mit rollenbasierter Autorisierung.</value>
+  </data>
+  <data name="GoToUserManagement" xml:space="preserve">
+    <value>Zur Benutzerverwaltung gehen</value>
+  </data>
+  <data name="AdminRequired" xml:space="preserve">
+    <value>Admin-Berechtigung erforderlich</value>
+  </data>
+  <data name="ReportsDescription" xml:space="preserve">
+    <value>Verfolgen Sie den Status und die Leistung Ihrer Aufträge.</value>
+  </data>
+  <data name="GoToReports" xml:space="preserve">
+    <value>Zu Berichten gehen</value>
+  </data>
+  <data name="ManagerRequired" xml:space="preserve">
+    <value>Manager-Berechtigung erforderlich</value>
+  </data>
+  <data name="AllTickets" xml:space="preserve">
+    <value>Alle Aufträge</value>
+  </data>
+  <data name="CreateNewTicket" xml:space="preserve">
+    <value>Neuen Auftrag erstellen</value>
+  </data>
+  <data name="TotalTickets" xml:space="preserve">
+    <value>Gesamtanzahl der Aufträge</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nachname</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Aktualisiert</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Terminplan</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>Archiviert</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="Technician" xml:space="preserve">
+    <value>Techniker</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Archivieren</value>
+  </data>
+</root>

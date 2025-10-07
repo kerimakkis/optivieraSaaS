@@ -1,20 +1,21 @@
 ﻿@model IEnumerable<Optiviera.Models.ViewModels.ManageUserRolesViewModel>
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Kullanıcı Yönetimi";
+    ViewData["Title"] = Localizer["UserManagement"];
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="text-primary"><i class="fas fa-users"></i> Kullanıcı Yönetimi</h2>
+                <h2 class="text-primary"><i class="fas fa-users"></i> @Localizer["UserManagement"]</h2>
                 <div>
                     <a asp-controller="UserRoles" asp-action="CreateUser" class="btn btn-success me-2">
-                        <i class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle
+                        <i class="fas fa-user-plus"></i> @Localizer["AddNewUser"]
                     </a>
                     <a asp-controller="Admin" asp-action="CreateRole" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Yeni Rol Oluştur
+                        <i class="fas fa-plus"></i> @Localizer["CreateNewRole"]
                     </a>
                 </div>
             </div>
@@ -47,8 +48,8 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    <strong>E-posta:</strong> @member.User.Email<br>
-                                    <strong>Mevcut Roller:</strong> 
+                                    <strong>@Localizer["Email"]:</strong> @member.User.Email<br>
+                                    <strong>@Localizer["CurrentRoles"]:</strong> 
                                     @{
                                         var userRoles = member.SelectedRoles?.ToList() ?? new List<string>();
                                         if (userRoles.Any())
@@ -57,7 +58,7 @@
                                         }
                                         else
                                         {
-                                            <span class="badge bg-warning">Rol Atanmamış</span>
+                                            <span class="badge bg-warning">@Localizer["NoRoleAssigned"]</span>
                                         }
                                     }
                                 </p>
@@ -65,20 +66,20 @@
                                 <form asp-action="ManageUserRoles" asp-controller="UserRoles" method="post">
                                     <input type="hidden" asp-for="@member.User.Id"/>
                                     <div class="mb-3">
-                                        <label asp-for="@member.Roles" class="form-label">Rol Değiştir:</label>
+                                        <label asp-for="@member.Roles" class="form-label">@Localizer["ChangeRole"]:</label>
                                         <select asp-for="@member.SelectedRoles" class="form-select" asp-items="@member.Roles">
-                                            <option value="">Rol Seçiniz</option>
+                                            <option value="">@Localizer["SelectRole"]</option>
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button type="submit" class="btn btn-warning btn-sm me-2">
-                                            <i class="fas fa-edit"></i> Rol Değiştir
+                                            <i class="fas fa-edit"></i> @Localizer["ChangeRole"]
                                         </button>
                                         <a asp-controller="UserRoles" asp-action="EditUser" asp-route-id="@member.User.Id" class="btn btn-info btn-sm me-2">
-                                            <i class="fas fa-edit"></i> Düzenle
+                                            <i class="fas fa-edit"></i> @Localizer["Edit"]
                                         </a>
                                         <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@member.User.Id', '@member.User.FullName')">
-                                            <i class="fas fa-trash"></i> Sil
+                                            <i class="fas fa-trash"></i> @Localizer["Delete"]
                                         </button>
                                     </div>
                                 </form>
@@ -96,16 +97,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Kullanıcıyı Sil</h5>
+                <h5 class="modal-title">@Localizer["DeleteUser"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p id="deleteMessage"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
                 <form id="deleteForm" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger">Sil</button>
+                    <button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
                 </form>
             </div>
         </div>
@@ -115,7 +116,7 @@
 <script>
 function confirmDelete(userId, userName) {
     document.getElementById('deleteMessage').textContent = 
-        'Bu kullanıcıyı (' + userName + ') silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+        '@Localizer["DeleteConfirmation", "' + userName + '"]';
     document.getElementById('deleteForm').action = '@Url.Action("DeleteUser", "UserRoles")/' + userId;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }

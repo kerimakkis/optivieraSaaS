@@ -1,16 +1,17 @@
 @model Optiviera.Controllers.ReportsViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Raporlama ve İstatistikler";
+    ViewData["Title"] = Localizer["ReportsAndStatistics"];
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="text-primary"><i class="fas fa-chart-bar"></i> Raporlama ve İstatistikler</h2>
+                <h2 class="text-primary"><i class="fas fa-chart-bar"></i> @Localizer["ReportsAndStatistics"]</h2>
                 <div class="text-muted">
-                    <small>Son güncelleme: @DateTime.Now.ToString("dd.MM.yyyy HH:mm")</small>
+                    <small>@Localizer["LastUpdate"]: @DateTime.Now.ToString("dd.MM.yyyy HH:mm")</small>
                 </div>
             </div>
 
@@ -22,7 +23,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="card-title">@Model.TotalTickets</h4>
-                                    <p class="card-text">Toplam İş Emri</p>
+                                    <p class="card-text">@Localizer["TotalTickets"]</p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-ticket-alt fa-2x"></i>
@@ -37,7 +38,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="card-title">@Model.CompletedTickets</h4>
-                                    <p class="card-text">Tamamlanan</p>
+                                    <p class="card-text">@Localizer["Completed"]</p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-check-circle fa-2x"></i>
@@ -52,7 +53,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="card-title">@Model.InProgressTickets</h4>
-                                    <p class="card-text">Devam Eden</p>
+                                    <p class="card-text">@Localizer["InProgress"]</p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-clock fa-2x"></i>
@@ -67,7 +68,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="card-title">@Model.RecentTickets</h4>
-                                    <p class="card-text">Son 30 Gün</p>
+                                    <p class="card-text">@Localizer["Last30Days"]</p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-calendar-day fa-2x"></i>
@@ -83,7 +84,7 @@
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
-                            <h5 class="card-title mb-0"><i class="fas fa-chart-pie"></i> İş Emri Durum Dağılımı</h5>
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-pie"></i> @Localizer["TicketStatusDistribution"]</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -92,24 +93,24 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-success">Tamamlanan</span>
+                                        <span class="badge bg-success">@Localizer["Completed"]</span>
                                         <strong>@Model.CompletedTickets</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-warning">Devam Eden</span>
+                                        <span class="badge bg-warning">@Localizer["InProgress"]</span>
                                         <strong>@Model.InProgressTickets</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-primary">Açık</span>
+                                        <span class="badge bg-primary">@Localizer["Open"]</span>
                                         <strong>@Model.OpenTickets</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-secondary">Kapatılmış</span>
+                                        <span class="badge bg-secondary">@Localizer["Closed"]</span>
                                         <strong>@Model.ClosedTickets</strong>
                                     </div>
                                     <hr>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-info">Toplam</span>
+                                        <span class="badge bg-info">@Localizer["Total"]</span>
                                         <strong>@Model.TotalTickets</strong>
                                     </div>
                                 </div>
@@ -122,27 +123,27 @@
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-header bg-danger text-white">
-                            <h5 class="card-title mb-0"><i class="fas fa-exclamation-triangle"></i> Öncelik Dağılımı</h5>
+                            <h5 class="card-title mb-0"><i class="fas fa-exclamation-triangle"></i> @Localizer["PriorityDistribution"]</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-danger">Acil</span>
+                                        <span class="badge bg-danger">@Localizer["Urgent"]</span>
                                         <strong>@Model.UrgentTickets</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-warning">Yüksek</span>
+                                        <span class="badge bg-warning">@Localizer["High"]</span>
                                         <strong>@Model.HighPriorityTickets</strong>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-info">Orta</span>
+                                        <span class="badge bg-info">@Localizer["Medium"]</span>
                                         <strong>@Model.MediumPriorityTickets</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-success">Düşük</span>
+                                        <span class="badge bg-success">@Localizer["Low"]</span>
                                         <strong>@Model.LowPriorityTickets</strong>
                                     </div>
                                 </div>
@@ -157,27 +158,27 @@
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-header bg-info text-white">
-                            <h5 class="card-title mb-0"><i class="fas fa-users"></i> Kullanıcı İstatistikleri</h5>
+                            <h5 class="card-title mb-0"><i class="fas fa-users"></i> @Localizer["UserStatistics"]</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-primary">Admin</span>
+                                        <span class="badge bg-primary">@Localizer["Admin"]</span>
                                         <strong>@Model.AdminUsers</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-info">Manager</span>
+                                        <span class="badge bg-info">@Localizer["Manager"]</span>
                                         <strong>@Model.ManagerUsers</strong>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-success">Employee</span>
+                                        <span class="badge bg-success">@Localizer["Employee"]</span>
                                         <strong>@Model.EmployeeUsers</strong>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-secondary">Toplam</span>
+                                        <span class="badge bg-secondary">@Localizer["Total"]</span>
                                         <strong>@Model.TotalUsers</strong>
                                     </div>
                                 </div>
@@ -190,7 +191,7 @@
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-header bg-success text-white">
-                            <h5 class="card-title mb-0"><i class="fas fa-star"></i> En Aktif Teknisyenler</h5>
+                            <h5 class="card-title mb-0"><i class="fas fa-star"></i> @Localizer["MostActiveTechnicians"]</h5>
                         </div>
                         <div class="card-body">
                             @if (Model.TopTechnicians.Any())
@@ -199,13 +200,13 @@
                                 {
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span>@tech.TechnicianName</span>
-                                        <span class="badge bg-primary">@tech.TicketCount iş emri</span>
+                                        <span class="badge bg-primary">@tech.TicketCount @Localizer["TicketsCount"]</span>
                                     </div>
                                 }
                             }
                             else
                             {
-                                <p class="text-muted">Henüz atanmış iş emri bulunmuyor.</p>
+                                <p class="text-muted">@Localizer["NoAssignedTickets"]</p>
                             }
                         </div>
                     </div>
@@ -217,28 +218,28 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header bg-secondary text-white">
-                            <h5 class="card-title mb-0"><i class="fas fa-bolt"></i> Hızlı Erişim</h5>
+                            <h5 class="card-title mb-0"><i class="fas fa-bolt"></i> @Localizer["QuickAccess"]</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3 mb-2">
                                     <a asp-controller="Tickets" asp-action="Index" class="btn btn-primary btn-block">
-                                        <i class="fas fa-ticket-alt"></i> Tüm İş Emirleri
+                                        <i class="fas fa-ticket-alt"></i> @Localizer["AllTickets"]
                                     </a>
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <a asp-controller="UserRoles" asp-action="ManageUserRoles" class="btn btn-info btn-block">
-                                        <i class="fas fa-users"></i> Kullanıcı Yönetimi
+                                        <i class="fas fa-users"></i> @Localizer["UserManagement"]
                                     </a>
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <a asp-controller="Tickets" asp-action="Create" class="btn btn-success btn-block">
-                                        <i class="fas fa-plus"></i> Yeni İş Emri
+                                        <i class="fas fa-plus"></i> @Localizer["NewTicket"]
                                     </a>
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-block">
-                                        <i class="fas fa-home"></i> Ana Sayfa
+                                        <i class="fas fa-home"></i> @Localizer["HomePage"]
                                     </a>
                                 </div>
                             </div>
@@ -286,7 +287,7 @@
             const ticketStatusChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Tamamlanan', 'Devam Eden', 'Açık', 'Kapatılmış'],
+                    labels: ['@Localizer["Completed"]', '@Localizer["InProgress"]', '@Localizer["Open"]', '@Localizer["Closed"]'],
                     datasets: [{
                         data: [completedTickets, inProgressTickets, openTicketsAdjusted, closedTickets],
                         backgroundColor: [

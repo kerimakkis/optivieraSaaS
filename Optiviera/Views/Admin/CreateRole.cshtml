@@ -1,7 +1,8 @@
 ﻿
 @model Optiviera.Models.ViewModels.CreateRoleViewModel
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Create Role";
+    ViewData["Title"] = Localizer["CreateNewRole"];
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -16,7 +17,7 @@
                         <label asp-for="RoleName"></label>
                         <span asp-validation-for="RoleName" class="text-danger"></span>
                     </div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">@Localizer["CreateRole"]</button>
         </form>
     </div>
 </div>

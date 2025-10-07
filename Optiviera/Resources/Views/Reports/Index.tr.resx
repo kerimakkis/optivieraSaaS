@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ReportsAndStatistics" xml:space="preserve">
+    <value>Raporlama ve İstatistikler</value>
+  </data>
+  <data name="LastUpdate" xml:space="preserve">
+    <value>Son güncelleme</value>
+  </data>
+  <data name="TotalTickets" xml:space="preserve">
+    <value>Toplam İş Emri</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Tamamlanan</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>Devam Eden</value>
+  </data>
+  <data name="Last30Days" xml:space="preserve">
+    <value>Son 30 Gün</value>
+  </data>
+  <data name="TicketStatusDistribution" xml:space="preserve">
+    <value>İş Emri Durum Dağılımı</value>
+  </data>
+  <data name="PriorityDistribution" xml:space="preserve">
+    <value>Öncelik Dağılımı</value>
+  </data>
+  <data name="UserStatistics" xml:space="preserve">
+    <value>Kullanıcı İstatistikleri</value>
+  </data>
+  <data name="MostActiveTechnicians" xml:space="preserve">
+    <value>En Aktif Teknisyenler</value>
+  </data>
+  <data name="QuickAccess" xml:space="preserve">
+    <value>Hızlı Erişim</value>
+  </data>
+  <data name="AllTickets" xml:space="preserve">
+    <value>Tüm İş Emirleri</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Kullanıcı Yönetimi</value>
+  </data>
+  <data name="NewTicket" xml:space="preserve">
+    <value>Yeni İş Emri</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Ana Sayfa</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Kapatılmış</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
+  <data name="Urgent" xml:space="preserve">
+    <value>Acil</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Yüksek</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Düşük</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Manager" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="NoAssignedTickets" xml:space="preserve">
+    <value>Henüz atanmış iş emri bulunmuyor.</value>
+  </data>
+  <data name="TicketsCount" xml:space="preserve">
+    <value>iş emri</value>
+  </data>
+</root>

@@ -1,7 +1,8 @@
 @model Optiviera.Models.ViewModels.CreateUserViewModel
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Yeni Kullanıcı Ekle";
+    ViewData["Title"] = Localizer["AddNewUser"];
 }
 
 <div class="container">
@@ -9,7 +10,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-success text-white">
-                    <h4 class="mb-0"><i class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle</h4>
+                    <h4 class="mb-0"><i class="fas fa-user-plus"></i> @Localizer["AddNewUser"]</h4>
                 </div>
                 <div class="card-body">
                     <form asp-action="CreateUser" method="post">
@@ -47,17 +48,17 @@
                         <div class="mb-3">
                             <label asp-for="SelectedRole" class="form-label"></label>
                             <select asp-for="SelectedRole" class="form-select" asp-items="ViewBag.Roles">
-                                <option value="">Rol Seçiniz</option>
+                                <option value="">@Localizer["SelectRole"]</option>
                             </select>
                             <span asp-validation-for="SelectedRole" class="text-danger"></span>
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a asp-action="ManageUserRoles" class="btn btn-secondary me-2">
-                                <i class="fas fa-arrow-left"></i> Geri Dön
+                                <i class="fas fa-arrow-left"></i> @Localizer["GoBack"]
                             </a>
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Kullanıcı Oluştur
+                                <i class="fas fa-save"></i> @Localizer["CreateUser"]
                             </button>
                         </div>
                     </form>
