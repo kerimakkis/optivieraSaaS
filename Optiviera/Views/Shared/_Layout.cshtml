@@ -98,5 +98,25 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    
+    <!-- Initial Loading Overlay -->
+    <div id="initial-loading" class="optiviera-loading">
+        <div class="optiviera-loading-content">
+            <div class="optiviera-spinner"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Hide initial loading when page is fully loaded
+        window.addEventListener('load', function() {
+            const initialLoading = document.getElementById('initial-loading');
+            if (initialLoading) {
+                initialLoading.classList.add('hidden');
+                setTimeout(() => {
+                    initialLoading.remove();
+                }, 500);
+            }
+        });
+    </script>
 </body>
 </html>
