@@ -12606,15 +12606,15 @@ body {
 }
 
 .optiviera-spinner {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     background-image: url('/images/OptivieraLogo4-Photoroom.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     animation: optiviera-spin 2s linear infinite;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(26, 188, 156, 0.5);
+    box-shadow: 0 0 30px rgba(26, 188, 156, 0.7);
 }
 
 @keyframes optiviera-spin {
