@@ -114,11 +114,23 @@ Optiviera ERP, küçük işletmeler için özel olarak tasarlanmış kapsamlı b
 
 ## 📝 License / Lizenz / Lisans
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Copyright (c) 2024 Akkis Technologies (AkkisTech)**
 
-Dieses Projekt steht unter der MIT-Lizenz - siehe die [LICENSE](LICENSE) Datei für Details.
+All rights reserved. The Optiviera project and its modules are proprietary software owned by Akkis Technologies (AkkisTech, Kerim Akkis).
 
-Bu proje MIT Lisansı altında lisanslanmıştır - detaylar için [LICENSE](LICENSE) dosyasına bakın.
+**Urheberrecht (c) 2024 Akkis Technologies (AkkisTech)**
+
+Alle Rechte vorbehalten. Das Optiviera-Projekt und seine Module sind proprietäre Software im Besitz von Akkis Technologies (AkkisTech, Kerim Akkis).
+
+**Telif Hakkı (c) 2024 Akkis Technologies (AkkisTech)**
+
+Tüm hakları saklıdır. Optiviera projesi ve modülleri Akkis Technologies (AkkisTech, Kerim Akkis) tarafından sahiplenilen özel yazılımdır.
+
+For complete license details, see the [LICENSE](LICENSE) file.
+
+Für vollständige Lizenzdetails siehe die [LICENSE](LICENSE) Datei.
+
+Tam lisans detayları için [LICENSE](LICENSE) dosyasına bakın.
 
 ---
 
