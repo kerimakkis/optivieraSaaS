@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LicenseManagement" xml:space="preserve">
+    <value>Lisans Yönetimi</value>
+  </data>
+  <data name="LicenseStatus" xml:space="preserve">
+    <value>Lisans Durumu</value>
+  </data>
+  <data name="LicenseValid" xml:space="preserve">
+    <value>Lisans Geçerli</value>
+  </data>
+  <data name="GracePeriodActive" xml:space="preserve">
+    <value>İade Süresi Aktif</value>
+  </data>
+  <data name="LicenseExpired" xml:space="preserve">
+    <value>Lisans Süresi Dolmuş</value>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Son Kullanma Tarihi</value>
+  </data>
+  <data name="NoExpiryDate" xml:space="preserve">
+    <value>Son kullanma tarihi yok</value>
+  </data>
+  <data name="TrialPeriod" xml:space="preserve">
+    <value>Deneme Süresi</value>
+  </data>
+  <data name="TrialDaysRemaining" xml:space="preserve">
+    <value>Kalan Deneme Günü</value>
+  </data>
+  <data name="TrialExpiringSoon" xml:space="preserve">
+    <value>Deneme süresi yakında sona eriyor!</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Lisansı Etkinleştir</value>
+  </data>
+  <data name="LicenseKey" xml:space="preserve">
+    <value>Lisans Anahtarı</value>
+  </data>
+  <data name="LicenseKeyFormat" xml:space="preserve">
+    <value>Format: OPTV-XXXX-XXXX-XXXX-XXXX</value>
+  </data>
+  <data name="PurchaseLicense" xml:space="preserve">
+    <value>Lisans Satın Al</value>
+  </data>
+  <data name="PurchaseDescription" xml:space="preserve">
+    <value>Optiviera için tam lisans satın alın</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Şimdi Satın Al</value>
+  </data>
+  <data name="CurrentLicense" xml:space="preserve">
+    <value>Mevcut Lisans</value>
+  </data>
+  <data name="LicenseType" xml:space="preserve">
+    <value>Lisans Türü</value>
+  </data>
+  <data name="ActivationDate" xml:space="preserve">
+    <value>Etkinleştirme Tarihi</value>
+  </data>
+  <data name="MachineId" xml:space="preserve">
+    <value>Makine Kimliği</value>
+  </data>
+  <data name="LastValidated" xml:space="preserve">
+    <value>Son Doğrulama</value>
+  </data>
+  <data name="Never" xml:space="preserve">
+    <value>Hiç</value>
+  </data>
+</root>

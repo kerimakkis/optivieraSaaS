@@ -29,6 +29,9 @@ builder.Services.AddScoped<ITTicketService, TicketService>();
 
 builder.Services.AddScoped<ITRolesService, RolesService>();
 
+// Add license service
+builder.Services.AddScoped<ILicenseService, LicenseService>();
+
 
 var app = builder.Build();
 
@@ -59,6 +62,9 @@ localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCulturePr
 app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
+
+// Add license middleware
+app.UseMiddleware<Optiviera.Middleware.LicenseMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

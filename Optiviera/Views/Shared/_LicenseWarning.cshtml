@@ -1,0 +1,61 @@
+@inject IViewLocalizer Localizer
+@inject Optiviera.Services.Interfaces.ILicenseService LicenseService
+
+@{
+    var isLicenseValid = await LicenseService.IsLicenseValidAsync();
+    var isInGracePeriod = await LicenseService.IsInGracePeriodAsync();
+    var trialDaysRemaining = await LicenseService.GetTrialDaysRemainingAsync();
+    var currentLicense = await LicenseService.GetCurrentLicenseAsync();
+}
+
+@if (!isLicenseValid && !isInGracePeriod)
+{
+    <!-- License Expired - Redirect to expired page -->
+    <script>
+        window.location.href = '@Url.Action("Expired", "License")';
+    </script>
+}
+else if (isInGracePeriod)
+{
+    <!-- Grace Period Warning -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>@Localizer["GracePeriodWarning"]</strong>
+                    @Localizer["GracePeriodMessage"]
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="@Url.Action("Index", "License")" class="btn btn-warning btn-sm">
+                        <i class="fas fa-key me-1"></i>
+                        @Localizer["ActivateLicense"]
+                    </a>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (currentLicense?.LicenseType == "Trial" && trialDaysRemaining <= 7)
+{
+    <!-- Trial Expiring Soon Warning -->
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <i class="fas fa-clock me-2"></i>
+                    <strong>@Localizer["TrialExpiringSoon"]</strong>
+                    @Localizer["TrialDaysRemaining"]: <strong>@trialDaysRemaining</strong>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="@Url.Action("Index", "License")" class="btn btn-primary btn-sm">
+                        <i class="fas fa-key me-1"></i>
+                        @Localizer["ActivateLicense"]
+                    </a>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

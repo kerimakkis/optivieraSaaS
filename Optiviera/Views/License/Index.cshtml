@@ -1,0 +1,194 @@
+@model Optiviera.Controllers.LicenseViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["LicenseManagement"];
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-key me-2"></i>
+                        @Localizer["LicenseManagement"]
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <!-- License Status -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card @(Model.IsLicenseValid ? "border-success" : "border-warning")">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        @Localizer["LicenseStatus"]
+                                    </h5>
+                                    @if (Model.IsLicenseValid)
+                                    {
+                                        <p class="text-success mb-0">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            @Localizer["LicenseValid"]
+                                        </p>
+                                    }
+                                    else if (Model.IsInGracePeriod)
+                                    {
+                                        <p class="text-warning mb-0">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            @Localizer["GracePeriodActive"]
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-danger mb-0">
+                                            <i class="fas fa-times-circle me-2"></i>
+                                            @Localizer["LicenseExpired"]
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-calendar me-2"></i>
+                                        @Localizer["ExpiryDate"]
+                                    </h5>
+                                    @if (Model.ExpiryDate.HasValue)
+                                    {
+                                        <p class="mb-0">@Model.ExpiryDate.Value.ToString("dd MMMM yyyy")</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted mb-0">@Localizer["NoExpiryDate"]</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trial Information -->
+                    @if (Model.License?.LicenseType == "Trial")
+                    {
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-info">
+                                            <i class="fas fa-clock me-2"></i>
+                                            @Localizer["TrialPeriod"]
+                                        </h5>
+                                        <p class="mb-2">@Localizer["TrialDaysRemaining"]: <strong>@Model.TrialDaysRemaining</strong></p>
+                                        @if (Model.TrialDaysRemaining <= 7)
+                                        {
+                                            <div class="alert alert-warning mb-0">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                @Localizer["TrialExpiringSoon"]
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- License Activation -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-key me-2"></i>
+                                        @Localizer["ActivateLicense"]
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form asp-action="Activate" method="post">
+                                        <div class="mb-3">
+                                            <label for="licenseKey" class="form-label">@Localizer["LicenseKey"]</label>
+                                            <input type="text" class="form-control" id="licenseKey" name="licenseKey" 
+                                                   placeholder="OPTV-XXXX-XXXX-XXXX-XXXX" required>
+                                            <div class="form-text">@Localizer["LicenseKeyFormat"]</div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-check me-2"></i>
+                                            @Localizer["ActivateLicense"]
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-shopping-cart me-2"></i>
+                                        @Localizer["PurchaseLicense"]
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">@Localizer["PurchaseDescription"]</p>
+                                    <a href="@Url.Action("Purchase")" class="btn btn-success" target="_blank">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        @Localizer["PurchaseNow"]
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current License Information -->
+                    @if (Model.License != null)
+                    {
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-info me-2"></i>
+                                            @Localizer["CurrentLicense"]
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>@Localizer["LicenseType"]:</strong> @Model.License.LicenseType</p>
+                                                <p><strong>@Localizer["ActivationDate"]:</strong> @Model.License.ActivationDate.ToString("dd MMMM yyyy")</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>@Localizer["MachineId"]:</strong> <code>@Model.License.MachineId</code></p>
+                                        <p><strong>@Localizer["LastValidated"]:</strong> 
+                                            @(Model.License.LastValidated?.ToString("dd MMMM yyyy HH:mm") ?? "Never")</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

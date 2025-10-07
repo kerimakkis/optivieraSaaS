@@ -1,0 +1,74 @@
+{
+  "name": "optiviera-desktop",
+  "version": "1.0.0",
+  "description": "Optiviera ERP Desktop Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "build:all": "electron-builder --win --mac --linux",
+    "dist": "npm run build",
+    "pack": "electron-builder --dir"
+  },
+  "keywords": [
+    "optiviera",
+    "erp",
+    "desktop",
+    "electron"
+  ],
+  "author": "AkkisTech",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^22.0.0",
+    "electron-builder": "^23.0.0"
+  },
+  "build": {
+    "appId": "com.akkistech.optiviera",
+    "productName": "Optiviera ERP",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "resources/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../Optiviera/bin/Release/net6.0/publish/",
+        "to": "app/",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "icon.icns",
+      "category": "public.app-category.business"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "icon.png",
+      "category": "Office"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Optiviera ERP"
+    }
+  }
+}
