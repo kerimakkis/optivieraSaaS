@@ -43,9 +43,10 @@ namespace Optiviera.Controllers
             reportData.ManagerUsers = await _context.UserRoles.CountAsync(ur => ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Manager").Id);
             reportData.EmployeeUsers = await _context.UserRoles.CountAsync(ur => ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Employee").Id);
 
-            // Son 30 günlük iş emirleri
+            // Son 30 günlük iş emirleri - SQLite uyumlu
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
-            reportData.RecentTickets = await _context.Tickets.CountAsync(t => t.Created >= thirtyDaysAgo);
+            var allTickets = await _context.Tickets.ToListAsync();
+            reportData.RecentTickets = allTickets.Count(t => t.Created >= thirtyDaysAgo);
 
             // En aktif kullanıcılar (en çok iş emri alan)
             reportData.TopTechnicians = await _context.Tickets
