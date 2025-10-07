@@ -1,153 +1,212 @@
-# Optiviera ERP - Eco-Level ERP for Small Businesses
+# Optiviera ERP
 
-## 🌍 Multilingual Support / Mehrsprachige Unterstützung / Çok Dilli Destek
+**Küçük İşletmeler İçin Eko Seviye ERP Çözümü**
+
+![Optiviera ERP](https://img.shields.io/badge/Optiviera-ERP-blue)
+![License](https://img.shields.io/badge/License-AkkisTech-green)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
+![Languages](https://img.shields.io/badge/Languages-8%20Languages-orange)
+
+## 🚀 Özellikler
+
+### ✨ **Ana Özellikler**
+- **🎯 Tek Tıkla Kurulum**: Otomatik kurulum ve veritabanı oluşturma
+- **🌍 8 Dil Desteği**: Türkçe, İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce, Hollandaca
+- **🔐 Güvenli Lisans Sistemi**: Makine bazlı lisans, otomatik aktivasyon
+- **📊 Gelişmiş Raporlama**: Chart.js ile interaktif grafikler
+- **👥 Kullanıcı Yönetimi**: Rol bazlı erişim kontrolü
+- **🎫 Ticket Sistemi**: Müşteri destek talebi yönetimi
+
+### 🛠️ **Teknik Özellikler**
+- **ASP.NET Core 6.0** - Modern web framework
+- **SQLite Database** - Self-contained veritabanı
+- **Entity Framework Core** - ORM ve migration desteği
+- **ASP.NET Identity** - Güvenli kullanıcı yönetimi
+- **Electron Desktop App** - Cross-platform masaüstü uygulaması
+- **Bootstrap 5** - Responsive ve modern UI
+- **Font Awesome 6** - Zengin ikon kütüphanesi
+
+## 📦 Kurulum
+
+### 🖥️ **Desktop Uygulaması (Önerilen)**
+
+#### Windows
+```bash
+# İndir ve çalıştır
+Optiviera ERP Setup 1.0.0.exe
+```
+
+#### macOS
+```bash
+# DMG dosyasını aç ve uygulamayı Applications klasörüne sürükle
+Optiviera ERP-1.0.0.dmg
+```
+
+#### Linux
+```bash
+# AppImage dosyasını çalıştırılabilir yap ve çalıştır
+chmod +x Optiviera\ ERP-1.0.0-arm64.AppImage
+./Optiviera\ ERP-1.0.0-arm64.AppImage
+```
+
+### 🌐 **Web Uygulaması**
+
+#### Gereksinimler
+- .NET 6.0 Runtime
+- SQLite (otomatik oluşturulur)
+
+#### Kurulum
+```bash
+# Repository'yi klonla
+git clone https://github.com/akkistech/optiviera.git
+cd optiviera
+
+# Bağımlılıkları yükle
+dotnet restore
+
+# Veritabanını oluştur
+dotnet ef database update
+
+# Uygulamayı çalıştır
+dotnet run
+```
+
+## 🎯 Kullanım
+
+### 🚀 **İlk Kurulum**
+1. **İndir**: Platformunuza uygun dosyayı indirin
+2. **Kur**: Kurulum sihirbazını takip edin
+3. **Başlat**: Uygulama otomatik olarak açılacak
+4. **Lisans**: 1 yıllık ücretsiz trial otomatik aktif
+
+### 👤 **Kullanıcı Yönetimi**
+- **Admin**: Tam erişim, kullanıcı yönetimi
+- **Manager**: Raporlama ve ticket yönetimi
+- **Employee**: Temel işlemler
+
+### 🎫 **Ticket Sistemi**
+- Müşteri bilgileri
+- Öncelik seviyeleri
+- Durum takibi
+- Teknik atama
+
+### 📊 **Raporlama**
+- Ticket istatistikleri
+- Kullanıcı performansı
+- Öncelik dağılımı
+- Zaman bazlı analizler
+
+## 🌍 Çok Dilli Destek
+
+| Dil | Kod | Durum |
+|-----|-----|-------|
+| 🇹🇷 Türkçe | tr | ✅ Tam |
+| 🇺🇸 English | en | ✅ Tam |
+| 🇩🇪 Deutsch | de | ✅ Tam |
+| 🇫🇷 Français | fr | ✅ Tam |
+| 🇪🇸 Español | es | ✅ Tam |
+| 🇮🇹 Italiano | it | ✅ Tam |
+| 🇵🇹 Português | pt | ✅ Tam |
+| 🇳🇱 Nederlands | nl | ✅ Tam |
+
+## 🔐 Lisans Sistemi
+
+### 🎁 **Trial Lisans**
+- **Süre**: 1 yıl (365 gün)
+- **Özellikler**: Tam erişim
+- **Aktivasyon**: Otomatik
+- **Grace Period**: 7 gün ek süre
+
+### 💳 **Satın Alma**
+- **Website**: [akkistech.com/optiviera](https://akkistech.com/optiviera)
+- **İletişim**: support@akkistech.com
+- **Ödeme**: Güvenli ödeme sistemi
+
+## 🛠️ Geliştirme
+
+### 📋 **Gereksinimler**
+- .NET 6.0 SDK
+- Node.js 16+
+- Git
+
+### 🚀 **Geliştirme Ortamı**
+```bash
+# Repository'yi klonla
+git clone https://github.com/akkistech/optiviera.git
+cd optiviera
+
+# Backend bağımlılıkları
+cd Optiviera
+dotnet restore
+dotnet ef database update
+
+# Frontend bağımlılıkları
+cd ../electron
+npm install
+
+# Geliştirme modunda çalıştır
+npm run dev
+```
+
+### 🏗️ **Build**
+```bash
+# ASP.NET Core build
+dotnet publish -c Release -r win-x64 --self-contained true
+
+# Electron build
+npm run build
+```
+
+## 📁 Proje Yapısı
+
+```
+Optiviera/
+├── Optiviera/                 # ASP.NET Core uygulaması
+│   ├── Controllers/            # MVC Controllers
+│   ├── Models/               # Veri modelleri
+│   ├── Views/                # Razor Views
+│   ├── Services/             # İş mantığı servisleri
+│   ├── Data/                 # Entity Framework
+│   └── Resources/            # Çok dilli kaynaklar
+├── electron/                 # Electron desktop app
+│   ├── main.js              # Ana process
+│   ├── preload.js           # Preload script
+│   └── package.json         # Node.js bağımlılıkları
+├── hosting/                  # Web hosting dosyaları
+│   ├── index.html           # Ana sayfa
+│   └── downloads/           # İndirilebilir dosyalar
+└── build/                   # Build çıktıları
+    ├── win-x64/            # Windows build
+    └── osx-arm64/          # macOS build
+```
+
+## 🤝 Katkıda Bulunma
+
+1. Fork yapın
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Commit yapın (`git commit -m 'Add amazing feature'`)
+4. Push yapın (`git push origin feature/amazing-feature`)
+5. Pull Request oluşturun
+
+## 📞 İletişim
+
+- **Website**: [akkistech.com](https://akkistech.com)
+- **E-posta**: support@akkistech.com
+- **GitHub**: [github.com/akkistech/optiviera](https://github.com/akkistech/optiviera)
+
+## 📄 Lisans
+
+Bu proje Akkis Technologies (AkkisTech) tarafından lisanslanmıştır.
+
+**Copyright © 2025 Akkis Technologies (AkkisTech) - Kerim Akkis**
+
+### Lisans Koşulları
+- ✅ **Trial**: 1 yıl ücretsiz kullanım
+- ✅ **Ticari Kullanım**: Lisans satın alındıktan sonra
+- ✅ **Dağıtım**: Lisanslı kullanıcılar için
+- ❌ **Reverse Engineering**: Yasak
+- ❌ **Kaynak Kod Dağıtımı**: Yasak
 
 ---
 
-## 🇺🇸 English
-
-### Overview
-Optiviera ERP is a comprehensive eco-level Enterprise Resource Planning (ERP) system designed specifically for small businesses. This project represents the first module of the Optiviera ecosystem, focusing on work order management and user administration.
-
-### Features
-- **Work Order Management**: Track and manage customer work orders efficiently
-- **User Management**: Role-based authorization system with secure user management
-- **Reporting**: Monitor work order status and performance
-- **Multi-language Support**: Available in English, German, and Turkish
-- **Modern UI**: Clean, responsive design with custom color palette
-
-### Technology Stack
-- **Backend**: ASP.NET Core 6.0 MVC
-- **Database**: PostgreSQL with Entity Framework Core
-- **Authentication**: ASP.NET Core Identity
-- **Frontend**: Bootstrap 5, HTML5, CSS3, JavaScript
-- **ORM**: Entity Framework Core 6.0
-
-### Getting Started
-1. Clone the repository
-2. Install PostgreSQL
-3. Update connection string in `appsettings.json`
-4. Run migrations: `dotnet ef database update`
-5. Start the application: `dotnet run`
-
-### Default Users
-- **Admin**: admin@optiviera.com / Admin123!
-- **Manager**: manager@optiviera.com / Manager123!
-- **Employee**: employee@optiviera.com / Employee123!
-
----
-
-## 🇩🇪 Deutsch
-
-### Übersicht
-Optiviera ERP ist ein umfassendes Öko-Level Enterprise Resource Planning (ERP) System, das speziell für kleine Unternehmen entwickelt wurde. Dieses Projekt stellt das erste Modul des Optiviera-Ökosystems dar und konzentriert sich auf Arbeitsauftragsverwaltung und Benutzeradministration.
-
-### Funktionen
-- **Arbeitsauftragsverwaltung**: Verfolgen und verwalten Sie Kundenarbeitsaufträge effizient
-- **Benutzerverwaltung**: Rollenbasierte Autorisierung mit sicherer Benutzerverwaltung
-- **Berichterstattung**: Überwachen Sie den Status und die Leistung von Arbeitsaufträgen
-- **Mehrsprachige Unterstützung**: Verfügbar in Englisch, Deutsch und Türkisch
-- **Moderne Benutzeroberfläche**: Sauberes, responsives Design mit benutzerdefinierter Farbpalette
-
-### Technologie-Stack
-- **Backend**: ASP.NET Core 6.0 MVC
-- **Datenbank**: PostgreSQL mit Entity Framework Core
-- **Authentifizierung**: ASP.NET Core Identity
-- **Frontend**: Bootstrap 5, HTML5, CSS3, JavaScript
-- **ORM**: Entity Framework Core 6.0
-
-### Erste Schritte
-1. Repository klonen
-2. PostgreSQL installieren
-3. Verbindungszeichenfolge in `appsettings.json` aktualisieren
-4. Migrationen ausführen: `dotnet ef database update`
-5. Anwendung starten: `dotnet run`
-
-### Standardbenutzer
-- **Admin**: admin@optiviera.com / Admin123!
-- **Manager**: manager@optiviera.com / Manager123!
-- **Mitarbeiter**: employee@optiviera.com / Employee123!
-
----
-
-## 🇹🇷 Türkçe
-
-### Genel Bakış
-Optiviera ERP, küçük işletmeler için özel olarak tasarlanmış kapsamlı bir eko seviye Kurumsal Kaynak Planlama (ERP) sistemidir. Bu proje, Optiviera ekosisteminin ilk modülünü temsil eder ve iş emri yönetimi ile kullanıcı yönetimine odaklanır.
-
-### Özellikler
-- **İş Emri Yönetimi**: Müşteri iş emirlerini verimli bir şekilde takip edin ve yönetin
-- **Kullanıcı Yönetimi**: Güvenli kullanıcı yönetimi ile rol tabanlı yetkilendirme sistemi
-- **Raporlama**: İş emirlerinin durumunu ve performansını izleyin
-- **Çok Dilli Destek**: İngilizce, Almanca ve Türkçe olarak mevcut
-- **Modern Arayüz**: Özel renk paleti ile temiz, duyarlı tasarım
-
-### Teknoloji Yığını
-- **Backend**: ASP.NET Core 6.0 MVC
-- **Veritabanı**: Entity Framework Core ile PostgreSQL
-- **Kimlik Doğrulama**: ASP.NET Core Identity
-- **Frontend**: Bootstrap 5, HTML5, CSS3, JavaScript
-- **ORM**: Entity Framework Core 6.0
-
-### Başlangıç
-1. Repository'yi klonlayın
-2. PostgreSQL'i yükleyin
-3. `appsettings.json` dosyasındaki bağlantı dizesini güncelleyin
-4. Migration'ları çalıştırın: `dotnet ef database update`
-5. Uygulamayı başlatın: `dotnet run`
-
-### Varsayılan Kullanıcılar
-- **Admin**: admin@optiviera.com / Admin123!
-- **Yönetici**: manager@optiviera.com / Manager123!
-- **Çalışan**: employee@optiviera.com / Employee123!
-
----
-
-## 🎨 Color Palette / Farbpalette / Renk Paleti
-
-- **Navy Blue**: #05445e
-- **Blue Grotto**: #189ab4
-- **Blue Green**: #75e6da
-- **Baby Blue**: #d4f1f4
-
----
-
-## 📝 License / Lizenz / Lisans
-
-**Copyright (c) 2024 Akkis Technologies (AkkisTech)**
-
-All rights reserved. The Optiviera project and its modules are proprietary software owned by Akkis Technologies (AkkisTech, Kerim Akkis).
-
-**Urheberrecht (c) 2024 Akkis Technologies (AkkisTech)**
-
-Alle Rechte vorbehalten. Das Optiviera-Projekt und seine Module sind proprietäre Software im Besitz von Akkis Technologies (AkkisTech, Kerim Akkis).
-
-**Telif Hakkı (c) 2024 Akkis Technologies (AkkisTech)**
-
-Tüm hakları saklıdır. Optiviera projesi ve modülleri Akkis Technologies (AkkisTech, Kerim Akkis) tarafından sahiplenilen özel yazılımdır.
-
-For complete license details, see the [LICENSE](LICENSE) file.
-
-Für vollständige Lizenzdetails siehe die [LICENSE](LICENSE) Datei.
-
-Tam lisans detayları için [LICENSE](LICENSE) dosyasına bakın.
-
----
-
-## 🤝 Contributing / Beitragen / Katkıda Bulunma
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-Beiträge sind willkommen! Bitte zögern Sie nicht, einen Pull Request einzureichen.
-
-Katkılarınız memnuniyetle karşılanır! Lütfen bir Pull Request göndermekten çekinmeyin.
-
----
-
-## 📧 Contact / Kontakt / İletişim
-
-For questions and support, please contact us at: [kerimakkis@github.com](mailto:kerimakkis@github.com)
-
-Bei Fragen und Support wenden Sie sich bitte an: [kerimakkis@github.com](mailto:kerimakkis@github.com)
-
-Sorularınız ve destek için lütfen bizimle iletişime geçin: [kerimakkis@github.com](mailto:kerimakkis@github.com)
+**Optiviera ERP** - Küçük işletmeler için modern ERP çözümü 🚀

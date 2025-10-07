@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optiviera ERP - Küçük İşletmeler İçin Eko Seviye ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 100px 0;
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .download-btn {
+            background: linear-gradient(45deg, #e74c3c, #f39c12);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        .trial-badge {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-cogs me-2"></i>
+                <strong>Optiviera ERP</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Özellikler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#download">İndir</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Optiviera ERP
+                        <span class="trial-badge">1 Yıl Ücretsiz Deneme</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        Küçük işletmeler için tasarlanmış, modern ve kullanıcı dostu ERP çözümü. 
+                        Tek tıkla kurulum, otomatik lisans aktivasyonu.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="#download" class="btn download-btn text-white">
+                            <i class="fas fa-download me-2"></i>
+                            Hemen İndir
+                        </a>
+                        <a href="#features" class="btn btn-outline-light">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Özellikleri Gör
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://via.placeholder.com/500x400/3498db/ffffff?text=Optiviera+ERP+Dashboard" 
+                         alt="Optiviera ERP Dashboard" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Neden Optiviera ERP?</h2>
+                <p class="lead text-muted">Modern teknoloji ile güçlendirilmiş işletme yönetimi</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-rocket fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Hızlı Kurulum</h5>
+                            <p class="card-text">Tek tıkla kurulum, otomatik veritabanı oluşturma ve 1 yıllık ücretsiz deneme.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-globe fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">8 Dil Desteği</h5>
+                            <p class="card-text">Türkçe, İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce, Hollandaca.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-shield-alt fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title">Güvenli Lisans</h5>
+                            <p class="card-text">Makine bazlı lisans sistemi, otomatik aktivasyon ve güvenli ödeme.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-ticket-alt fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Ticket Yönetimi</h5>
+                            <p class="card-text">Müşteri destek taleplerini takip edin, önceliklendirin ve çözün.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x text-danger mb-3"></i>
+                            <h5 class="card-title">Kullanıcı Yönetimi</h5>
+                            <p class="card-text">Rol bazlı erişim kontrolü, kullanıcı yetkilendirme ve güvenlik.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-bar fa-3x text-secondary mb-3"></i>
+                            <h5 class="card-title">Raporlama</h5>
+                            <p class="card-text">Detaylı raporlar, istatistikler ve işletme performans analizi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Optiviera ERP İndir</h2>
+                <p class="lead text-muted">İşletmeniz için en uygun platformu seçin</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fab fa-windows fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Windows</h5>
+                            <p class="card-text">Windows 10/11 (x64)</p>
+                            <a href="downloads/Optiviera ERP Setup 1.0.0.exe" class="btn btn-primary">
+                                <i class="fas fa-download me-2"></i>
+                                İndir (68.7 MB)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fab fa-apple fa-3x text-secondary mb-3"></i>
+                            <h5 class="card-title">macOS</h5>
+                            <p class="card-text">macOS 10.12+ (Intel & Apple Silicon)</p>
+                            <a href="downloads/Optiviera ERP-1.0.0.dmg" class="btn btn-secondary">
+                                <i class="fas fa-download me-2"></i>
+                                İndir (91.3 MB)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fab fa-linux fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">Linux</h5>
+                            <p class="card-text">Ubuntu, Debian, CentOS</p>
+                            <a href="downloads/Optiviera ERP-1.0.0-arm64.AppImage" class="btn btn-success">
+                                <i class="fas fa-download me-2"></i>
+                                İndir (95.5 MB)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- License Information -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h3 class="fw-bold mb-4">Lisans Bilgileri</h3>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    <h5 class="card-title text-success">
+                                        <i class="fas fa-gift me-2"></i>
+                                        1 Yıl Ücretsiz Deneme
+                                    </h5>
+                                    <p class="card-text">Tam özellikli 1 yıllık ücretsiz deneme süresi</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">
+                                        <i class="fas fa-key me-2"></i>
+                                        Otomatik Aktivasyon
+                                    </h5>
+                                    <p class="card-text">Kurulum sonrası otomatik lisans aktivasyonu</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h3 class="fw-bold mb-4">İletişim</h3>
+                    <p class="lead mb-4">
+                        Sorularınız için bizimle iletişime geçin
+                    </p>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-envelope fa-2x me-3"></i>
+                                <div>
+                                    <h6>E-posta</h6>
+                                    <p class="mb-0">support@akkistech.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-globe fa-2x me-3"></i>
+                                <div>
+                                    <h6>Website</h6>
+                                    <p class="mb-0">akkistech.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-secondary text-white text-center">
+        <div class="container">
+            <p class="mb-0">
+                &copy; 2025 Optiviera ERP - Akkis Technologies (AkkisTech) tarafından lisanslanmıştır.
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+

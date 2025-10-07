@@ -8,7 +8,8 @@ const config = {
   outputPath: './dist',
   platforms: {
     win: { runtime: 'win-x64', name: 'Windows' },
-    mac: { runtime: 'osx-x64', name: 'macOS' },
+    mac: { runtime: 'osx-arm64', name: 'macOS ARM64' },
+    macIntel: { runtime: 'osx-x64', name: 'macOS Intel' },
     linux: { runtime: 'linux-x64', name: 'Linux' }
   }
 };
@@ -82,27 +83,41 @@ function buildAspNetCore(runtime) {
 function buildElectron(platform) {
   log(`Building Electron for ${platform}...`);
   
-  // Copy published ASP.NET Core app to electron resources
-  const aspNetPath = path.join(config.outputPath, 'publish', config.platforms[platform].runtime);
-  const electronResourcesPath = path.join(config.electronPath, 'resources', 'app');
-  
-  cleanDirectory(electronResourcesPath);
-  copyDirectory(aspNetPath, electronResourcesPath);
-  
-  // Build Electron app
-  const buildCommand = platform === 'all' ? 'npm run build:all' : `npm run build:${platform}`;
-  runCommand(buildCommand, config.electronPath);
+  if (platform === 'all') {
+    // Build for all platforms
+    runCommand('npm run build:all', config.electronPath);
+  } else {
+    // Copy published ASP.NET Core app to electron resources for specific platform
+    const platformConfig = config.platforms[platform];
+    if (platformConfig) {
+      const aspNetPath = path.join(config.outputPath, 'publish', platformConfig.runtime);
+      const electronResourcesPath = path.join(config.electronPath, 'resources', 'app');
+      
+      cleanDirectory(electronResourcesPath);
+      copyDirectory(aspNetPath, electronResourcesPath);
+    }
+    
+    // Build Electron app
+    const buildCommand = `npm run build:${platform}`;
+    runCommand(buildCommand, config.electronPath);
+  }
 }
 
 function createInitialDatabase() {
   log('Creating initial database...');
   
-  // This would be implemented as a separate script that creates
-  // a pre-seeded SQLite database with admin user
+  // Create a pre-seeded SQLite database with admin user
   const dbScriptPath = path.join(config.projectPath, 'Scripts', 'CreateInitialDatabase.cs');
   
   if (fs.existsSync(dbScriptPath)) {
-    runCommand(`dotnet run --project ${config.projectPath} -- --create-db`, config.projectPath);
+    try {
+      // Create database using the script
+      runCommand(`dotnet run --project ${config.projectPath} -- --create-db`, config.projectPath);
+      log('Database created successfully with admin user.');
+    } catch (error) {
+      log('Warning: Database creation failed. Manual setup may be required.');
+      log(`Error: ${error.message}`);
+    }
   } else {
     log('Warning: Database creation script not found. Manual database setup required.');
   }
