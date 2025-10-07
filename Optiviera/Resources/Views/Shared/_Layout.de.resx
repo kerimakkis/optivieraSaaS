@@ -169,4 +169,7 @@
   <data name="Loading" xml:space="preserve">
     <value>Laden...</value>
   </data>
+  <data name="ClickForLicenseInfo" xml:space="preserve">
+    <value>Klicken Sie für Lizenzinformationen</value>
+  </data>
 </root>

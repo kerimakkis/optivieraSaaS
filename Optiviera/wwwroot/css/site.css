@@ -12641,3 +12641,21 @@ body {
     align-items: center;
 }
 
+/* Footer Optiviera Link Hover Effects */
+footer a[href*="License"] {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+footer a[href*="License"]:hover {
+    color: #ffc107 !important;
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.8) !important;
+    transform: scale(1.05);
+}
+
+footer a[href*="License"]:hover::after {
+    content: " 🔗";
+    font-size: 0.8em;
+    margin-left: 2px;
+}
+

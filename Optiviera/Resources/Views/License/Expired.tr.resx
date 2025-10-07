@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LicenseExpired" xml:space="preserve">
+    <value>Lisans Süresi Doldu</value>
+  </data>
+  <data name="LicenseExpiredTitle" xml:space="preserve">
+    <value>Lisansınız Geçmiştir</value>
+  </data>
+  <data name="LicenseExpiredMessage" xml:space="preserve">
+    <value>Optiviera ERP lisansınızın süresi dolmuştur. Uygulamayı kullanmaya devam etmek için yeni bir lisans satın almanız veya mevcut lisansınızı yenilemeniz gerekmektedir.</value>
+  </data>
+  <data name="PurchaseNewLicense" xml:space="preserve">
+    <value>Yeni Lisans Satın Al</value>
+  </data>
+  <data name="PurchaseNewLicenseDescription" xml:space="preserve">
+    <value>Optiviera ERP'nin tam sürümünü satın alarak tüm özelliklerden yararlanın.</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Şimdi Satın Al</value>
+  </data>
+  <data name="ActivateExistingLicense" xml:space="preserve">
+    <value>Mevcut Lisansı Etkinleştir</value>
+  </data>
+  <data name="ActivateExistingLicenseDescription" xml:space="preserve">
+    <value>Zaten sahip olduğunuz bir lisans anahtarınız varsa buradan etkinleştirebilirsiniz.</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Lisansı Etkinleştir</value>
+  </data>
+  <data name="NeedHelp" xml:space="preserve">
+    <value>Yardıma mı İhtiyacınız Var?</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Lisans konusunda yardıma ihtiyacınız varsa destek ekibimizle iletişime geçin.</value>
+  </data>
+</root>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LicenseInformation" xml:space="preserve">
+    <value>License Information</value>
+  </data>
+  <data name="LicenseStatus" xml:space="preserve">
+    <value>License Status</value>
+  </data>
+  <data name="Valid" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Remaining Time</value>
+  </data>
+  <data name="DaysRemaining" xml:space="preserve">
+    <value>Days Remaining</value>
+  </data>
+  <data name="Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="LicenseDetails" xml:space="preserve">
+    <value>License Details</value>
+  </data>
+  <data name="LicenseKey" xml:space="preserve">
+    <value>License Key</value>
+  </data>
+  <data name="LicenseType" xml:space="preserve">
+    <value>License Type</value>
+  </data>
+  <data name="Trial" xml:space="preserve">
+    <value>Trial</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="ActivationDate" xml:space="preserve">
+    <value>Activation Date</value>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Expiry Date</value>
+  </data>
+  <data name="MachineId" xml:space="preserve">
+    <value>Machine ID</value>
+  </data>
+  <data name="CustomerEmail" xml:space="preserve">
+    <value>Customer Email</value>
+  </data>
+  <data name="NoLicenseFound" xml:space="preserve">
+    <value>No License Found</value>
+  </data>
+  <data name="NoLicenseFoundMessage" xml:space="preserve">
+    <value>No license found for this machine. Please enter your license key or purchase a new license.</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Activate License</value>
+  </data>
+  <data name="ActivateLicenseDescription" xml:space="preserve">
+    <value>Enter and activate your existing license key</value>
+  </data>
+  <data name="PurchaseLicense" xml:space="preserve">
+    <value>Purchase License</value>
+  </data>
+  <data name="PurchaseLicenseDescription" xml:space="preserve">
+    <value>Purchase a new license and get full feature access</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Purchase Now</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Contact Support</value>
+  </data>
+  <data name="ContactSupportDescription" xml:space="preserve">
+    <value>Contact our support team for license issues</value>
+  </data>
+  <data name="GracePeriodWarning" xml:space="preserve">
+    <value>Warning: Grace Period</value>
+  </data>
+  <data name="GracePeriodMessage" xml:space="preserve">
+    <value>Your license has expired but you are still in the grace period. Please renew your license.</value>
+  </data>
+  <data name="LicenseExpiredWarning" xml:space="preserve">
+    <value>Warning: License Expired</value>
+  </data>
+  <data name="LicenseExpiredMessage" xml:space="preserve">
+    <value>Your license has expired. Please renew your license or purchase a new one.</value>
+  </data>
+</root>

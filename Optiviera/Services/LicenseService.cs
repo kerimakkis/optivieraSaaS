@@ -12,6 +12,7 @@ namespace Optiviera.Services
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<LicenseService> _logger;
+        private readonly string _machineId;
 
         public LicenseService(
             ApplicationDbContext context, 
@@ -21,6 +22,7 @@ namespace Optiviera.Services
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
+            _machineId = GenerateMachineId();
         }
 
         public async Task<bool> ValidateLicenseAsync()
@@ -44,11 +46,25 @@ namespace Optiviera.Services
                 // Check if license has expired
                 if (DateTime.UtcNow > license.ExpiryDate)
                 {
-                    // Check if we're in grace period
-                    if (license.GracePeriodEnd.HasValue && DateTime.UtcNow <= license.GracePeriodEnd.Value)
+                    // For trial licenses, allow some grace period
+                    if (license.LicenseType == "Trial")
                     {
-                        _logger.LogInformation("License expired but in grace period");
-                        return true;
+                        // Trial licenses get 7 days grace period
+                        var gracePeriodEnd = license.ExpiryDate.AddDays(7);
+                        if (DateTime.UtcNow <= gracePeriodEnd)
+                        {
+                            _logger.LogInformation("Trial license expired but in grace period");
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        // Check if we're in grace period for paid licenses
+                        if (license.GracePeriodEnd.HasValue && DateTime.UtcNow <= license.GracePeriodEnd.Value)
+                        {
+                            _logger.LogInformation("License expired but in grace period");
+                            return true;
+                        }
                     }
                     
                     _logger.LogWarning("License has expired");
@@ -92,6 +108,11 @@ namespace Optiviera.Services
 
         public async Task<string> GenerateMachineIdAsync()
         {
+            return GenerateMachineId();
+        }
+
+        private static string GenerateMachineId()
+        {
             try
             {
                 // Get hardware information
@@ -109,9 +130,8 @@ namespace Optiviera.Services
                     return Convert.ToBase64String(hash)[..16]; // Take first 16 characters
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error generating machine ID");
                 return Guid.NewGuid().ToString("N")[..16]; // Fallback to GUID
             }
         }
@@ -298,6 +318,87 @@ namespace Optiviera.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error logging validation attempt");
+            }
+        }
+
+        // Additional methods needed by LicenseController
+        public string GetMachineId()
+        {
+            return _machineId;
+        }
+
+        public async Task<License?> GetLicenseAsync(string machineId)
+        {
+            try
+            {
+                return await _context.Licenses
+                    .FirstOrDefaultAsync(l => l.MachineId == machineId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting license for machine ID: {MachineId}", machineId);
+                return null;
+            }
+        }
+
+        public async Task<bool> ValidateLicenseAsync(string machineId)
+        {
+            try
+            {
+                var license = await GetLicenseAsync(machineId);
+                if (license == null)
+                {
+                    _logger.LogWarning("No license found for machine ID: {MachineId}", machineId);
+                    return false;
+                }
+
+                return await ValidateLicenseAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error validating license for machine ID: {MachineId}", machineId);
+                return false;
+            }
+        }
+
+        public async Task<bool> CreateTrialLicenseAsync()
+        {
+            try
+            {
+                // Check if trial license already exists
+                var existingLicense = await _context.Licenses
+                    .FirstOrDefaultAsync(l => l.MachineId == _machineId);
+
+                if (existingLicense != null)
+                {
+                    return true; // Trial already exists
+                }
+
+                // Create new trial license
+                var trialLicense = new License
+                {
+                    LicenseKey = $"TRIAL-{_machineId}-{DateTime.UtcNow:yyyyMMdd}",
+                    MachineId = _machineId,
+                    LicenseType = "Trial",
+                    ActivationDate = DateTime.UtcNow,
+                    ExpiryDate = DateTime.UtcNow.AddDays(365), // 1 year trial
+                    IsActive = true,
+                    CreatedDate = DateTime.UtcNow,
+                    LastValidated = DateTime.UtcNow,
+                    CustomerEmail = "trial@optiviera.com",
+                    Notes = "Free trial license - 1 year validity"
+                };
+
+                _context.Licenses.Add(trialLicense);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Trial license created for machine ID: {MachineId}", _machineId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating trial license");
+                return false;
             }
         }
     }

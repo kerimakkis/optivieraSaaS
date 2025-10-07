@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LicenseExpired" xml:space="preserve">
+    <value>Licencia Expirada</value>
+  </data>
+  <data name="LicenseExpiredTitle" xml:space="preserve">
+    <value>Su Licencia ha Expirado</value>
+  </data>
+  <data name="LicenseExpiredMessage" xml:space="preserve">
+    <value>Su licencia de Optiviera ERP ha expirado. Para continuar usando la aplicación, necesita comprar una nueva licencia o renovar su licencia existente.</value>
+  </data>
+  <data name="PurchaseNewLicense" xml:space="preserve">
+    <value>Comprar Nueva Licencia</value>
+  </data>
+  <data name="PurchaseNewLicenseDescription" xml:space="preserve">
+    <value>Compre la versión completa de Optiviera ERP para acceder a todas las funciones.</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Comprar Ahora</value>
+  </data>
+  <data name="ActivateExistingLicense" xml:space="preserve">
+    <value>Activar Licencia Existente</value>
+  </data>
+  <data name="ActivateExistingLicenseDescription" xml:space="preserve">
+    <value>Si ya tiene una clave de licencia, puede activarla aquí.</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Activar Licencia</value>
+  </data>
+  <data name="NeedHelp" xml:space="preserve">
+    <value>¿Necesita Ayuda?</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Si necesita ayuda con la licencia, póngase en contacto con nuestro equipo de soporte.</value>
+  </data>
+</root>

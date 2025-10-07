@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LicenseInformation" xml:space="preserve">
+    <value>Informazioni sulla licenza</value>
+  </data>
+  <data name="LicenseStatus" xml:space="preserve">
+    <value>Stato della licenza</value>
+  </data>
+  <data name="Valid" xml:space="preserve">
+    <value>Valida</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Non valida</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Tempo rimanente</value>
+  </data>
+  <data name="DaysRemaining" xml:space="preserve">
+    <value>Giorni rimanenti</value>
+  </data>
+  <data name="Expired" xml:space="preserve">
+    <value>Scaduta</value>
+  </data>
+  <data name="LicenseDetails" xml:space="preserve">
+    <value>Dettagli della licenza</value>
+  </data>
+  <data name="LicenseKey" xml:space="preserve">
+    <value>Chiave di licenza</value>
+  </data>
+  <data name="LicenseType" xml:space="preserve">
+    <value>Tipo di licenza</value>
+  </data>
+  <data name="Trial" xml:space="preserve">
+    <value>Prova</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Pagata</value>
+  </data>
+  <data name="ActivationDate" xml:space="preserve">
+    <value>Data di attivazione</value>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Data di scadenza</value>
+  </data>
+  <data name="MachineId" xml:space="preserve">
+    <value>ID macchina</value>
+  </data>
+  <data name="CustomerEmail" xml:space="preserve">
+    <value>Email cliente</value>
+  </data>
+  <data name="NoLicenseFound" xml:space="preserve">
+    <value>Nessuna licenza trovata</value>
+  </data>
+  <data name="NoLicenseFoundMessage" xml:space="preserve">
+    <value>Nessuna licenza trovata per questa macchina. Inserisci la tua chiave di licenza o acquista una nuova licenza.</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Attiva licenza</value>
+  </data>
+  <data name="ActivateLicenseDescription" xml:space="preserve">
+    <value>Inserisci e attiva la tua chiave di licenza esistente</value>
+  </data>
+  <data name="PurchaseLicense" xml:space="preserve">
+    <value>Acquista licenza</value>
+  </data>
+  <data name="PurchaseLicenseDescription" xml:space="preserve">
+    <value>Acquista una nuova licenza e ottieni accesso completo alle funzionalità</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Acquista ora</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Contatta supporto</value>
+  </data>
+  <data name="ContactSupportDescription" xml:space="preserve">
+    <value>Contatta il nostro team di supporto per problemi di licenza</value>
+  </data>
+  <data name="GracePeriodWarning" xml:space="preserve">
+    <value>Avviso: Periodo di grazia</value>
+  </data>
+  <data name="GracePeriodMessage" xml:space="preserve">
+    <value>La tua licenza è scaduta ma sei ancora nel periodo di grazia. Rinnova la tua licenza.</value>
+  </data>
+  <data name="LicenseExpiredWarning" xml:space="preserve">
+    <value>Avviso: Licenza scaduta</value>
+  </data>
+  <data name="LicenseExpiredMessage" xml:space="preserve">
+    <value>La tua licenza è scaduta. Rinnova la tua licenza o acquistane una nuova.</value>
+  </data>
+</root>

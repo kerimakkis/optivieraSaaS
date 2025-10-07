@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LicenseExpired" xml:space="preserve">
+    <value>Licentie Verlopen</value>
+  </data>
+  <data name="LicenseExpiredTitle" xml:space="preserve">
+    <value>Uw Licentie is Verlopen</value>
+  </data>
+  <data name="LicenseExpiredMessage" xml:space="preserve">
+    <value>Uw Optiviera ERP-licentie is verlopen. Om de applicatie te blijven gebruiken, moet u een nieuwe licentie kopen of uw bestaande licentie vernieuwen.</value>
+  </data>
+  <data name="PurchaseNewLicense" xml:space="preserve">
+    <value>Nieuwe Licentie Kopen</value>
+  </data>
+  <data name="PurchaseNewLicenseDescription" xml:space="preserve">
+    <value>Koop de volledige versie van Optiviera ERP om toegang te krijgen tot alle functies.</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Nu Kopen</value>
+  </data>
+  <data name="ActivateExistingLicense" xml:space="preserve">
+    <value>Bestaande Licentie Activeren</value>
+  </data>
+  <data name="ActivateExistingLicenseDescription" xml:space="preserve">
+    <value>Als u al een licentiesleutel heeft, kunt u deze hier activeren.</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Licentie Activeren</value>
+  </data>
+  <data name="NeedHelp" xml:space="preserve">
+    <value>Hulp Nodig?</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Als u hulp nodig heeft met licenties, neem dan contact op met ons supportteam.</value>
+  </data>
+</root>

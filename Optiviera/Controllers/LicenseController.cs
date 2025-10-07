@@ -5,7 +5,6 @@ using Optiviera.Services.Interfaces;
 
 namespace Optiviera.Controllers
 {
-    [Authorize]
     public class LicenseController : Controller
     {
         private readonly ILicenseService _licenseService;
@@ -17,30 +16,57 @@ namespace Optiviera.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             try
             {
-                var license = await _licenseService.GetCurrentLicenseAsync();
-                var daysRemaining = await _licenseService.GetTrialDaysRemainingAsync();
-                var isInGracePeriod = await _licenseService.IsInGracePeriodAsync();
-                var isLicenseValid = await _licenseService.IsLicenseValidAsync();
-
-                var model = new LicenseViewModel
-                {
-                    License = license,
-                    TrialDaysRemaining = daysRemaining,
-                    IsInGracePeriod = isInGracePeriod,
-                    IsLicenseValid = isLicenseValid,
-                    ExpiryDate = await _licenseService.GetExpiryDateAsync()
-                };
-
-                return View(model);
+                // Simple test for now
+                return Content("License Controller Working!");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading license page");
-                return View(new LicenseViewModel());
+                return Content($"Error: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> Info()
+        {
+            try
+            {
+                var machineId = _licenseService.GetMachineId();
+                var license = await _licenseService.GetLicenseAsync(machineId);
+                
+                // If no license exists, create a trial license
+                if (license == null)
+                {
+                    await _licenseService.CreateTrialLicenseAsync();
+                    license = await _licenseService.GetLicenseAsync(machineId);
+                }
+                
+                var isValid = await _licenseService.ValidateLicenseAsync(machineId);
+                
+                var viewModel = new LicenseViewModel
+                {
+                    License = license,
+                    IsLicenseValid = isValid,
+                    ExpiryDate = license?.ExpiryDate,
+                    TrialDaysRemaining = license?.ExpiryDate != null ? 
+                        Math.Max(0, (int)(license.ExpiryDate - DateTime.Now).TotalDays) : 0,
+                    IsInGracePeriod = license?.GracePeriodEnd != null && 
+                        DateTime.Now <= license.GracePeriodEnd
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading license info page");
+                return View(new LicenseViewModel 
+                { 
+                    IsLicenseValid = false,
+                    TrialDaysRemaining = 0
+                });
             }
         }
 

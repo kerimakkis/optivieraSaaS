@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LicenseExpired" xml:space="preserve">
+    <value>Lizenz Abgelaufen</value>
+  </data>
+  <data name="LicenseExpiredTitle" xml:space="preserve">
+    <value>Ihre Lizenz ist Abgelaufen</value>
+  </data>
+  <data name="LicenseExpiredMessage" xml:space="preserve">
+    <value>Ihre Optiviera ERP-Lizenz ist abgelaufen. Um die Anwendung weiter zu nutzen, müssen Sie eine neue Lizenz kaufen oder Ihre bestehende Lizenz verlängern.</value>
+  </data>
+  <data name="PurchaseNewLicense" xml:space="preserve">
+    <value>Neue Lizenz Kaufen</value>
+  </data>
+  <data name="PurchaseNewLicenseDescription" xml:space="preserve">
+    <value>Kaufen Sie die Vollversion von Optiviera ERP, um auf alle Funktionen zuzugreifen.</value>
+  </data>
+  <data name="PurchaseNow" xml:space="preserve">
+    <value>Jetzt Kaufen</value>
+  </data>
+  <data name="ActivateExistingLicense" xml:space="preserve">
+    <value>Bestehende Lizenz Aktivieren</value>
+  </data>
+  <data name="ActivateExistingLicenseDescription" xml:space="preserve">
+    <value>Falls Sie bereits einen Lizenzschlüssel haben, können Sie ihn hier aktivieren.</value>
+  </data>
+  <data name="ActivateLicense" xml:space="preserve">
+    <value>Lizenz Aktivieren</value>
+  </data>
+  <data name="NeedHelp" xml:space="preserve">
+    <value>Benötigen Sie Hilfe?</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Falls Sie Hilfe bei der Lizenzierung benötigen, kontaktieren Sie bitte unser Support-Team.</value>
+  </data>
+</root>

@@ -24,6 +24,13 @@ namespace Optiviera.Middleware
                 return;
             }
 
+            // Check if we already redirected to license page in this session
+            if (context.Session.GetString("LicenseRedirected") == "true")
+            {
+                await _next(context);
+                return;
+            }
+
             try
             {
                 // Check if license is valid
@@ -43,8 +50,9 @@ namespace Optiviera.Middleware
                     }
                     else
                     {
-                        // License expired and not in grace period - redirect to license page
+                        // License expired and not in grace period - redirect to license page ONCE
                         _logger.LogWarning("License validation failed, redirecting to license page");
+                        context.Session.SetString("LicenseRedirected", "true");
                         context.Response.Redirect("/License/Expired");
                         return;
                     }
@@ -76,7 +84,8 @@ namespace Optiviera.Middleware
         {
             return path.StartsWith("/license", StringComparison.OrdinalIgnoreCase) ||
                    path.StartsWith("/identity/account/login", StringComparison.OrdinalIgnoreCase) ||
-                   path.StartsWith("/identity/account/register", StringComparison.OrdinalIgnoreCase);
+                   path.StartsWith("/identity/account/register", StringComparison.OrdinalIgnoreCase) ||
+                   path.Equals("/license/expired", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsStaticFile(string path)

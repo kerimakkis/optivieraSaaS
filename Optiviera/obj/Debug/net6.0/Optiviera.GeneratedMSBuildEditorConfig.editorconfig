@@ -206,6 +206,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/License/Expired.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZS9FeHBpcmVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/License/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/License/Info.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGljZW5zZS9JbmZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/Priorities/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJpb3JpdGllcy9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -236,6 +248,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/Shared/_LicenseWarning.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MaWNlbnNlV2FybmluZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/kerimakkis/Projects/Optiviera/Optiviera/Views/Shared/_LoginPartial.cshtml]

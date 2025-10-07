@@ -32,6 +32,14 @@ builder.Services.AddScoped<ITRolesService, RolesService>();
 // Add license service
 builder.Services.AddScoped<ILicenseService, LicenseService>();
 
+// Add session support
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 
 var app = builder.Build();
 
@@ -62,6 +70,9 @@ localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCulturePr
 app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
+
+// Add session support for license middleware
+app.UseSession();
 
 // Add license middleware
 app.UseMiddleware<Optiviera.Middleware.LicenseMiddleware>();
