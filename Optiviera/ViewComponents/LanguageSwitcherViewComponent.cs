@@ -9,14 +9,14 @@ namespace Optiviera.ViewComponents
         {
             var languages = new Dictionary<string, string>
             {
-                { "tr", "🇹🇷 Türkçe" },
-                { "en", "🇺🇸 English" },
-                { "de", "🇩🇪 Deutsch" },
-                { "fr", "🇫🇷 Français" },
-                { "es", "🇪🇸 Español" },
-                { "it", "🇮🇹 Italiano" },
-                { "pt", "🇵🇹 Português" },
-                { "nl", "🇳🇱 Nederlands" }
+                { "tr", "TR" },
+                { "en", "EN" },
+                { "de", "DE" },
+                { "fr", "FR" },
+                { "es", "ES" },
+                { "it", "IT" },
+                { "pt", "PT" },
+                { "nl", "NL" }
             };
             
             var currentCulture = HttpContext.Features.Get<IRequestCultureFeature>()

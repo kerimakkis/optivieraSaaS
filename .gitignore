@@ -361,3 +361,10 @@ electron/dist/
 
 # Logs
 *.log
+
+# Electron distribution files (too large for GitHub)
+electron/dist/
+hosting/downloads/*.exe
+hosting/downloads/*.dmg
+hosting/downloads/*.AppImage
+hosting/downloads/*.deb

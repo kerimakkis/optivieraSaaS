@@ -7,10 +7,11 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "electron-builder",
-    "build:win": "electron-builder --win",
+    "build:win": "electron-builder --win --x64",
     "build:mac": "electron-builder --mac",
     "build:macIntel": "electron-builder --mac --x64",
-    "build:linux": "electron-builder --linux",
+    "build:linux": "electron-builder --linux --x64",
+    "build:linuxArm": "electron-builder --linux --arm64",
     "build:all": "electron-builder --win --mac --linux",
     "dist": "npm run build",
     "pack": "electron-builder --dir"
@@ -33,7 +34,8 @@
   },
   "build": {
     "appId": "com.akkistech.optiviera",
-    "productName": "Optiviera ERP",
+    "productName": "OptvieraERP",
+    "artifactName": "OptvieraERP-Setup-${version}.${ext}",
     "directories": {
       "output": "dist"
     },
@@ -41,11 +43,13 @@
       "main.js",
       "preload.js",
       "package.json",
-      "resources/**/*"
+      "icon.ico",
+      "icon.png",
+      "icon.icns"
     ],
     "extraResources": [
       {
-        "from": "../Optiviera/bin/Release/net6.0/publish/",
+        "from": "resources/app/",
         "to": "app/",
         "filter": ["**/*"]
       }
@@ -53,7 +57,9 @@
     "win": {
       "target": "nsis",
       "icon": "icon.ico",
-      "requestedExecutionLevel": "asInvoker"
+      "requestedExecutionLevel": "asInvoker",
+      "publisherName": "AkkisTech",
+      "verifyUpdateCodeSignature": false
     },
     "mac": {
       "target": [
@@ -81,9 +87,22 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "Optiviera ERP"
+      "shortcutName": "Optiviera ERP",
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": false,
+      "menuCategory": "Business",
+      "removeDefaultUninstallWelcomePage": false,
+      "warningsAsErrors": false,
+      "displayLanguageSelector": false,
+      "installerLanguages": ["de"],
+      "include": "build/installer.nsh"
     }
   }
 }

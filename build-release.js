@@ -7,10 +7,12 @@ const config = {
   electronPath: './electron',
   outputPath: './dist',
   platforms: {
-    win: { runtime: 'win-x64', name: 'Windows' },
+    win: { runtime: 'win-x64', name: 'Windows x64' },
+    winArm: { runtime: 'win-arm64', name: 'Windows ARM64' },
     mac: { runtime: 'osx-arm64', name: 'macOS ARM64' },
     macIntel: { runtime: 'osx-x64', name: 'macOS Intel' },
-    linux: { runtime: 'linux-x64', name: 'Linux' }
+    linux: { runtime: 'linux-x64', name: 'Linux x64' },
+    linuxArm: { runtime: 'linux-arm64', name: 'Linux ARM64' }
   }
 };
 
@@ -69,7 +71,8 @@ function copyDirectory(src, dest) {
 function buildAspNetCore(runtime) {
   log(`Building ASP.NET Core for ${runtime}...`);
   
-  const publishPath = path.join(config.outputPath, 'publish', runtime);
+  // Use absolute path to avoid nested dist folders
+  const publishPath = path.resolve(config.outputPath, 'publish', runtime);
   cleanDirectory(publishPath);
   
   runCommand(
@@ -90,11 +93,24 @@ function buildElectron(platform) {
     // Copy published ASP.NET Core app to electron resources for specific platform
     const platformConfig = config.platforms[platform];
     if (platformConfig) {
-      const aspNetPath = path.join(config.outputPath, 'publish', platformConfig.runtime);
-      const electronResourcesPath = path.join(config.electronPath, 'resources', 'app');
+      const aspNetPath = path.resolve(config.outputPath, 'publish', platformConfig.runtime);
+      const electronResourcesPath = path.resolve(config.electronPath, 'resources', 'app');
+      
+      log(`Copying ASP.NET app from: ${aspNetPath}`);
+      log(`Copying ASP.NET app to: ${electronResourcesPath}`);
       
       cleanDirectory(electronResourcesPath);
       copyDirectory(aspNetPath, electronResourcesPath);
+      
+      // Verify copy
+      const exeName = platformConfig.runtime.startsWith('win') ? 'Optiviera.exe' : 'Optiviera';
+      const exePath = path.join(electronResourcesPath, exeName);
+      if (fs.existsSync(exePath)) {
+        log(`✓ ${exeName} copied successfully`);
+      } else {
+        log(`✗ ERROR: ${exeName} not found after copy!`);
+        process.exit(1);
+      }
     }
     
     // Build Electron app

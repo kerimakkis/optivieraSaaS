@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Optiviera.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Optiviera.Data
 {
@@ -35,22 +37,6 @@ namespace Optiviera.Data
                 };
                 await userManager.CreateAsync(adminUser, "Admin123!");
                 await userManager.AddToRoleAsync(adminUser, "Admin");
-            }
-
-            // Serdar kullanıcısı oluştur
-            var serdarUser = await userManager.FindByNameAsync("serdar@optiviera.com");
-            if (serdarUser == null)
-            {
-                serdarUser = new WaveUser
-                {
-                    UserName = "serdar@optiviera.com",
-                    Email = "serdar@optiviera.com",
-                    FirstName = "Serdar",
-                    LastName = "User",
-                    EmailConfirmed = true
-                };
-                await userManager.CreateAsync(serdarUser, "Serdar123!");
-                await userManager.AddToRoleAsync(serdarUser, "Employee");
             }
 
             // Manager kullanıcısı oluştur
@@ -93,11 +79,55 @@ namespace Optiviera.Data
                     new Priority { Name = "Düşük" },
                     new Priority { Name = "Orta" },
                     new Priority { Name = "Yüksek" },
-                    new Priority { Name = "Kritik" }
+                    new Priority { Name = "Acil" }
                 };
 
                 context.Priorities.AddRange(priorities);
                 await context.SaveChangesAsync();
+            }
+
+            // Trial lisans oluştur (eğer yoksa)
+            if (!context.Licenses.Any())
+            {
+                var machineId = GenerateMachineId();
+                var trialLicense = new License
+                {
+                    LicenseKey = "TRIAL-" + Guid.NewGuid().ToString("N")[..16].ToUpper(),
+                    MachineId = machineId,
+                    LicenseType = "Trial",
+                    ActivationDate = DateTime.UtcNow,
+                    ExpiryDate = DateTime.UtcNow.AddDays(365), // 1 year trial
+                    IsActive = true,
+                    CreatedDate = DateTime.UtcNow,
+                    LastValidated = DateTime.UtcNow
+                };
+                context.Licenses.Add(trialLicense);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        private static string GenerateMachineId()
+        {
+            try
+            {
+                // Get hardware information
+                var machineName = Environment.MachineName;
+                var osVersion = Environment.OSVersion.ToString();
+                var processorCount = Environment.ProcessorCount.ToString();
+                var userName = Environment.UserName;
+
+                // Create a unique identifier based on hardware
+                var combined = $"{machineName}-{osVersion}-{processorCount}-{userName}";
+                
+                using (var sha256 = SHA256.Create())
+                {
+                    var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(combined));
+                    return Convert.ToBase64String(hash)[..16]; // Take first 16 characters
+                }
+            }
+            catch (Exception)
+            {
+                return Guid.NewGuid().ToString("N")[..16]; // Fallback to GUID
             }
         }
     }

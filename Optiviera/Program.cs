@@ -8,8 +8,27 @@ using Optiviera.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Determine database path based on environment
+string dbPath;
+var isElectronMode = Environment.GetEnvironmentVariable("ELECTRON_MODE") == "true";
+
+if (isElectronMode)
+{
+    // In Electron/Production: Store database in user's AppData folder
+    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    var appFolder = Path.Combine(appDataPath, "Optiviera ERP");
+    Directory.CreateDirectory(appFolder);
+    dbPath = Path.Combine(appFolder, "Optiviera.db");
+    Console.WriteLine($"Using database path: {dbPath}");
+}
+else
+{
+    // In Development: Use relative path
+    dbPath = "Optiviera.db";
+}
+
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = $"Data Source={dbPath}";
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -42,6 +61,31 @@ builder.Services.AddSession(options =>
 
 
 var app = builder.Build();
+
+// Auto-migrate database on startup (especially important for Electron mode)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var userManager = services.GetRequiredService<UserManager<WaveUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        
+        // Ensure database is created and migrated
+        context.Database.Migrate();
+        Console.WriteLine("Database migrated successfully.");
+        
+        // Seed initial data
+        SeedData.Initialize(services).Wait();
+        Console.WriteLine("Initial data seeded successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during database initialization: {ex.Message}");
+        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
