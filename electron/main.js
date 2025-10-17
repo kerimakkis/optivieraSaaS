@@ -256,11 +256,46 @@ function createTray() {
 }
 
 function startAspNetProcess() {
-  // In production, __dirname is inside app.asar, so we need to go up to resources
-  const isPackaged = !__dirname.includes('electron');
-  const appPath = isPackaged 
-    ? path.join(process.resourcesPath, 'app')
-    : path.join(__dirname, 'resources', 'app');
+  // In production, files are in app.asar, so we need to extract them first
+  const isPackaged = app.isPackaged;
+  let appPath;
+  
+  if (isPackaged) {
+    // Extract files from app.asar to a temporary directory
+    const tempDir = path.join(os.tmpdir(), 'optiviera-temp');
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+    appPath = tempDir;
+    
+    // Copy files from app.asar to temp directory
+    const asarPath = path.join(process.resourcesPath, 'app.asar');
+    if (fs.existsSync(asarPath)) {
+      // Extract all files from asar
+      const asar = require('asar');
+      asar.extractAll(asarPath, appPath);
+      
+      // Move files from resources/app to root of temp directory
+      const resourcesAppPath = path.join(appPath, 'resources', 'app');
+      if (fs.existsSync(resourcesAppPath)) {
+        // Copy all files from resources/app to temp directory root
+        const files = fs.readdirSync(resourcesAppPath);
+        files.forEach(file => {
+          const srcPath = path.join(resourcesAppPath, file);
+          const destPath = path.join(appPath, file);
+          if (fs.statSync(srcPath).isDirectory()) {
+            // Copy directory recursively
+            fs.cpSync(srcPath, destPath, { recursive: true });
+          } else {
+            // Copy file
+            fs.copyFileSync(srcPath, destPath);
+          }
+        });
+      }
+    }
+  } else {
+    appPath = path.join(__dirname, 'resources', 'app');
+  }
   
   const exeName = process.platform === 'win32' ? 'Optiviera.exe' : 'Optiviera';
   const exePath = path.join(appPath, exeName);
@@ -290,11 +325,46 @@ function startAspNetProcess() {
 }
 
 function startAspNetServer() {
-  // In production, __dirname is inside app.asar, so we need to go up to resources
-  const isPackaged = !__dirname.includes('electron');
-  const appPath = isPackaged 
-    ? path.join(process.resourcesPath, 'app')
-    : path.join(__dirname, 'resources', 'app');
+  // In production, files are in app.asar, so we need to extract them first
+  const isPackaged = app.isPackaged;
+  let appPath;
+  
+  if (isPackaged) {
+    // Extract files from app.asar to a temporary directory
+    const tempDir = path.join(os.tmpdir(), 'optiviera-temp');
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+    appPath = tempDir;
+    
+    // Copy files from app.asar to temp directory
+    const asarPath = path.join(process.resourcesPath, 'app.asar');
+    if (fs.existsSync(asarPath)) {
+      // Extract all files from asar
+      const asar = require('asar');
+      asar.extractAll(asarPath, appPath);
+      
+      // Move files from resources/app to root of temp directory
+      const resourcesAppPath = path.join(appPath, 'resources', 'app');
+      if (fs.existsSync(resourcesAppPath)) {
+        // Copy all files from resources/app to temp directory root
+        const files = fs.readdirSync(resourcesAppPath);
+        files.forEach(file => {
+          const srcPath = path.join(resourcesAppPath, file);
+          const destPath = path.join(appPath, file);
+          if (fs.statSync(srcPath).isDirectory()) {
+            // Copy directory recursively
+            fs.cpSync(srcPath, destPath, { recursive: true });
+          } else {
+            // Copy file
+            fs.copyFileSync(srcPath, destPath);
+          }
+        });
+      }
+    }
+  } else {
+    appPath = path.join(__dirname, 'resources', 'app');
+  }
   
   const exeName = process.platform === 'win32' ? 'Optiviera.exe' : 'Optiviera';
   const exePath = path.join(appPath, exeName);

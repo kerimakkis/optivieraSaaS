@@ -32,6 +32,9 @@
     "electron": "^22.0.0",
     "electron-builder": "^23.0.0"
   },
+  "dependencies": {
+    "asar": "^3.2.0"
+  },
   "build": {
     "appId": "com.akkistech.optiviera",
     "productName": "OptvieraERP",
@@ -45,14 +48,8 @@
       "package.json",
       "icon.ico",
       "icon.png",
-      "icon.icns"
-    ],
-    "extraResources": [
-      {
-        "from": "resources/app/",
-        "to": "app/",
-        "filter": ["**/*"]
-      }
+      "icon.icns",
+      "resources/app/**/*"
     ],
     "win": {
       "target": "nsis",
@@ -96,7 +93,7 @@
       "uninstallerIcon": "icon.ico",
       "installerHeaderIcon": "icon.ico",
       "deleteAppDataOnUninstall": false,
-      "runAfterFinish": false,
+      "runAfterFinish": true,
       "menuCategory": "Business",
       "removeDefaultUninstallWelcomePage": false,
       "warningsAsErrors": false,
