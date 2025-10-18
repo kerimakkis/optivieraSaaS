@@ -29,9 +29,9 @@
     FileClose $0
   
   # Check AppData Local
-  IfFileExists "$LOCALAPPDATA\Programs\Optiviera ERP" 0 +3
+  IfFileExists "$LOCALAPPDATA\Programs\OptivieraERP" 0 +3
     FileOpen $0 "$TEMP\OptivieraInstall.log" a
-    FileWrite $0 "Found existing installation in: $LOCALAPPDATA\Programs\Optiviera ERP$\r$\n"
+    FileWrite $0 "Found existing installation in: $LOCALAPPDATA\Programs\OptivieraERP$\r$\n"
     FileClose $0
   
   # Kill any running Optiviera processes
@@ -39,10 +39,10 @@
   FileWrite $0 "Attempting to kill running processes...$\r$\n"
   FileClose $0
   
-  nsExec::ExecToLog 'taskkill /F /IM "Optiviera ERP.exe" /T'
+  nsExec::ExecToLog 'taskkill /F /IM "OptivieraERP.exe" /T'
   Pop $0
   FileOpen $1 "$TEMP\OptivieraInstall.log" a
-  FileWrite $1 "taskkill Optiviera ERP.exe result: $0$\r$\n"
+  FileWrite $1 "taskkill OptivieraERP.exe result: $0$\r$\n"
   FileClose $1
   
   nsExec::ExecToLog 'taskkill /F /IM "Optiviera.exe" /T'
@@ -117,10 +117,10 @@
   FileWrite $0 "Killing processes before uninstall...$\r$\n"
   FileClose $0
   
-  nsExec::ExecToLog 'taskkill /F /IM "Optiviera ERP.exe" /T'
+  nsExec::ExecToLog 'taskkill /F /IM "OptivieraERP.exe" /T'
   Pop $0
   FileOpen $1 "$TEMP\OptivieraUninstall.log" a
-  FileWrite $1 "taskkill Optiviera ERP.exe result: $0$\r$\n"
+  FileWrite $1 "taskkill OptivieraERP.exe result: $0$\r$\n"
   FileClose $1
   
   nsExec::ExecToLog 'taskkill /F /IM "Optiviera.exe" /T'

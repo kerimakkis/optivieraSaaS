@@ -37,8 +37,8 @@
   },
   "build": {
     "appId": "com.akkistech.optiviera",
-    "productName": "OptvieraERP",
-    "artifactName": "OptvieraERP-Setup-${version}.${ext}",
+    "productName": "OptivieraERP",
+    "artifactName": "OptivieraERP-Setup-${version}.${ext}",
     "directories": {
       "output": "dist"
     },
@@ -88,7 +88,7 @@
       "allowElevation": true,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "Optiviera ERP",
+      "shortcutName": "OptivieraERP",
       "installerIcon": "icon.ico",
       "uninstallerIcon": "icon.ico",
       "installerHeaderIcon": "icon.ico",
