@@ -7,14 +7,15 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "electron-builder",
-    "build:win": "electron-builder --win --x64",
-    "build:mac": "electron-builder --mac",
-    "build:macIntel": "electron-builder --mac --x64",
-    "build:linux": "electron-builder --linux --x64",
-    "build:linuxArm": "electron-builder --linux --arm64",
-    "build:all": "electron-builder --win --mac --linux",
+    "build:win": "electron-builder --win --x64 && node scripts/generate-checksums.js",
+    "build:mac": "electron-builder --mac && node scripts/generate-checksums.js",
+    "build:macIntel": "electron-builder --mac --x64 && node scripts/generate-checksums.js",
+    "build:linux": "electron-builder --linux --x64 && node scripts/generate-checksums.js",
+    "build:linuxArm": "electron-builder --linux --arm64 && node scripts/generate-checksums.js",
+    "build:all": "electron-builder --win --mac --linux && node scripts/generate-checksums.js",
     "dist": "npm run build",
-    "pack": "electron-builder --dir"
+    "pack": "electron-builder --dir",
+    "checksums": "node scripts/generate-checksums.js"
   },
   "keywords": [
     "optiviera",
@@ -33,12 +34,17 @@
     "electron-builder": "^23.0.0"
   },
   "dependencies": {
-    "asar": "^3.2.0"
+    "asar": "^3.2.0",
+    "electron-updater": "^6.6.2"
   },
   "build": {
     "appId": "com.akkistech.optiviera",
     "productName": "OptivieraERP",
-    "artifactName": "OptivieraERP-Setup-${version}.${ext}",
+    "artifactName": "OptivieraERP.${ext}",
+    "publish": {
+      "provider": "generic",
+      "url": "https://akkistech.com/optiviera/updates"
+    },
     "directories": {
       "output": "dist"
     },
@@ -49,7 +55,7 @@
       "icon.ico",
       "icon.png",
       "icon.icns",
-      "resources/app/**/*"
+      "app-files/**/*"
     ],
     "win": {
       "target": "nsis",
@@ -62,7 +68,10 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["arm64", "x64"]
+          "arch": [
+            "arm64",
+            "x64"
+          ]
         }
       ],
       "icon": "icon.icns",
@@ -98,8 +107,9 @@
       "removeDefaultUninstallWelcomePage": false,
       "warningsAsErrors": false,
       "displayLanguageSelector": false,
-      "installerLanguages": ["de"],
-      "include": "build/installer.nsh"
+      "installerLanguages": [
+        "de"
+      ]
     }
   }
 }

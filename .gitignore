@@ -368,3 +368,4 @@ hosting/downloads/*.exe
 hosting/downloads/*.dmg
 hosting/downloads/*.AppImage
 hosting/downloads/*.deb
+nul

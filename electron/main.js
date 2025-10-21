@@ -3,12 +3,72 @@ const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const os = require('os');
+const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
 let splashWindow;
 let tray;
 let aspNetProcess;
 let isQuitting = false;
+
+// Configure auto-updater
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+
+// Auto-updater event handlers
+autoUpdater.on('checking-for-update', () => {
+  console.log('Checking for updates...');
+});
+
+autoUpdater.on('update-available', (info) => {
+  console.log('Update available:', info.version);
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Update Available',
+    message: `A new version (${info.version}) is available. Would you like to download it now?`,
+    buttons: ['Download', 'Later'],
+    defaultId: 0
+  }).then((result) => {
+    if (result.response === 0) {
+      autoUpdater.downloadUpdate();
+    }
+  });
+});
+
+autoUpdater.on('update-not-available', () => {
+  console.log('Update not available');
+});
+
+autoUpdater.on('error', (err) => {
+  console.error('Update error:', err);
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  console.log(`Download progress: ${progressObj.percent}%`);
+  if (mainWindow) {
+    mainWindow.setProgressBar(progressObj.percent / 100);
+  }
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  console.log('Update downloaded:', info.version);
+  if (mainWindow) {
+    mainWindow.setProgressBar(-1); // Remove progress bar
+  }
+
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Update Ready',
+    message: `Version ${info.version} has been downloaded. The application will restart to install the update.`,
+    buttons: ['Restart Now', 'Later'],
+    defaultId: 0
+  }).then((result) => {
+    if (result.response === 0) {
+      isQuitting = true;
+      autoUpdater.quitAndInstall();
+    }
+  });
+});
 
 // Configuration
 const CONFIG = {
@@ -259,44 +319,77 @@ function startAspNetProcess() {
   // In production, files are in app.asar, so we need to extract them first
   const isPackaged = app.isPackaged;
   let appPath;
-  
+
   if (isPackaged) {
-    // Extract files from app.asar to a temporary directory
-    const tempDir = path.join(os.tmpdir(), 'optiviera-temp');
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-    appPath = tempDir;
-    
-    // Copy files from app.asar to temp directory
+    // Use AppData for persistent cache instead of temp directory
+    const cacheDir = path.join(app.getPath('userData'), 'app-cache');
+    const versionFile = path.join(cacheDir, '.version');
     const asarPath = path.join(process.resourcesPath, 'app.asar');
-    if (fs.existsSync(asarPath)) {
-      // Extract all files from asar
-      const asar = require('asar');
-      asar.extractAll(asarPath, appPath);
-      
-      // Move files from resources/app to root of temp directory
-      const resourcesAppPath = path.join(appPath, 'resources', 'app');
-      if (fs.existsSync(resourcesAppPath)) {
-        // Copy all files from resources/app to temp directory root
-        const files = fs.readdirSync(resourcesAppPath);
-        files.forEach(file => {
-          const srcPath = path.join(resourcesAppPath, file);
-          const destPath = path.join(appPath, file);
-          if (fs.statSync(srcPath).isDirectory()) {
-            // Copy directory recursively
-            fs.cpSync(srcPath, destPath, { recursive: true });
-          } else {
-            // Copy file
-            fs.copyFileSync(srcPath, destPath);
-          }
-        });
+
+    // Get current asar file hash/timestamp for cache validation
+    let needsExtraction = true;
+    if (fs.existsSync(cacheDir) && fs.existsSync(versionFile)) {
+      try {
+        const cachedVersion = fs.readFileSync(versionFile, 'utf8');
+        const currentStats = fs.statSync(asarPath);
+        const currentVersion = `${currentStats.size}-${currentStats.mtimeMs}`;
+
+        // Check if cache is still valid
+        if (cachedVersion === currentVersion) {
+          needsExtraction = false;
+          console.log('Using cached application files');
+        }
+      } catch (error) {
+        console.log('Cache validation failed, will re-extract:', error);
       }
     }
+
+    if (needsExtraction) {
+      console.log('Extracting application files to cache...');
+
+      // Clean old cache
+      if (fs.existsSync(cacheDir)) {
+        fs.rmSync(cacheDir, { recursive: true, force: true });
+      }
+      fs.mkdirSync(cacheDir, { recursive: true });
+
+      // Extract files from app.asar
+      if (fs.existsSync(asarPath)) {
+        const asar = require('asar');
+        asar.extractAll(asarPath, cacheDir);
+
+        // Move files from app-files to root of cache directory
+        const appFilesPath = path.join(cacheDir, 'app-files');
+        if (fs.existsSync(appFilesPath)) {
+          const files = fs.readdirSync(appFilesPath);
+          files.forEach(file => {
+            const srcPath = path.join(appFilesPath, file);
+            const destPath = path.join(cacheDir, file);
+            if (fs.statSync(srcPath).isDirectory()) {
+              fs.cpSync(srcPath, destPath, { recursive: true });
+            } else {
+              fs.copyFileSync(srcPath, destPath);
+            }
+          });
+
+          // Clean up the app-files directory after moving files
+          fs.rmSync(appFilesPath, { recursive: true, force: true });
+        }
+
+        // Save version info for cache validation
+        const currentStats = fs.statSync(asarPath);
+        const currentVersion = `${currentStats.size}-${currentStats.mtimeMs}`;
+        fs.writeFileSync(versionFile, currentVersion, 'utf8');
+
+        console.log('Application files extracted and cached successfully');
+      }
+    }
+
+    appPath = cacheDir;
   } else {
-    appPath = path.join(__dirname, 'resources', 'app');
+    appPath = path.join(__dirname, 'app-files');
   }
-  
+
   const exeName = process.platform === 'win32' ? 'Optiviera.exe' : 'Optiviera';
   const exePath = path.join(appPath, exeName);
   
@@ -325,45 +418,15 @@ function startAspNetProcess() {
 }
 
 function startAspNetServer() {
-  // In production, files are in app.asar, so we need to extract them first
+  // Use the same caching logic as startAspNetProcess
   const isPackaged = app.isPackaged;
   let appPath;
-  
+
   if (isPackaged) {
-    // Extract files from app.asar to a temporary directory
-    const tempDir = path.join(os.tmpdir(), 'optiviera-temp');
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-    appPath = tempDir;
-    
-    // Copy files from app.asar to temp directory
-    const asarPath = path.join(process.resourcesPath, 'app.asar');
-    if (fs.existsSync(asarPath)) {
-      // Extract all files from asar
-      const asar = require('asar');
-      asar.extractAll(asarPath, appPath);
-      
-      // Move files from resources/app to root of temp directory
-      const resourcesAppPath = path.join(appPath, 'resources', 'app');
-      if (fs.existsSync(resourcesAppPath)) {
-        // Copy all files from resources/app to temp directory root
-        const files = fs.readdirSync(resourcesAppPath);
-        files.forEach(file => {
-          const srcPath = path.join(resourcesAppPath, file);
-          const destPath = path.join(appPath, file);
-          if (fs.statSync(srcPath).isDirectory()) {
-            // Copy directory recursively
-            fs.cpSync(srcPath, destPath, { recursive: true });
-          } else {
-            // Copy file
-            fs.copyFileSync(srcPath, destPath);
-          }
-        });
-      }
-    }
+    // Use the cached directory (already extracted by startAspNetProcess)
+    appPath = path.join(app.getPath('userData'), 'app-cache');
   } else {
-    appPath = path.join(__dirname, 'resources', 'app');
+    appPath = path.join(__dirname, 'app-files');
   }
   
   const exeName = process.platform === 'win32' ? 'Optiviera.exe' : 'Optiviera';
@@ -460,9 +523,18 @@ function getIconPath() {
 app.whenReady().then(() => {
   // Show splash screen first
   createSplashScreen();
-  
+
   // Then create main window (hidden)
   createWindow();
+
+  // Check for updates after 3 seconds (after app is fully loaded)
+  setTimeout(() => {
+    if (app.isPackaged) {
+      autoUpdater.checkForUpdates().catch(err => {
+        console.log('Auto-update check failed (this is normal if update server is not configured):', err.message);
+      });
+    }
+  }, 3000);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -544,10 +616,23 @@ ipcMain.handle('show-save-dialog', async (event, options) => {
   return result;
 });
 
-// Auto-updater (placeholder for future implementation)
+// Auto-updater
 ipcMain.handle('check-for-updates', async () => {
-  // TODO: Implement update checking
-  return { available: false };
+  try {
+    if (!app.isPackaged) {
+      return { available: false, message: 'Updates only available in production' };
+    }
+
+    const result = await autoUpdater.checkForUpdates();
+    return {
+      available: result.updateInfo.version !== app.getVersion(),
+      currentVersion: app.getVersion(),
+      latestVersion: result.updateInfo.version
+    };
+  } catch (error) {
+    console.error('Update check failed:', error);
+    return { available: false, error: error.message };
+  }
 });
 
 // Prevent navigation to external URLs
