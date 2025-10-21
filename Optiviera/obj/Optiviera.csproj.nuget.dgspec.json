@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kerim\\Desktop\\projects\\optiviera\\Optiviera\\Optiviera.csproj": {}
+    "/Users/kerimakkis/Projects/Optiviera/Optiviera/Optiviera.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kerim\\Desktop\\projects\\optiviera\\Optiviera\\Optiviera.csproj": {
+    "/Users/kerimakkis/Projects/Optiviera/Optiviera/Optiviera.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kerim\\Desktop\\projects\\optiviera\\Optiviera\\Optiviera.csproj",
+        "projectUniqueName": "/Users/kerimakkis/Projects/Optiviera/Optiviera/Optiviera.csproj",
         "projectName": "Optiviera",
-        "projectPath": "C:\\Users\\kerim\\Desktop\\projects\\optiviera\\Optiviera\\Optiviera.csproj",
-        "packagesPath": "C:\\Users\\kerim\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kerim\\Desktop\\projects\\optiviera\\Optiviera\\obj\\",
+        "projectPath": "/Users/kerimakkis/Projects/Optiviera/Optiviera/Optiviera.csproj",
+        "packagesPath": "/Users/kerimakkis/.nuget/packages/",
+        "outputPath": "/Users/kerimakkis/Projects/Optiviera/Optiviera/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\kerim\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/kerimakkis/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,8 +37,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -79,7 +72,7 @@
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.17, )",
+              "version": "[8.0.6, )",
               "autoReferenced": true
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
@@ -108,16 +101,8 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[8.0.17, 8.0.17]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[8.0.17, 8.0.17]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[8.0.17, 8.0.17]"
+              "name": "Microsoft.NETCore.App.Crossgen2.osx-arm64",
+              "version": "[8.0.6, 8.0.6]"
             }
           ],
           "frameworkReferences": {
@@ -128,12 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
