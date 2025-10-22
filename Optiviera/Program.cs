@@ -100,7 +100,11 @@ else
 }
 
 
-app.UseHttpsRedirection();
+// Only use HTTPS redirection in non-Electron mode (Electron uses HTTP)
+if (!isElectronMode)
+{
+    app.UseHttpsRedirection();
+}
 app.UseStaticFiles();
 
 // Configure request localization
@@ -129,10 +133,24 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-// Seed data
-using (var scope = app.Services.CreateScope())
+// Seed data (with error handling)
+// Note: Data is already seeded during migration (line 80), but we run it again
+// to ensure any updates are applied
+try
 {
-    await SeedData.Initialize(scope.ServiceProvider);
+    using (var scope = app.Services.CreateScope())
+    {
+        await SeedData.Initialize(scope.ServiceProvider);
+    }
+    Console.WriteLine("Final data seed completed successfully.");
+}
+catch (Exception ex)
+{
+    // Don't crash the application if seeding fails on second run
+    Console.WriteLine($"Warning: Second data seed failed: {ex.Message}");
+    Console.WriteLine($"This is usually not critical as data was already seeded during migration.");
 }
 
+Console.WriteLine("Starting web server...");
 app.Run();
+Console.WriteLine("Application stopped.");

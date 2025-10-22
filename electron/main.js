@@ -245,17 +245,12 @@ function createWindow() {
     }
   });
 
-  // Handle window closed
+  // Handle window close button (X)
   mainWindow.on('close', (event) => {
-    if (!isQuitting) {
-      event.preventDefault();
-      mainWindow.hide();
-      
-      // Show notification on first minimize
-      if (process.platform === 'win32') {
-        mainWindow.setSkipTaskbar(false);
-      }
-    }
+    // Always quit when close button is clicked
+    // This ensures ASP.NET process is properly terminated and database is unlocked
+    isQuitting = true;
+    // Don't prevent default - let the window close normally
   });
 
   // Handle window closed
@@ -347,41 +342,71 @@ function startAspNetProcess() {
     if (needsExtraction) {
       console.log('Extracting application files to cache...');
 
-      // Clean old cache
-      if (fs.existsSync(cacheDir)) {
-        fs.rmSync(cacheDir, { recursive: true, force: true });
-      }
-      fs.mkdirSync(cacheDir, { recursive: true });
-
-      // Extract files from app.asar
-      if (fs.existsSync(asarPath)) {
-        const asar = require('asar');
-        asar.extractAll(asarPath, cacheDir);
-
-        // Move files from app-files to root of cache directory
-        const appFilesPath = path.join(cacheDir, 'app-files');
-        if (fs.existsSync(appFilesPath)) {
-          const files = fs.readdirSync(appFilesPath);
-          files.forEach(file => {
-            const srcPath = path.join(appFilesPath, file);
-            const destPath = path.join(cacheDir, file);
-            if (fs.statSync(srcPath).isDirectory()) {
-              fs.cpSync(srcPath, destPath, { recursive: true });
-            } else {
-              fs.copyFileSync(srcPath, destPath);
-            }
-          });
-
-          // Clean up the app-files directory after moving files
-          fs.rmSync(appFilesPath, { recursive: true, force: true });
+      try {
+        // Clean old cache
+        if (fs.existsSync(cacheDir)) {
+          fs.rmSync(cacheDir, { recursive: true, force: true });
         }
+        fs.mkdirSync(cacheDir, { recursive: true });
 
-        // Save version info for cache validation
-        const currentStats = fs.statSync(asarPath);
-        const currentVersion = `${currentStats.size}-${currentStats.mtimeMs}`;
-        fs.writeFileSync(versionFile, currentVersion, 'utf8');
+        // Extract files from app.asar
+        if (fs.existsSync(asarPath)) {
+          const asar = require('asar');
+          asar.extractAll(asarPath, cacheDir);
 
-        console.log('Application files extracted and cached successfully');
+          // Move files from app-files to root of cache directory
+          const appFilesPath = path.join(cacheDir, 'app-files');
+          if (fs.existsSync(appFilesPath)) {
+            const files = fs.readdirSync(appFilesPath);
+            files.forEach(file => {
+              const srcPath = path.join(appFilesPath, file);
+              const destPath = path.join(cacheDir, file);
+              if (fs.statSync(srcPath).isDirectory()) {
+                fs.cpSync(srcPath, destPath, { recursive: true });
+              } else {
+                fs.copyFileSync(srcPath, destPath);
+              }
+            });
+
+            // Clean up the app-files directory after moving files
+            fs.rmSync(appFilesPath, { recursive: true, force: true });
+          }
+
+          // Save version info for cache validation
+          const currentStats = fs.statSync(asarPath);
+          const currentVersion = `${currentStats.size}-${currentStats.mtimeMs}`;
+          fs.writeFileSync(versionFile, currentVersion, 'utf8');
+
+          console.log('Application files extracted and cached successfully');
+
+          // CRITICAL FIX: Wait for file system to flush all writes
+          // This prevents "exit code 1" error on first run after installation
+          // The delay ensures all extracted files are fully written to disk
+          // before attempting to start the ASP.NET process
+          const exeName = process.platform === 'win32' ? 'Optiviera.exe' : 'Optiviera';
+          const exePath = path.join(cacheDir, exeName);
+
+          // Wait and verify the main executable is accessible
+          let retries = 0;
+          while (retries < 10) {
+            try {
+              // Try to access the file to ensure it's fully written and unlocked
+              fs.accessSync(exePath, fs.constants.R_OK);
+              console.log('Executable verified and accessible');
+              break;
+            } catch (err) {
+              console.log(`Waiting for executable to be ready (attempt ${retries + 1}/10)...`);
+              // Synchronous sleep - not ideal but necessary here
+              const waitTime = Date.now() + 500;
+              while (Date.now() < waitTime) { /* wait */ }
+              retries++;
+            }
+          }
+        }
+      } catch (extractError) {
+        console.error('FATAL: Extraction failed:', extractError);
+        // Don't quit here - let the exe check below handle it
+        // This way we'll get a clearer error message
       }
     }
 
@@ -392,15 +417,20 @@ function startAspNetProcess() {
 
   const exeName = process.platform === 'win32' ? 'Optiviera.exe' : 'Optiviera';
   const exePath = path.join(appPath, exeName);
-  
+
   console.log('Checking exe path:', exePath);
-  
+  console.log('App path contents:', fs.existsSync(appPath) ? fs.readdirSync(appPath).slice(0, 20) : 'NOT FOUND');
+
   // Check if the executable exists
   if (!fs.existsSync(exePath)) {
-    dialog.showErrorBox('Error', `Optiviera executable not found at: ${exePath}`);
+    const errorDetails = `Optiviera executable not found at: ${exePath}\n\nApp path: ${appPath}\nApp path exists: ${fs.existsSync(appPath)}\nCache dir files: ${fs.existsSync(appPath) ? fs.readdirSync(appPath).length : 0}`;
+    console.error(errorDetails);
+    dialog.showErrorBox('Error', errorDetails);
     app.quit();
     return;
   }
+
+  console.log('Exe found! Size:', fs.statSync(exePath).size, 'bytes');
 
   // Kill any existing Optiviera processes on Windows
   if (process.platform === 'win32') {
@@ -445,11 +475,15 @@ function startAspNetServer() {
     server.close();
     
     // Start ASP.NET Core process
+    console.log(`Starting ASP.NET on port ${CONFIG.port}`);
+    console.log(`Working directory: ${appPath}`);
+    console.log(`Executable: ${exePath}`);
+
     const env = { ...process.env };
     env.ASPNETCORE_URLS = `http://localhost:${CONFIG.port}`;
     env.ASPNETCORE_ENVIRONMENT = 'Production';
     env.ELECTRON_MODE = 'true';
-    
+
     aspNetProcess = spawn(exePath, [], {
       cwd: appPath,
       env: env,
@@ -457,8 +491,11 @@ function startAspNetServer() {
       detached: false // Important: Keep process attached to parent
     });
 
+    console.log(`ASP.NET process spawned with PID: ${aspNetProcess.pid}`);
+
     let startupLog = '';
-    
+    let logStartTime = Date.now();
+
     aspNetProcess.stdout.on('data', (data) => {
       const msg = data.toString();
       console.log(`ASP.NET: ${msg}`);
@@ -472,10 +509,13 @@ function startAspNetServer() {
     });
 
     aspNetProcess.on('close', (code) => {
-      console.log(`ASP.NET process exited with code ${code}`);
-      console.log('Startup log:', startupLog);
+      const runTime = Date.now() - logStartTime;
+      console.log(`ASP.NET process exited with code ${code} after ${runTime}ms`);
+      console.log('Full startup log:', startupLog);
       if (!isQuitting) {
-        const errorMsg = `Optiviera application stopped with exit code ${code}.\n\nLog:\n${startupLog.substring(0, 500)}`;
+        // Show last 3000 chars of log to see the actual error
+        const logToShow = startupLog.length > 3000 ? '...' + startupLog.substring(startupLog.length - 3000) : startupLog;
+        const errorMsg = `Optiviera application stopped with exit code ${code}.\n\nRuntime: ${runTime}ms\n\nLog (last 3000 chars):\n${logToShow}`;
         dialog.showErrorBox('Application Error', errorMsg);
         app.quit();
       }
@@ -553,23 +593,34 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('before-quit', () => {
+app.on('before-quit', (event) => {
   isQuitting = true;
-  
-  // Kill ASP.NET process properly
+
+  // Kill ASP.NET process properly and WAIT for it
   if (aspNetProcess && !aspNetProcess.killed) {
     try {
+      console.log('Killing ASP.NET process:', aspNetProcess.pid);
+
       if (process.platform === 'win32') {
-        // Windows: Force kill the process tree
-        spawn('taskkill', ['/pid', aspNetProcess.pid, '/f', '/t']);
+        // Windows: Force kill the process tree synchronously
+        const { execSync } = require('child_process');
+        try {
+          execSync(`taskkill /pid ${aspNetProcess.pid} /f /t`, { stdio: 'ignore', timeout: 3000 });
+          console.log('ASP.NET process killed successfully');
+        } catch (killError) {
+          console.log('Taskkill error (process may already be dead):', killError.message);
+        }
+
+        // Also kill any orphaned Optiviera.exe processes
+        try {
+          execSync('taskkill /IM Optiviera.exe /f', { stdio: 'ignore', timeout: 3000 });
+          console.log('All Optiviera.exe processes killed');
+        } catch (cleanupError) {
+          console.log('Cleanup error (no processes to kill):', cleanupError.message);
+        }
       } else {
-        // Unix: Use SIGTERM first, then SIGKILL
-        aspNetProcess.kill('SIGTERM');
-        setTimeout(() => {
-          if (aspNetProcess && !aspNetProcess.killed) {
-            aspNetProcess.kill('SIGKILL');
-          }
-        }, 1000);
+        // Unix: Use SIGKILL immediately
+        aspNetProcess.kill('SIGKILL');
       }
     } catch (error) {
       console.error('Error killing ASP.NET process:', error);
