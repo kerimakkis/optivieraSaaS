@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Optiviera.Models;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,21 +14,29 @@ namespace Optiviera.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<WaveUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Rolleri oluştur
+            // Rolleri oluştur - optimized: check all roles at once
             string[] roleNames = { "Admin", "Manager", "Employee", "Not Verified" };
+            var existingRoles = roleManager.Roles.Select(r => r.Name).ToList();
+
             foreach (var roleName in roleNames)
             {
-                if (!await roleManager.RoleExistsAsync(roleName))
+                if (!existingRoles.Contains(roleName))
                 {
                     await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
+            // Check all test users at once - optimized
+            var testUserEmails = new[] { "admin@optiviera.com", "manager@optiviera.com", "employee@optiviera.com" };
+            var existingUsers = await context.Users
+                .Where(u => testUserEmails.Contains(u.Email))
+                .Select(u => u.Email)
+                .ToListAsync();
+
             // Admin kullanıcısı oluştur
-            var adminUser = await userManager.FindByNameAsync("admin@optiviera.com");
-            if (adminUser == null)
+            if (!existingUsers.Contains("admin@optiviera.com"))
             {
-                adminUser = new WaveUser
+                var adminUser = new WaveUser
                 {
                     UserName = "admin@optiviera.com",
                     Email = "admin@optiviera.com",
@@ -40,10 +49,9 @@ namespace Optiviera.Data
             }
 
             // Manager kullanıcısı oluştur
-            var managerUser = await userManager.FindByNameAsync("manager@optiviera.com");
-            if (managerUser == null)
+            if (!existingUsers.Contains("manager@optiviera.com"))
             {
-                managerUser = new WaveUser
+                var managerUser = new WaveUser
                 {
                     UserName = "manager@optiviera.com",
                     Email = "manager@optiviera.com",
@@ -56,10 +64,9 @@ namespace Optiviera.Data
             }
 
             // Employee kullanıcısı oluştur
-            var employeeUser = await userManager.FindByNameAsync("employee@optiviera.com");
-            if (employeeUser == null)
+            if (!existingUsers.Contains("employee@optiviera.com"))
             {
-                employeeUser = new WaveUser
+                var employeeUser = new WaveUser
                 {
                     UserName = "employee@optiviera.com",
                     Email = "employee@optiviera.com",

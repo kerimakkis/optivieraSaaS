@@ -48,6 +48,9 @@ builder.Services.AddScoped<ITTicketService, TicketService>();
 
 builder.Services.AddScoped<ITRolesService, RolesService>();
 
+// Add memory cache for performance
+builder.Services.AddMemoryCache();
+
 // Add license service
 builder.Services.AddScoped<ILicenseService, LicenseService>();
 
@@ -72,10 +75,21 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<WaveUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         
-        // Ensure database is created and migrated
-        context.Database.Migrate();
-        Console.WriteLine("Database migrated successfully.");
-        
+        // Optimized: Only migrate if database doesn't exist or has pending migrations
+        var pendingMigrations = context.Database.GetPendingMigrations().Any();
+        var canConnect = context.Database.CanConnect();
+
+        if (!canConnect || pendingMigrations)
+        {
+            Console.WriteLine("Database migration required...");
+            context.Database.Migrate();
+            Console.WriteLine("Database migrated successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Database is up to date, skipping migration.");
+        }
+
         // Seed initial data
         SeedData.Initialize(services).Wait();
         Console.WriteLine("Initial data seeded successfully.");
@@ -132,24 +146,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-
-// Seed data (with error handling)
-// Note: Data is already seeded during migration (line 80), but we run it again
-// to ensure any updates are applied
-try
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        await SeedData.Initialize(scope.ServiceProvider);
-    }
-    Console.WriteLine("Final data seed completed successfully.");
-}
-catch (Exception ex)
-{
-    // Don't crash the application if seeding fails on second run
-    Console.WriteLine($"Warning: Second data seed failed: {ex.Message}");
-    Console.WriteLine($"This is usually not critical as data was already seeded during migration.");
-}
 
 Console.WriteLine("Starting web server...");
 app.Run();

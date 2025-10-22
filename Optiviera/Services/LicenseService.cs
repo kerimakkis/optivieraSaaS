@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Optiviera.Data;
 using Optiviera.Models;
 using Optiviera.Services.Interfaces;
@@ -12,16 +13,21 @@ namespace Optiviera.Services
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<LicenseService> _logger;
+        private readonly IMemoryCache _cache;
         private readonly string _machineId;
+        private const string LICENSE_CACHE_KEY = "CurrentLicense";
+        private const int CACHE_DURATION_MINUTES = 10;
 
         public LicenseService(
-            ApplicationDbContext context, 
+            ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
-            ILogger<LicenseService> logger)
+            ILogger<LicenseService> logger,
+            IMemoryCache cache)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
+            _cache = cache;
             _machineId = GenerateMachineId();
         }
 
@@ -71,12 +77,17 @@ namespace Optiviera.Services
                     return false;
                 }
 
-                // Update last validated
-                license.LastValidated = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
+                // Update last validated (throttled - only if older than 1 hour)
+                if (license.LastValidated == null ||
+                    (DateTime.UtcNow - license.LastValidated.Value).TotalHours >= 1)
+                {
+                    license.LastValidated = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                }
 
-                // Log validation attempt
-                await LogValidationAttemptAsync(license, true, "License validated successfully");
+                // Note: Validation logging disabled for performance
+                // Re-enable if audit trail is needed
+                // await LogValidationAttemptAsync(license, true, "License validated successfully");
 
                 return true;
             }
@@ -190,6 +201,10 @@ namespace Optiviera.Services
                 }
 
                 await _context.SaveChangesAsync();
+
+                // Invalidate cache after license update
+                _cache.Remove(LICENSE_CACHE_KEY);
+
                 _logger.LogInformation("License activated successfully: {LicenseKey}", licenseKey);
                 return true;
             }
@@ -219,9 +234,27 @@ namespace Optiviera.Services
         {
             try
             {
+                // Try to get from cache first
+                if (_cache.TryGetValue(LICENSE_CACHE_KEY, out License? cachedLicense))
+                {
+                    return cachedLicense;
+                }
+
+                // Not in cache, fetch from database
                 var machineId = await GenerateMachineIdAsync();
-                return await _context.Licenses
+                var license = await _context.Licenses
+                    .AsNoTracking() // Performance: don't track entities we're just reading
                     .FirstOrDefaultAsync(l => l.MachineId == machineId);
+
+                // Cache the result for 10 minutes
+                if (license != null)
+                {
+                    var cacheOptions = new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(CACHE_DURATION_MINUTES));
+                    _cache.Set(LICENSE_CACHE_KEY, license, cacheOptions);
+                }
+
+                return license;
             }
             catch (Exception ex)
             {
@@ -391,6 +424,9 @@ namespace Optiviera.Services
 
                 _context.Licenses.Add(trialLicense);
                 await _context.SaveChangesAsync();
+
+                // Invalidate cache after license creation
+                _cache.Remove(LICENSE_CACHE_KEY);
 
                 _logger.LogInformation("Trial license created for machine ID: {MachineId}", _machineId);
                 return true;

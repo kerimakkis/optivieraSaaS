@@ -310,7 +310,7 @@ function createTray() {
   });
 }
 
-function startAspNetProcess() {
+async function startAspNetProcess() {
   // In production, files are in app.asar, so we need to extract them first
   const isPackaged = app.isPackaged;
   let appPath;
@@ -388,17 +388,17 @@ function startAspNetProcess() {
 
           // Wait and verify the main executable is accessible
           let retries = 0;
-          while (retries < 10) {
+          const maxRetries = 10;
+          while (retries < maxRetries) {
             try {
               // Try to access the file to ensure it's fully written and unlocked
               fs.accessSync(exePath, fs.constants.R_OK);
               console.log('Executable verified and accessible');
               break;
             } catch (err) {
-              console.log(`Waiting for executable to be ready (attempt ${retries + 1}/10)...`);
-              // Synchronous sleep - not ideal but necessary here
-              const waitTime = Date.now() + 500;
-              while (Date.now() < waitTime) { /* wait */ }
+              console.log(`Waiting for executable to be ready (attempt ${retries + 1}/${maxRetries})...`);
+              // Async sleep - allows event loop to continue
+              await new Promise(resolve => setTimeout(resolve, 500));
               retries++;
             }
           }
@@ -532,19 +532,34 @@ function startAspNetServer() {
   });
 }
 
-function waitForServer(port, attempts = 0) {
-  const maxAttempts = 30; // 30 seconds max
+function waitForServer(port, attempts = 0, startTime = Date.now()) {
+  const maxTimeout = 30000; // 30 seconds max
   const http = require('http');
-  
+
+  // Adaptive polling: fast at start, slower later
+  // First 5 seconds: 100ms intervals (fast detection)
+  // Next 10 seconds: 500ms intervals
+  // Last 15 seconds: 1000ms intervals
+  const elapsed = Date.now() - startTime;
+  let pollInterval;
+  if (elapsed < 5000) {
+    pollInterval = 100;
+  } else if (elapsed < 15000) {
+    pollInterval = 500;
+  } else {
+    pollInterval = 1000;
+  }
+
   http.get(`http://localhost:${port}`, (res) => {
-    console.log(`Server is ready! Status: ${res.statusCode}`);
+    const totalTime = Date.now() - startTime;
+    console.log(`Server is ready! Status: ${res.statusCode}, Time: ${totalTime}ms`);
     if (mainWindow) {
       mainWindow.loadURL(`http://localhost:${port}`);
     }
   }).on('error', (err) => {
-    if (attempts < maxAttempts) {
-      console.log(`Waiting for server... attempt ${attempts + 1}/${maxAttempts}`);
-      setTimeout(() => waitForServer(port, attempts + 1), 1000);
+    if (elapsed < maxTimeout) {
+      console.log(`Waiting for server... attempt ${attempts + 1} (${elapsed}ms elapsed)`);
+      setTimeout(() => waitForServer(port, attempts + 1, startTime), pollInterval);
     } else {
       console.error('Server failed to start in time');
       dialog.showErrorBox('Server Timeout', 'The application server took too long to start. Please try again.');

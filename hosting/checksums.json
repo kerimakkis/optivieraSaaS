@@ -1,0 +1,14 @@
+[
+  {
+    "file": "OptivieraERP.exe",
+    "sha256": "65f0586ff4f1051d79f9d0361e1d5c8da6882dbcccf22996e4facdda0ea8a373",
+    "size": "129.82 MB",
+    "bytes": 136127148
+  },
+  {
+    "file": "win-unpacked/OptivieraERP.exe",
+    "sha256": "3a453b934d5a1fb006026ca857f7e7da9ebd0f15c12222cc211a0e25f7efa373",
+    "size": "150.43 MB",
+    "bytes": 157740544
+  }
+]
