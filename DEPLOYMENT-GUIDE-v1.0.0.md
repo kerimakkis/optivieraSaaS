@@ -12,10 +12,17 @@
 1. [Build Paketleri](#build-paketleri)
 2. [Deployment Yöntemleri](#deployment-yöntemleri)
 3. [WireGuard VPN Deployment](#wireguard-vpn-deployment)
-4. [v1.0.0 Özellikleri](#v100-özellikleri)
-5. [Test Durumu](#test-durumu)
-6. [Kullanıcı Bilgileri](#kullanıcı-bilgileri)
-7. [Troubleshooting](#troubleshooting)
+4. [Deployment Guide with VPN](#-deployment-guide-with-vpn)
+   - [Ön Hazırlık](#ön-hazırlık)
+   - [Manuel Deployment Komutları](#manuel-deployment-komutları)
+   - [Hızlı Deployment (Tek Komut)](#hızlı-deployment-tek-komut)
+   - [Troubleshooting VPN Deployment](#troubleshooting-vpn-deployment)
+   - [Deployment Checklist](#deployment-checklist)
+   - [Yararlı Komutlar](#yararlı-komutlar)
+5. [v1.0.0 Özellikleri](#v100-özellikleri)
+6. [Test Durumu](#test-durumu)
+7. [Kullanıcı Bilgileri](#kullanıcı-bilgileri)
+8. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -217,6 +224,318 @@ graph LR
     D --> E[192.168.178.20]
     E --> F[Docker Restart]
     F --> G[LIVE!]
+```
+
+---
+
+## 📘 Deployment Guide with VPN
+
+### Ön Hazırlık
+
+#### 1. WireGuard VPN Kurulumu
+```bash
+# macOS için WireGuard kurulumu
+brew install wireguard-tools
+
+# veya GUI client indir
+# https://www.wireguard.com/install/
+```
+
+#### 2. sshpass Kurulumu
+```bash
+# macOS için sshpass kurulumu
+brew install sshpass
+```
+
+#### 3. VPN Bağlantısı Kontrolü
+```bash
+# VPN aktif mi kontrol et
+ping -c 1 192.168.178.20
+
+# Başarılı çıktı:
+# 64 bytes from 192.168.178.20: icmp_seq=0 ttl=64 time=23ms
+```
+
+---
+
+### Manuel Deployment Komutları
+
+#### Adım 1: Server'daki Mevcut Dosyaları Kontrol Et
+```bash
+# .exe dosyalarını listele
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'ls -lh /mnt/data/volumes/websites/akkistech/html/optiviera/downloads/*.exe'
+
+# Tüm dosyaları listele
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'ls -lah /mnt/data/volumes/websites/akkistech/html/optiviera/downloads/'
+```
+
+#### Adım 2: Eski Installer Dosyalarını Sil
+```bash
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 << 'ENDSSH'
+cd /mnt/data/volumes/websites/akkistech/html/optiviera/downloads
+
+echo "🗑️ ESKİ .exe DOSYALARINI SİLİYORUM..."
+rm -f OptvieraERP-Setup-1.0.0.exe "Optiviera ERP Setup 1.0.0.exe"
+
+echo "✅ Eski dosyalar silindi!"
+echo ""
+echo "📦 MEVCUT DOSYALAR:"
+ls -lh *.exe 2>/dev/null
+ENDSSH
+```
+
+#### Adım 3: Yeni Installer'ı Deploy Et
+```bash
+# Local dosyayı kontrol et
+ls -lh /Users/kerimakkis/Projects/Optiviera/hosting/downloads/*.exe
+
+# Deploy script'i çalıştır
+cd /Users/kerimakkis/Projects/Optiviera
+./deploy-wireguard.sh
+```
+
+#### Adım 4: HTML Download Linklerini Güncelle
+```bash
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 << 'ENDSSH'
+cd /mnt/data/volumes/websites/akkistech/html/optiviera
+
+echo "🔧 index.html güncelleniyor..."
+
+# Backup oluştur
+cp index.html index.html.backup
+
+# Eski .exe linklerini yeni linkle değiştir
+sed -i 's|downloads/OptvieraERP-Setup-1.0.0.exe|downloads/OptivieraERP.exe|g' index.html
+sed -i 's|downloads/Optiviera%20ERP%20Setup%201.0.0.exe|downloads/OptivieraERP.exe|g' index.html
+sed -i 's|downloads/Optiviera ERP Setup 1.0.0.exe|downloads/OptivieraERP.exe|g' index.html
+
+# Dosya boyutunu güncelle
+sed -i 's/İndir v1.0.0 (118 MB)/İndir v1.0.0 (130 MB)/g' index.html
+
+echo "✅ index.html güncellendi!"
+echo ""
+echo "🔍 YENİ DOWNLOAD LİNKİ:"
+grep -A2 "Windows" index.html | grep "href.*exe"
+ENDSSH
+```
+
+#### Adım 5: Nginx Cache Temizle ve Container Restart
+```bash
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 << 'ENDSSH'
+echo "🔄 Nginx cache temizleniyor ve container restart..."
+docker restart web-akkishost nginx-proxy-manager-app-1
+
+echo "✅ Deployment tamamlandı!"
+ENDSSH
+```
+
+#### Adım 6: Deployment Doğrulama
+```bash
+# Server'daki yeni dosyayı kontrol et
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'ls -lh /mnt/data/volumes/websites/akkistech/html/optiviera/downloads/*.exe'
+
+# HTML içeriğini kontrol et
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'grep "OptivieraERP.exe" /mnt/data/volumes/websites/akkistech/html/optiviera/index.html'
+
+# Web'den test et
+curl -I https://akkistech.com/optiviera/downloads/OptivieraERP.exe
+```
+
+---
+
+### Hızlı Deployment (Tek Komut)
+
+Tüm adımları tek seferde çalıştırmak için:
+
+```bash
+cd /Users/kerimakkis/Projects/Optiviera && \
+./deploy-wireguard.sh && \
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 << 'ENDSSH'
+cd /mnt/data/volumes/websites/akkistech/html/optiviera/downloads
+rm -f OptvieraERP-Setup-1.0.0.exe "Optiviera ERP Setup 1.0.0.exe"
+cd ..
+cp index.html index.html.backup
+sed -i 's|downloads/OptvieraERP-Setup-1.0.0.exe|downloads/OptivieraERP.exe|g' index.html
+sed -i 's|downloads/Optiviera.*Setup.*exe|downloads/OptivieraERP.exe|g' index.html
+sed -i 's/İndir v1.0.0 (118 MB)/İndir v1.0.0 (130 MB)/g' index.html
+docker restart web-akkishost nginx-proxy-manager-app-1
+echo "✅ DEPLOYMENT TAMAMLANDI!"
+ls -lh downloads/*.exe
+ENDSSH
+```
+
+---
+
+### Troubleshooting VPN Deployment
+
+#### Problem 1: VPN Bağlantısı Yok
+```bash
+# Sorun: ping: cannot resolve 192.168.178.20
+
+# Çözüm:
+# 1. WireGuard VPN'in aktif olduğundan emin ol
+sudo wg-quick up wg0
+
+# 2. VPN interface'i kontrol et
+ifconfig | grep wg
+
+# 3. VPN routing'i kontrol et
+netstat -rn | grep 192.168.178
+```
+
+#### Problem 2: sshpass Permission Denied
+```bash
+# Sorun: Failed to get a pseudo terminal: Operation not permitted
+
+# Çözüm: -T flag ekle (pseudo-terminal devre dışı)
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 'ls'
+```
+
+#### Problem 3: rsync Transfer Hatası
+```bash
+# Sorun: rsync: failed to set times
+
+# Çözüm: --no-perms ve --no-times flag'leri ekle
+sshpass -p "Duka1429!" rsync -avh --no-perms --no-times --progress --delete \
+  -e "ssh -o StrictHostKeyChecking=no" \
+  /Users/kerimakkis/Projects/Optiviera/hosting/ \
+  kerim@192.168.178.20:/mnt/data/volumes/websites/akkistech/html/optiviera/
+```
+
+#### Problem 4: Docker Container Bulunamıyor
+```bash
+# Sorun: Error: No such container: web-akkistech
+
+# Çözüm: Doğru container ismini bul
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'docker ps -a | grep web'
+
+# Doğru isim: web-akkishost
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'docker restart web-akkishost'
+```
+
+#### Problem 5: Eski Dosya Hala İndiriliyor
+```bash
+# Sorun: Browser cache veya Nginx cache
+
+# Çözüm 1: Browser cache temizle
+# Ctrl+Shift+Delete → Clear all cache
+
+# Çözüm 2: Incognito mode kullan
+# Ctrl+Shift+N (Chrome/Edge)
+
+# Çözüm 3: Nginx cache temizle
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 << 'ENDSSH'
+docker restart nginx-proxy-manager-app-1
+docker exec nginx-proxy-manager-app-1 nginx -s reload
+ENDSSH
+
+# Çözüm 4: Hard refresh
+# Ctrl+F5 (Windows)
+# Cmd+Shift+R (macOS)
+```
+
+---
+
+### Deployment Checklist
+
+- [ ] ✅ WireGuard VPN aktif
+- [ ] ✅ sshpass kurulu
+- [ ] ✅ Local build hazır (`hosting/downloads/OptivieraERP.exe`)
+- [ ] ✅ VPN ping testi başarılı (192.168.178.20)
+- [ ] ✅ SSH bağlantısı test edildi
+- [ ] ✅ Eski dosyalar silindi
+- [ ] ✅ Yeni dosya deploy edildi
+- [ ] ✅ HTML linkleri güncellendi
+- [ ] ✅ Dosya boyutu güncellendi
+- [ ] ✅ Docker container restart edildi
+- [ ] ✅ Nginx cache temizlendi
+- [ ] ✅ Web'den download test edildi
+- [ ] ✅ Dosya boyutu doğru (130 MB)
+- [ ] ✅ Checksum doğrulandı (opsiyonel)
+
+---
+
+### Deployment İstatistikleri
+
+**Son Deployment:**
+- **Tarih:** 23 Ekim 2025
+- **Dosya:** OptivieraERP.exe
+- **Boyut:** 130 MB (136,127,148 bytes)
+- **Transfer Hızı:** 8.76 MB/s
+- **Transfer Süresi:** ~15 saniye
+- **Hedef:** akkistech.com/optiviera/downloads/
+- **Status:** ✅ BAŞARILI
+
+**Deployment Geçmişi:**
+| Tarih | Dosya | Boyut | Durum |
+|-------|-------|-------|-------|
+| 23 Ekim 2025 | OptivieraERP.exe | 130 MB | ✅ LIVE |
+| 14 Ekim 2025 | OptvieraERP-Setup-1.0.0.exe | 118 MB | ❌ Silindi |
+| 14 Ekim 2025 | Optiviera ERP Setup 1.0.0.exe | 118 MB | ❌ Silindi |
+
+---
+
+### Yararlı Komutlar
+
+#### Server Durumu
+```bash
+# Disk kullanımı
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'df -h /mnt/data/volumes/websites/akkistech/html/optiviera/'
+
+# Dosya sayısı
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'find /mnt/data/volumes/websites/akkistech/html/optiviera/ -type f | wc -l'
+
+# Toplam boyut
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'du -sh /mnt/data/volumes/websites/akkistech/html/optiviera/'
+```
+
+#### Docker Yönetimi
+```bash
+# Container durumu
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'docker ps | grep web-akkishost'
+
+# Container logs (son 50 satır)
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'docker logs --tail 50 web-akkishost'
+
+# Container kaynak kullanımı
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'docker stats --no-stream web-akkishost'
+```
+
+#### Dosya Checksum
+```bash
+# Local checksum
+shasum -a 256 /Users/kerimakkis/Projects/Optiviera/hosting/downloads/OptivieraERP.exe
+
+# Server checksum
+sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 \
+  'sha256sum /mnt/data/volumes/websites/akkistech/html/optiviera/downloads/OptivieraERP.exe'
+
+# Karşılaştır - aynı olmalı!
+```
+
+#### Backup Oluştur
+```bash
+# Server'dan local'e backup al
+sshpass -p "Duka1429!" rsync -avh --progress \
+  -e "ssh -o StrictHostKeyChecking=no" \
+  kerim@192.168.178.20:/mnt/data/volumes/websites/akkistech/html/optiviera/ \
+  ~/Desktop/optiviera-backup-$(date +%Y%m%d)/
+
+# Backup'ı arşivle
+cd ~/Desktop
+tar -czf optiviera-backup-$(date +%Y%m%d).tar.gz optiviera-backup-$(date +%Y%m%d)/
 ```
 
 ---
