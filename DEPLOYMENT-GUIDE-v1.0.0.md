@@ -29,11 +29,11 @@
 ## 📦 Build Paketleri
 
 ### Windows (x64)
-- **Dosya:** `Optiviera ERP Setup 1.0.0.exe`
-- **Boyut:** 114 MB
+- **Dosya:** `OptivieraERP.exe`
+- **Boyut:** 130 MB
 - **Platform:** Windows 10/11 x64
-- **Konum:** `electron/dist/Optiviera ERP Setup 1.0.0.exe`
-- **Download:** https://akkistech.com/optiviera/downloads/Optiviera%20ERP%20Setup%201.0.0.exe
+- **Konum:** `electron/dist/OptivieraERP.exe`
+- **Download:** https://akkistech.com/optiviera/downloads/OptivieraERP.exe
 - **Status:** ✅ Test Edildi - Çalışıyor
 
 ### macOS (Intel)
@@ -277,7 +277,7 @@ sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 <
 cd /mnt/data/volumes/websites/akkistech/html/optiviera/downloads
 
 echo "🗑️ ESKİ .exe DOSYALARINI SİLİYORUM..."
-rm -f OptvieraERP-Setup-1.0.0.exe "Optiviera ERP Setup 1.0.0.exe"
+rm -f "Optiviera ERP Setup 1.0.0.exe"
 
 echo "✅ Eski dosyalar silindi!"
 echo ""
@@ -306,10 +306,8 @@ echo "🔧 index.html güncelleniyor..."
 # Backup oluştur
 cp index.html index.html.backup
 
-# Eski .exe linklerini yeni linkle değiştir
-sed -i 's|downloads/OptvieraERP-Setup-1.0.0.exe|downloads/OptivieraERP.exe|g' index.html
-sed -i 's|downloads/Optiviera%20ERP%20Setup%201.0.0.exe|downloads/OptivieraERP.exe|g' index.html
-sed -i 's|downloads/Optiviera ERP Setup 1.0.0.exe|downloads/OptivieraERP.exe|g' index.html
+# .exe linklerini kontrol et (zaten güncel olmalı)
+grep "downloads/OptivieraERP.exe" index.html
 
 # Dosya boyutunu güncelle
 sed -i 's/İndir v1.0.0 (118 MB)/İndir v1.0.0 (130 MB)/g' index.html
@@ -356,11 +354,10 @@ cd /Users/kerimakkis/Projects/Optiviera && \
 ./deploy-wireguard.sh && \
 sshpass -p "Duka1429!" ssh -o StrictHostKeyChecking=no -T kerim@192.168.178.20 << 'ENDSSH'
 cd /mnt/data/volumes/websites/akkistech/html/optiviera/downloads
-rm -f OptvieraERP-Setup-1.0.0.exe "Optiviera ERP Setup 1.0.0.exe"
+echo "📦 Mevcut .exe dosyaları:"
+ls -lh *.exe
 cd ..
 cp index.html index.html.backup
-sed -i 's|downloads/OptvieraERP-Setup-1.0.0.exe|downloads/OptivieraERP.exe|g' index.html
-sed -i 's|downloads/Optiviera.*Setup.*exe|downloads/OptivieraERP.exe|g' index.html
 sed -i 's/İndir v1.0.0 (118 MB)/İndir v1.0.0 (130 MB)/g' index.html
 docker restart web-akkishost nginx-proxy-manager-app-1
 echo "✅ DEPLOYMENT TAMAMLANDI!"
@@ -476,8 +473,7 @@ ENDSSH
 | Tarih | Dosya | Boyut | Durum |
 |-------|-------|-------|-------|
 | 23 Ekim 2025 | OptivieraERP.exe | 130 MB | ✅ LIVE |
-| 14 Ekim 2025 | OptvieraERP-Setup-1.0.0.exe | 118 MB | ❌ Silindi |
-| 14 Ekim 2025 | Optiviera ERP Setup 1.0.0.exe | 118 MB | ❌ Silindi |
+| 14 Ekim 2025 | Optiviera ERP Setup 1.0.0.exe | 118 MB | ❌ Silindi (eski versiyon) |
 
 ---
 
