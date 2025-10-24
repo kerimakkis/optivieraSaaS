@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Optiviera.Data;
 using Optiviera.Models;
+using Optiviera.Models.Enums;
 using System.Security.Claims;
 
 namespace Optiviera.Controllers
@@ -167,7 +168,7 @@ namespace Optiviera.Controllers
                 CCity = request.CustomerCity,
                 CState = request.CustomerState,
                 CZip = request.CustomerZip,
-                Status = request.Status ?? Enums.TicketStatus.Open,
+                Status = request.Status ?? TicketStatus.Open,
                 PriorityId = request.PriorityId,
                 TechnicianId = request.TechnicianId,
                 SupportId = request.SupportId,
@@ -269,7 +270,7 @@ namespace Optiviera.Controllers
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public Enums.TicketStatus Status { get; set; }
+        public TicketStatus Status { get; set; }
         public PriorityDto? Priority { get; set; }
         public string CustomerFirstName { get; set; } = string.Empty;
         public string CustomerLastName { get; set; } = string.Empty;
@@ -315,7 +316,7 @@ namespace Optiviera.Controllers
         public string CustomerCity { get; set; } = string.Empty;
         public string CustomerState { get; set; } = string.Empty;
         public string CustomerZip { get; set; } = string.Empty;
-        public Enums.TicketStatus? Status { get; set; }
+        public TicketStatus? Status { get; set; }
         public int PriorityId { get; set; }
         public string? TechnicianId { get; set; }
         public string? SupportId { get; set; }
@@ -326,7 +327,7 @@ namespace Optiviera.Controllers
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public Enums.TicketStatus? Status { get; set; }
+        public TicketStatus? Status { get; set; }
         public int? PriorityId { get; set; }
         public string? TechnicianId { get; set; }
         public string? SupportId { get; set; }

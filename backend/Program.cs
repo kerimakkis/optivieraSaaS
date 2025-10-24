@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Database Configuration - MySQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21))));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -71,7 +71,7 @@ builder.Services.AddCors(options =>
 
 // Application Services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ITTicketService, TicketService>();
 builder.Services.AddScoped<ITRolesService, RolesService>();
 
 // Memory Cache
