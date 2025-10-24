@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(awk:*)",
+      "Read(//tmp/**)",
+      "Bash(find:*)",
+      "Read(//c/Users/kerim/Desktop/**)",
+      "Bash(7z l:*)",
+      "Bash(git lfs:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
