@@ -1,162 +1,209 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Optiviera.Data;
 using Optiviera.Models;
+using Optiviera.DTOs;
 
 namespace Optiviera.Controllers
 {
-    public class PrioritiesController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
+    public class PrioritiesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<PrioritiesController> _logger;
 
-        public PrioritiesController(ApplicationDbContext context)
+        public PrioritiesController(ApplicationDbContext context, ILogger<PrioritiesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        // GET: Priorities
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
+        private int GetTenantId()
         {
-            return View(await _context.Priorities.ToListAsync());
-        }
-
-        // GET: Priorities/Details/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            var tenantId = HttpContext.Items["TenantId"];
+            if (tenantId == null)
             {
-                return NotFound();
+                throw new UnauthorizedAccessException("Tenant ID not found");
             }
+            return (int)tenantId;
+        }
+
+        /// <summary>
+        /// Get all priorities for the current tenant
+        /// </summary>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<PriorityDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var tenantId = GetTenantId();
+
+            var priorities = await _context.Priorities
+                .Where(p => p.TenantId == tenantId)
+                .OrderBy(p => p.Name)
+                .Select(p => new PriorityDto
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                })
+                .ToListAsync();
+
+            return Ok(priorities);
+        }
+
+        /// <summary>
+        /// Get a specific priority by ID
+        /// </summary>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PriorityDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var tenantId = GetTenantId();
 
             var priority = await _context.Priorities
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Where(p => p.Id == id && p.TenantId == tenantId)
+                .FirstOrDefaultAsync();
+
             if (priority == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Priority not found" });
             }
 
-            return View(priority);
+            return Ok(new PriorityDto
+            {
+                Id = priority.Id,
+                Name = priority.Name
+            });
         }
 
-        // GET: Priorities/Create
-        [Authorize(Roles = "Admin")]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Priorities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create a new priority (Admin only)
+        /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Priority priority)
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(PriorityDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] CreatePriorityRequest request)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(priority);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest(ModelState);
             }
-            return View(priority);
+
+            var tenantId = GetTenantId();
+
+            // Check if priority name already exists for this tenant
+            var exists = await _context.Priorities
+                .AnyAsync(p => p.TenantId == tenantId && p.Name == request.Name);
+
+            if (exists)
+            {
+                return BadRequest(new { message = "Priority with this name already exists" });
+            }
+
+            var priority = new Priority
+            {
+                TenantId = tenantId,
+                Name = request.Name
+            };
+
+            _context.Priorities.Add(priority);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Priority created: {PriorityId} - {PriorityName} for TenantId: {TenantId}",
+                priority.Id, priority.Name, tenantId);
+
+            return CreatedAtAction(nameof(GetById), new { id = priority.Id }, new PriorityDto
+            {
+                Id = priority.Id,
+                Name = priority.Name
+            });
         }
 
-        // GET: Priorities/Edit/5
+        /// <summary>
+        /// Update an existing priority (Admin only)
+        /// </summary>
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdatePriorityRequest request)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var priority = await _context.Priorities.FindAsync(id);
-            if (priority == null)
-            {
-                return NotFound();
-            }
-            return View(priority);
-        }
-
-        // POST: Priorities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Priority priority)
-        {
-            if (id != priority.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(priority);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PriorityExists(priority.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(priority);
-        }
-
-        // GET: Priorities/Delete/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var tenantId = GetTenantId();
 
             var priority = await _context.Priorities
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Where(p => p.Id == id && p.TenantId == tenantId)
+                .FirstOrDefaultAsync();
+
             if (priority == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Priority not found" });
             }
 
-            return View(priority);
+            // Check if new name already exists for this tenant
+            if (request.Name != null && request.Name != priority.Name)
+            {
+                var exists = await _context.Priorities
+                    .AnyAsync(p => p.TenantId == tenantId && p.Name == request.Name && p.Id != id);
+
+                if (exists)
+                {
+                    return BadRequest(new { message = "Priority with this name already exists" });
+                }
+
+                priority.Name = request.Name;
+            }
+
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Priority updated: {PriorityId} for TenantId: {TenantId}", id, tenantId);
+
+            return NoContent();
         }
 
-        // POST: Priorities/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        /// <summary>
+        /// Delete a priority (Admin only)
+        /// </summary>
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(int id)
         {
-            var priority = await _context.Priorities.FindAsync(id);
+            var tenantId = GetTenantId();
+
+            var priority = await _context.Priorities
+                .Where(p => p.Id == id && p.TenantId == tenantId)
+                .Include(p => p.Tickets)
+                .FirstOrDefaultAsync();
+
+            if (priority == null)
+            {
+                return NotFound(new { message = "Priority not found" });
+            }
+
+            // Check if priority is in use
+            if (priority.Tickets.Any())
+            {
+                return BadRequest(new { message = "Cannot delete priority that is assigned to tickets" });
+            }
+
             _context.Priorities.Remove(priority);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool PriorityExists(int id)
-        {
-            return _context.Priorities.Any(e => e.Id == id);
+            _logger.LogInformation("Priority deleted: {PriorityId} for TenantId: {TenantId}", id, tenantId);
+
+            return NoContent();
         }
     }
 }

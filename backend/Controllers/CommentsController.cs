@@ -1,176 +1,240 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Optiviera.Data;
 using Optiviera.Models;
+using Optiviera.DTOs;
+using System.Security.Claims;
 
 namespace Optiviera.Controllers
 {
-    public class CommentsController : Controller
+    [ApiController]
+    [Route("api/tickets/{ticketId}/[controller]")]
+    [Authorize]
+    public class CommentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CommentsController> _logger;
 
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context, ILogger<CommentsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        // GET: Comments
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
+        private int GetTenantId()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.Ticket).Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Comments/Details/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            var tenantId = HttpContext.Items["TenantId"];
+            if (tenantId == null)
             {
-                return NotFound();
+                throw new UnauthorizedAccessException("Tenant ID not found");
             }
+            return (int)tenantId;
+        }
+
+        private string GetUserId()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? throw new UnauthorizedAccessException("User ID not found");
+        }
+
+        /// <summary>
+        /// Get all comments for a specific ticket
+        /// </summary>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<CommentDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetComments(int ticketId)
+        {
+            var tenantId = GetTenantId();
+
+            // Verify ticket exists and belongs to tenant
+            var ticketExists = await _context.Tickets
+                .AnyAsync(t => t.Id == ticketId && t.TenantId == tenantId);
+
+            if (!ticketExists)
+            {
+                return NotFound(new { message = "Ticket not found" });
+            }
+
+            var comments = await _context.Comments
+                .Where(c => c.TicketId == ticketId && c.TenantId == tenantId)
+                .Include(c => c.User)
+                .OrderBy(c => c.Created)
+                .Select(c => new CommentDto
+                {
+                    Id = c.Id,
+                    Note = c.Note,
+                    Created = c.Created,
+                    UserName = c.User != null ? c.User.FullName : "Unknown",
+                    UserId = c.UserId
+                })
+                .ToListAsync();
+
+            return Ok(comments);
+        }
+
+        /// <summary>
+        /// Get a specific comment by ID
+        /// </summary>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetComment(int ticketId, int id)
+        {
+            var tenantId = GetTenantId();
 
             var comment = await _context.Comments
-                .Include(c => c.Ticket)
+                .Where(c => c.Id == id && c.TicketId == ticketId && c.TenantId == tenantId)
                 .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync();
+
             if (comment == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Comment not found" });
             }
 
-            return View(comment);
+            return Ok(new CommentDto
+            {
+                Id = comment.Id,
+                Note = comment.Note,
+                Created = comment.Created,
+                UserName = comment.User != null ? comment.User.FullName : "Unknown",
+                UserId = comment.UserId
+            });
         }
 
-        // GET: Comments/Create
-        [Authorize(Roles = "Admin")]
-        public IActionResult Create()
-        {
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
-        }
-
-        // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create a new comment on a ticket
+        /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("Id,TicketId,Note,Created,UserId")] Comment comment)
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateComment(int ticketId, [FromBody] CreateCommentRequest request)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress", comment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
-            return View(comment);
-        }
-
-        // GET: Comments/Edit/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress", comment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
-            return View(comment);
-        }
+            var tenantId = GetTenantId();
+            var userId = GetUserId();
 
-        // POST: Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Note,Created,UserId")] Comment comment)
-        {
-            if (id != comment.Id)
+            // Verify ticket exists and belongs to tenant
+            var ticketExists = await _context.Tickets
+                .AnyAsync(t => t.Id == ticketId && t.TenantId == tenantId);
+
+            if (!ticketExists)
             {
-                return NotFound();
+                return NotFound(new { message = "Ticket not found" });
             }
 
-            if (ModelState.IsValid)
+            var comment = new Comment
             {
-                try
+                TenantId = tenantId,
+                TicketId = ticketId,
+                UserId = userId,
+                Note = request.Note,
+                Created = DateTimeOffset.UtcNow
+            };
+
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Comment created: {CommentId} for Ticket: {TicketId} by User: {UserId}",
+                comment.Id, ticketId, userId);
+
+            // Reload with user info
+            await _context.Entry(comment).Reference(c => c.User).LoadAsync();
+
+            return CreatedAtAction(nameof(GetComment),
+                new { ticketId = ticketId, id = comment.Id },
+                new CommentDto
                 {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CommentExists(comment.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress", comment.TicketId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
-            return View(comment);
+                    Id = comment.Id,
+                    Note = comment.Note,
+                    Created = comment.Created,
+                    UserName = comment.User != null ? comment.User.FullName : "Unknown",
+                    UserId = comment.UserId
+                });
         }
 
-        // GET: Comments/Delete/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
+        /// <summary>
+        /// Update an existing comment
+        /// </summary>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> UpdateComment(int ticketId, int id, [FromBody] UpdateCommentRequest request)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
+
+            var tenantId = GetTenantId();
+            var userId = GetUserId();
 
             var comment = await _context.Comments
-                .Include(c => c.Ticket)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Where(c => c.Id == id && c.TicketId == ticketId && c.TenantId == tenantId)
+                .FirstOrDefaultAsync();
+
             if (comment == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Comment not found" });
             }
 
-            return View(comment);
+            // Only allow user to edit their own comments (or admin)
+            if (comment.UserId != userId && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
+            comment.Note = request.Note ?? comment.Note;
+
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Comment updated: {CommentId} by User: {UserId}", id, userId);
+
+            return NoContent();
         }
 
-        // POST: Comments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        /// <summary>
+        /// Delete a comment
+        /// </summary>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> DeleteComment(int ticketId, int id)
         {
-            var comment = await _context.Comments.FindAsync(id);
+            var tenantId = GetTenantId();
+            var userId = GetUserId();
+
+            var comment = await _context.Comments
+                .Where(c => c.Id == id && c.TicketId == ticketId && c.TenantId == tenantId)
+                .FirstOrDefaultAsync();
+
+            if (comment == null)
+            {
+                return NotFound(new { message = "Comment not found" });
+            }
+
+            // Only allow user to delete their own comments (or admin)
+            if (comment.UserId != userId && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool CommentExists(int id)
-        {
-            return _context.Comments.Any(e => e.Id == id);
+            _logger.LogInformation("Comment deleted: {CommentId} by User: {UserId}", id, userId);
+
+            return NoContent();
         }
     }
 }

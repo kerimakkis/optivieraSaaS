@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Optiviera.Services.Interfaces;
+using Optiviera.DTOs;
 
 namespace Optiviera.Controllers
 {
@@ -131,41 +132,5 @@ namespace Optiviera.Controllers
                 TenantId = int.Parse(tenantId)
             });
         }
-    }
-
-    // DTOs
-    public class RegisterRequest
-    {
-        public string CompanyName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-    }
-
-    public class LoginRequest
-    {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
-
-    public class AuthResponse
-    {
-        public string Token { get; set; } = string.Empty;
-        public UserDto User { get; set; } = null!;
-    }
-
-    public class UserDto
-    {
-        public string Id { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public int TenantId { get; set; }
-    }
-
-    public class ErrorResponse
-    {
-        public string Message { get; set; } = string.Empty;
     }
 }
