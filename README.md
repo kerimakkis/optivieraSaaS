@@ -1,685 +1,306 @@
-// ...existing code...
-# Optiviera ERP
+# Optiviera SaaS
 
-**Eco-level ERP Solution for Small Businesses**
+**Multi-tenant IT Helpdesk & Ticketing Platform**
 
-![Optiviera ERP](https://img.shields.io/badge/Optiviera-ERP-blue)
-![License](https://img.shields.io/badge/License-AkkisTech-green)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
-![Languages](https://img.shields.io/badge/Languages-8%20Languages-orange)
+![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
+![Platform](https://img.shields.io/badge/Platform-SaaS%20Web%20App-blue)
+![Backend](https://img.shields.io/badge/Backend-ASP.NET%20Core%208.0-purple)
+![Frontend](https://img.shields.io/badge/Frontend-Nuxt%203-green)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-## 🚀 Features
+Optiviera is being transformed from a desktop Electron application to a modern SaaS platform with multi-tenant architecture.
 
-### ✨ Main Features
-- **🎯 One-Click Installation**: Automatic installer and database creation
-- **🌍 8-Language Support**: Turkish, English, German, French, Spanish, Italian, Portuguese, Dutch
-- **🔐 Secure Licensing System**: Machine-based licensing with automatic activation
-- **📊 Advanced Reporting**: Interactive charts using Chart.js
-- **👥 User Management**: Role-based access control
-- **🎫 Ticket System**: Customer support ticket management
+---
 
-### 🛠️ Technical Features
-- **ASP.NET Core 6.0** - Modern web framework
-- **SQLite Database** - Self-contained database
-- **Entity Framework Core** - ORM and migration support
-- **ASP.NET Identity** - Secure user management
-- **Electron Desktop App** - Cross-platform desktop application
-- **Bootstrap 5** - Responsive and modern UI
-- **Font Awesome 6** - Rich icon library
+## 🚀 Project Status
 
-## 📦 Installation
+**Current Phase:** Desktop → SaaS Transformation (In Progress)
 
-### 🖥️ Desktop Application (Recommended)
+### ✅ Completed
+- [x] Multi-tenant database models (Tenant, TenantId integration)
+- [x] Backend Web API infrastructure (JWT, CORS, Swagger)
+- [x] Project structure reorganization
+- [x] SQLite → MySQL migration preparation
 
-#### Windows
-```bash
-# Download and run
-Optiviera ERP Setup 1.0.0.exe
-```
+### 🔄 In Progress
+- [ ] Backend packages update (MySQL, JWT)
+- [ ] Auth Service (JWT token generation)
+- [ ] Tenant Middleware
+- [ ] Auth API Controllers (Login/Register)
+- [ ] Tickets API endpoints
+- [ ] Nuxt 3 Frontend setup
 
-#### macOS
-```bash
-# Open the DMG and drag the app into Applications
-Optiviera ERP-1.0.0.dmg
-```
-
-#### Linux
-```bash
-# Make the AppImage executable and run it
-chmod +x Optiviera\ ERP-1.0.0-arm64.AppImage
-./Optiviera\ ERP-1.0.0-arm64.AppImage
-```
-
-### 🌐 Web Application
-
-#### Requirements
-- .NET 6.0 Runtime
-- SQLite (created automatically)
-
-#### Installation
-```bash
-# Clone the repository
-git clone https://github.com/akkistech/optiviera.git
-cd optiviera
-
-# Restore dependencies
-dotnet restore
-
-# Apply database migrations
-dotnet ef database update
-
-# Run the application
-dotnet run
-```
-
-## 🎯 Usage
-
-### 🚀 Initial Setup
-1. **Download** the appropriate package for your platform
-2. **Install** using the installer wizard
-3. **Launch** the application (it will open automatically after install)
-4. **License**: 1-year free trial activates automatically
-
-### 👤 User Roles
-- **Admin**: Full access, user management
-- **Manager**: Reporting and ticket management
-- **Employee**: Basic operations
-
-### 🎫 Ticket System
-- Customer information
-- Priority levels
-- Status tracking
-- Technical assignment
-
-### 📊 Reporting
-- Ticket statistics
-- User performance
-- Priority distribution
-- Time-based analysis
-
-## 🌍 Multilingual Support
-
-| Language | Code | Status |
-|----------|------|--------|
-| 🇹🇷 Turkish | tr | ✅ Complete |
-| 🇺🇸 English | en | ✅ Complete |
-| 🇩🇪 German | de | ✅ Complete |
-| 🇫🇷 French | fr | ✅ Complete |
-| 🇪🇸 Spanish | es | ✅ Complete |
-| 🇮🇹 Italian | it | ✅ Complete |
-| 🇵🇹 Portuguese | pt | ✅ Complete |
-| 🇳🇱 Dutch | nl | ✅ Complete |
-
-## 🔐 Licensing System
-
-### 🎁 Trial License
-- **Duration**: 1 year (365 days)
-- **Features**: Full access
-- **Activation**: Automatic
-- **Grace Period**: 7 additional days
-
-### 💳 Purchase
-- **Website**: [akkistech.com/optiviera](https://akkistech.com/optiviera)
-- **Contact**: support@akkistech.com
-- **Payment**: Secure payment system
-
-## 🛠️ Development
-
-### 📋 Requirements
-- .NET 6.0 SDK
-- Node.js 16+
-- Git
-
-### 🚀 Development Environment
-```bash
-# Clone the repository
-git clone https://github.com/akkistech/optiviera.git
-cd optiviera
-
-# Backend dependencies
-cd Optiviera
-dotnet restore
-dotnet ef database update
-
-# Frontend dependencies
-cd ../electron
-npm install
-
-# Run in development mode
-npm run dev
-```
-
-### 🏗️ Build
-```bash
-# ASP.NET Core build
-dotnet publish -c Release -r win-x64 --self-contained true
-
-# Electron build
-npm run build
-```
+---
 
 ## 📁 Project Structure
 
 ```
-Optiviera/
-├── Optiviera/                 # ASP.NET Core application
-│   ├── Controllers/           # MVC Controllers
-│   ├── Models/                # Data models
-│   ├── Views/                 # Razor Views
-│   ├── Services/              # Business logic services
-│   ├── Data/                  # Entity Framework
-│   └── Resources/             # Localization resources
-├── electron/                  # Electron desktop app
-│   ├── main.js                # Main process
-│   ├── preload.js             # Preload script
-│   └── package.json           # Node dependencies
-├── hosting/                   # Web hosting files
-│   ├── index.html             # Main page
-│   └── downloads/             # Downloadable files
-└── build/                     # Build outputs
-    ├── win-x64/               # Windows build
-    └── osx-arm64/             # macOS build
+optivieraSaaS/
+├── backend/                    # ASP.NET Core Web API
+│   ├── Controllers/            # API Controllers
+│   ├── Models/                 # Domain Models (Tenant, Ticket, Comment, Priority, WaveUser)
+│   ├── Data/                   # DbContext, SeedData
+│   ├── Services/               # Business Logic
+│   ├── Middleware/             # Tenant Middleware (upcoming)
+│   └── Program.cs              # Application Entry Point
+│
+├── frontend/                   # Nuxt 3 + Vue 3 (upcoming)
+│   └── [To be created]
+│
+└── Optiviera/                  # Legacy Desktop App (Archive)
+    └── [Original Electron project]
 ```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📞 Contact
-
-- **Website**: [akkistech.com](https://akkistech.com)
-- **Email**: support@akkistech.com
-- **GitHub**: [github.com/akkistech/optiviera](https://github.com/akkistech/optiviera)
-
-## 📄 License
-
-This project is licensed by Akkis Technologies (AkkisTech).
-
-**Copyright © 2025 Akkis Technologies (AkkisTech) - Kerim Akkis**
-
-### License Terms
-- ✅ **Trial**: 1 year free use
-- ✅ **Commercial Use**: Allowed after purchase
-- ✅ **Distribution**: For licensed users
-- ❌ **Reverse Engineering**: Prohibited
-- ❌ **Source Code Distribution**: Prohibited
 
 ---
 
-**Optiviera ERP** - A modern ERP solution for small businesses 🚀
-// ...existing code...
-```// filepath: c:\Users\kerim\Desktop\projects\optiviera\README.md
-// ...existing code...
-# Optiviera ERP
+## 🛠️ Tech Stack
 
-**Eco-level ERP Solution for Small Businesses**
+### Backend
+- **Framework:** ASP.NET Core 8.0 Web API
+- **Database:** MySQL (migrating from SQLite)
+- **ORM:** Entity Framework Core
+- **Authentication:** JWT Bearer Tokens
+- **API Documentation:** Swagger/OpenAPI
+- **Architecture:** Multi-Tenant SaaS
 
-![Optiviera ERP](https://img.shields.io/badge/Optiviera-ERP-blue)
-![License](https://img.shields.io/badge/License-AkkisTech-green)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
-![Languages](https://img.shields.io/badge/Languages-8%20Languages-orange)
+### Frontend (Planned)
+- **Framework:** Nuxt 3 + Vue 3
+- **UI Library:** PrimeVue
+- **State Management:** Pinia
+- **HTTP Client:** Axios
+- **Styling:** Tailwind CSS
 
-## 🚀 Features
+---
 
-### ✨ Main Features
-- **🎯 One-Click Installation**: Automatic installer and database creation
-- **🌍 8-Language Support**: Turkish, English, German, French, Spanish, Italian, Portuguese, Dutch
-- **🔐 Secure Licensing System**: Machine-based licensing with automatic activation
-- **📊 Advanced Reporting**: Interactive charts using Chart.js
-- **👥 User Management**: Role-based access control
-- **🎫 Ticket System**: Customer support ticket management
+## 🏗️ Multi-Tenant Architecture
 
-### 🛠️ Technical Features
-- **ASP.NET Core 6.0** - Modern web framework
-- **SQLite Database** - Self-contained database
-- **Entity Framework Core** - ORM and migration support
-- **ASP.NET Identity** - Secure user management
-- **Electron Desktop App** - Cross-platform desktop application
-- **Bootstrap 5** - Responsive and modern UI
-- **Font Awesome 6** - Rich icon library
+### Core Entities
+All entities include `TenantId` for data isolation:
 
-## 📦 Installation
+- **Tenant** - Company/Organization
+- **WaveUser** - Users (scoped to Tenant)
+- **Ticket** - Helpdesk tickets (scoped to Tenant)
+- **Comment** - Ticket comments (scoped to Tenant)
+- **Priority** - Priority levels (scoped to Tenant)
 
-### 🖥️ Desktop Application (Recommended)
-
-#### Windows
-```bash
-# Download and run
-Optiviera ERP Setup 1.0.0.exe
+### Database Relationships
+```
+Tenant (1) ─── (N) WaveUser
+         └─── (N) Ticket
+               └─── (N) Comment
+         └─── (N) Priority
 ```
 
-#### macOS
+---
+
+## 🔧 Getting Started
+
+### Prerequisites
+- .NET 8.0 SDK
+- MySQL 8.0+
+- Node.js 18+ (for frontend)
+
+### Backend Setup
+
+1. **Clone the repository**
 ```bash
-# Open the DMG and drag the app into Applications
-Optiviera ERP-1.0.0.dmg
+git clone git@github.com:kerimakkis/optivieraSaaS.git
+cd optivieraSaaS/backend
 ```
 
-#### Linux
-```bash
-# Make the AppImage executable and run it
-chmod +x Optiviera\ ERP-1.0.0-arm64.AppImage
-./Optiviera\ ERP-1.0.0-arm64.AppImage
+2. **Update database connection**
+Edit `appsettings.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=optiviera_saas;Uid=root;Pwd=yourpassword;"
+  }
+}
 ```
 
-### 🌐 Web Application
-
-#### Requirements
-- .NET 6.0 Runtime
-- SQLite (created automatically)
-
-#### Installation
+3. **Install packages** (when ready)
 ```bash
-# Clone the repository
-git clone https://github.com/akkistech/optiviera.git
-cd optiviera
-
-# Restore dependencies
 dotnet restore
+```
 
-# Apply database migrations
+4. **Run migrations** (upcoming)
+```bash
 dotnet ef database update
+```
 
-# Run the application
+5. **Run the API**
+```bash
 dotnet run
 ```
 
-## 🎯 Usage
+API will be available at: `https://localhost:5001`
+Swagger UI: `https://localhost:5001/swagger`
 
-### 🚀 Initial Setup
-1. **Download** the appropriate package for your platform
-2. **Install** using the installer wizard
-3. **Launch** the application (it will open automatically after install)
-4. **License**: 1-year free trial activates automatically
+---
 
-### 👤 User Roles
-- **Admin**: Full access, user management
-- **Manager**: Reporting and ticket management
-- **Employee**: Basic operations
+## 📚 API Endpoints (Planned)
 
-### 🎫 Ticket System
-- Customer information
-- Priority levels
-- Status tracking
-- Technical assignment
+### Authentication
+```
+POST   /api/auth/register       # Create new tenant & admin user
+POST   /api/auth/login          # Get JWT token
+POST   /api/auth/refresh        # Refresh token
+```
 
-### 📊 Reporting
-- Ticket statistics
-- User performance
-- Priority distribution
-- Time-based analysis
+### Tickets
+```
+GET    /api/tickets             # List all tickets (tenant-scoped)
+GET    /api/tickets/{id}        # Get ticket details
+POST   /api/tickets             # Create new ticket
+PUT    /api/tickets/{id}        # Update ticket
+DELETE /api/tickets/{id}        # Delete ticket
+```
 
-## 🌍 Multilingual Support
+### Comments
+```
+GET    /api/tickets/{id}/comments    # List comments
+POST   /api/tickets/{id}/comments    # Add comment
+```
 
-| Language | Code | Status |
-|----------|------|--------|
-| 🇹🇷 Turkish | tr | ✅ Complete |
-| 🇺🇸 English | en | ✅ Complete |
-| 🇩🇪 German | de | ✅ Complete |
-| 🇫🇷 French | fr | ✅ Complete |
-| 🇪🇸 Spanish | es | ✅ Complete |
-| 🇮🇹 Italian | it | ✅ Complete |
-| 🇵🇹 Portuguese | pt | ✅ Complete |
-| 🇳🇱 Dutch | nl | ✅ Complete |
+### Priorities
+```
+GET    /api/priorities          # List priorities
+POST   /api/priorities          # Create priority
+PUT    /api/priorities/{id}     # Update priority
+DELETE /api/priorities/{id}     # Delete priority
+```
 
-## 🔐 Licensing System
+---
 
-### 🎁 Trial License
-- **Duration**: 1 year (365 days)
-- **Features**: Full access
-- **Activation**: Automatic
-- **Grace Period**: 7 additional days
+## 🔐 Authentication
 
-### 💳 Purchase
-- **Website**: [akkistech.com/optiviera](https://akkistech.com/optiviera)
-- **Contact**: support@akkistech.com
-- **Payment**: Secure payment system
+The platform uses **JWT Bearer Token** authentication:
 
-## 🛠️ Development
+1. **Register:** Create a new tenant account
+2. **Login:** Get JWT token
+3. **API Calls:** Include token in `Authorization: Bearer {token}` header
+4. **Token includes:** UserId, TenantId, Email, Role
 
-### 📋 Requirements
-- .NET 6.0 SDK
-- Node.js 16+
-- Git
+---
 
-### 🚀 Development Environment
+## 🎯 Roadmap
+
+### Phase 1: Backend Foundation ✅ (Current)
+- [x] Multi-tenant models
+- [x] Web API infrastructure
+- [ ] JWT authentication service
+- [ ] Auth API endpoints
+- [ ] Tenant middleware
+- [ ] Tickets API endpoints
+
+### Phase 2: Frontend Development
+- [ ] Nuxt 3 project setup
+- [ ] PrimeVue integration
+- [ ] Login/Register pages
+- [ ] Dashboard
+- [ ] Tickets module
+- [ ] Comments module
+
+### Phase 3: Advanced Features
+- [ ] Real-time notifications (SignalR)
+- [ ] File uploads
+- [ ] Email notifications
+- [ ] Reporting & Analytics
+- [ ] User management
+- [ ] Role-based permissions
+
+### Phase 4: Deployment
+- [ ] Backend deployment (AkkisHost)
+- [ ] Frontend deployment (Netlify/Vercel)
+- [ ] CI/CD pipeline
+- [ ] Production database setup
+
+---
+
+## 🧪 Development
+
+### Backend Development
 ```bash
-# Clone the repository
-git clone https://github.com/akkistech/optiviera.git
-cd optiviera
-
-# Backend dependencies
-cd Optiviera
-dotnet restore
-dotnet ef database update
-
-# Frontend dependencies
-cd ../electron
-npm install
+cd backend
 
 # Run in development mode
-npm run dev
+dotnet run
+
+# Run with hot reload
+dotnet watch run
+
+# Run tests (upcoming)
+dotnet test
 ```
 
-### 🏗️ Build
+### Frontend Development (upcoming)
 ```bash
-# ASP.NET Core build
-dotnet publish -c Release -r win-x64 --self-contained true
+cd frontend/optiviera-web
 
-# Electron build
+# Install dependencies
+npm install
+
+# Run dev server
+npm run dev
+
+# Build for production
 npm run build
 ```
 
-## 📁 Project Structure
+---
 
+## 📝 Environment Variables
+
+### Backend
+Create `appsettings.Development.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=optiviera_saas_dev;Uid=root;Pwd=dev123;"
+  },
+  "Jwt": {
+    "SecretKey": "YourDevelopmentSecretKey32CharsMin!",
+    "Issuer": "http://localhost:5001",
+    "Audience": "http://localhost:3000",
+    "ExpiryInDays": 7
+  }
+}
 ```
-Optiviera/
-├── Optiviera/                 # ASP.NET Core application
-│   ├── Controllers/           # MVC Controllers
-│   ├── Models/                # Data models
-│   ├── Views/                 # Razor Views
-│   ├── Services/              # Business logic services
-│   ├── Data/                  # Entity Framework
-│   └── Resources/             # Localization resources
-├── electron/                  # Electron desktop app
-│   ├── main.js                # Main process
-│   ├── preload.js             # Preload script
-│   └── package.json           # Node dependencies
-├── hosting/                   # Web hosting files
-│   ├── index.html             # Main page
-│   └── downloads/             # Downloadable files
-└── build/                     # Build outputs
-    ├── win-x64/               # Windows build
-    └── osx-arm64/             # macOS build
+
+### Frontend (upcoming)
+Create `.env`:
 ```
+API_BASE_URL=http://localhost:5001/api
+```
+
+---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+This project is currently under active development. Contributions will be welcomed once the foundation is complete.
 
-## 📞 Contact
-
-- **Website**: [akkistech.com](https://akkistech.com)
-- **Email**: support@akkistech.com
-- **GitHub**: [github.com/akkistech/optiviera](https://github.com/akkistech/optiviera)
+---
 
 ## 📄 License
 
-This project is licensed by Akkis Technologies (AkkisTech).
-
-**Copyright © 2025 Akkis Technologies (AkkisTech) - Kerim Akkis**
-
-### License Terms
-- ✅ **Trial**: 1 year free use
-- ✅ **Commercial Use**: Allowed after purchase
-- ✅ **Distribution**: For licensed users
-- ❌ **Reverse Engineering**: Prohibited
-- ❌ **Source Code Distribution**: Prohibited
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-**Optiviera ERP** - A modern ERP solution for small businesses 🚀
-// ...existing code...# Optiviera ERP
+## 📞 Contact
 
-**Küçük İşletmeler İçin Eko Seviye ERP Çözümü**
-
-![Optiviera ERP](https://img.shields.io/badge/Optiviera-ERP-blue)
-![License](https://img.shields.io/badge/License-AkkisTech-green)
-![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
-![Languages](https://img.shields.io/badge/Languages-8%20Languages-orange)
-
-## 🚀 Özellikler
-
-### ✨ **Ana Özellikler**
-- **🎯 Tek Tıkla Kurulum**: Otomatik kurulum ve veritabanı oluşturma
-- **🌍 8 Dil Desteği**: Türkçe, İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce, Hollandaca
-- **🔐 Güvenli Lisans Sistemi**: Makine bazlı lisans, otomatik aktivasyon
-- **📊 Gelişmiş Raporlama**: Chart.js ile interaktif grafikler
-- **👥 Kullanıcı Yönetimi**: Rol bazlı erişim kontrolü
-- **🎫 Ticket Sistemi**: Müşteri destek talebi yönetimi
-
-### 🛠️ **Teknik Özellikler**
-- **ASP.NET Core 6.0** - Modern web framework
-- **SQLite Database** - Self-contained veritabanı
-- **Entity Framework Core** - ORM ve migration desteği
-- **ASP.NET Identity** - Güvenli kullanıcı yönetimi
-- **Electron Desktop App** - Cross-platform masaüstü uygulaması
-- **Bootstrap 5** - Responsive ve modern UI
-- **Font Awesome 6** - Zengin ikon kütüphanesi
-
-## 📦 Kurulum
-
-### 🖥️ **Desktop Uygulaması (Önerilen)**
-
-#### Windows
-```bash
-# İndir ve çalıştır
-Optiviera ERP Setup 1.0.0.exe
-```
-
-#### macOS
-```bash
-# DMG dosyasını aç ve uygulamayı Applications klasörüne sürükle
-Optiviera ERP-1.0.0.dmg
-```
-
-#### Linux
-```bash
-# AppImage dosyasını çalıştırılabilir yap ve çalıştır
-chmod +x Optiviera\ ERP-1.0.0-arm64.AppImage
-./Optiviera\ ERP-1.0.0-arm64.AppImage
-```
-
-### 🌐 **Web Uygulaması**
-
-#### Gereksinimler
-- .NET 6.0 Runtime
-- SQLite (otomatik oluşturulur)
-
-#### Kurulum
-```bash
-# Repository'yi klonla
-git clone https://github.com/akkistech/optiviera.git
-cd optiviera
-
-# Bağımlılıkları yükle
-dotnet restore
-
-# Veritabanını oluştur
-dotnet ef database update
-
-# Uygulamayı çalıştır
-dotnet run
-```
-
-## 🎯 Kullanım
-
-### 🚀 **İlk Kurulum**
-1. **İndir**: Platformunuza uygun dosyayı indirin
-2. **Kur**: Kurulum sihirbazını takip edin
-3. **Başlat**: Uygulama otomatik olarak açılacak
-4. **Lisans**: 1 yıllık ücretsiz trial otomatik aktif
-
-### 👤 **Kullanıcı Yönetimi**
-- **Admin**: Tam erişim, kullanıcı yönetimi
-- **Manager**: Raporlama ve ticket yönetimi
-- **Employee**: Temel işlemler
-
-### 🎫 **Ticket Sistemi**
-- Müşteri bilgileri
-- Öncelik seviyeleri
-- Durum takibi
-- Teknik atama
-
-### 📊 **Raporlama**
-- Ticket istatistikleri
-- Kullanıcı performansı
-- Öncelik dağılımı
-- Zaman bazlı analizler
-
-## 🌍 Çok Dilli Destek
-
-| Dil | Kod | Durum |
-|-----|-----|-------|
-| 🇹🇷 Türkçe | tr | ✅ Tam |
-| 🇺🇸 English | en | ✅ Tam |
-| 🇩🇪 Deutsch | de | ✅ Tam |
-| 🇫🇷 Français | fr | ✅ Tam |
-| 🇪🇸 Español | es | ✅ Tam |
-| 🇮🇹 Italiano | it | ✅ Tam |
-| 🇵🇹 Português | pt | ✅ Tam |
-| 🇳🇱 Nederlands | nl | ✅ Tam |
-
-## 🔐 Lisans Sistemi
-
-### 🎁 **Trial Lisans**
-- **Süre**: 1 yıl (365 gün)
-- **Özellikler**: Tam erişim
-- **Aktivasyon**: Otomatik
-- **Grace Period**: 7 gün ek süre
-
-### 💳 **Satın Alma**
-- **Website**: [akkistech.com/optiviera](https://akkistech.com/optiviera)
-- **İletişim**: support@akkistech.com
-- **Ödeme**: Güvenli ödeme sistemi
-
-## 🛠️ Geliştirme
-
-### 📋 **Gereksinimler**
-- .NET 6.0 SDK
-- Node.js 16+
-- Git
-
-### 🚀 **Geliştirme Ortamı**
-```bash
-# Repository'yi klonla
-git clone https://github.com/akkistech/optiviera.git
-cd optiviera
-
-# Backend bağımlılıkları
-cd Optiviera
-dotnet restore
-dotnet ef database update
-
-# Frontend bağımlılıkları
-cd ../electron
-npm install
-
-# Geliştirme modunda çalıştır
-npm run dev
-```
-
-### 🏗️ **Build**
-```bash
-# ASP.NET Core build
-dotnet publish -c Release -r win-x64 --self-contained true
-
-# Electron build
-npm run build
-```
-
-## 📁 Proje Yapısı
-
-```
-Optiviera/
-├── Optiviera/                 # ASP.NET Core uygulaması
-│   ├── Controllers/            # MVC Controllers
-│   ├── Models/               # Veri modelleri
-│   ├── Views/                # Razor Views
-│   ├── Services/             # İş mantığı servisleri
-│   ├── Data/                 # Entity Framework
-│   └── Resources/            # Çok dilli kaynaklar
-├── electron/                 # Electron desktop app
-│   ├── main.js              # Ana process
-│   ├── preload.js           # Preload script
-│   └── package.json         # Node.js bağımlılıkları
-├── hosting/                  # Web hosting dosyaları
-│   ├── index.html           # Ana sayfa
-│   └── downloads/           # İndirilebilir dosyalar
-├── test/                     # Test suite
-│   ├── test-installers.sh  # Otomatik test scripti
-│   ├── results/            # Test sonuçları
-│   └── reports/            # Test raporları
-└── build/                   # Build çıktıları
-    ├── win-x64/            # Windows build
-    └── osx-arm64/          # macOS build
-```
-
-## 🧪 Test Suite
-
-Tüm installer paketlerini otomatik olarak test eden kapsamlı bir test sistemi mevcuttur.
-
-### Test Çalıştırma
-
-```bash
-# Proje root'undan
-./test/test-installers.sh
-
-# Test klasöründen
-cd test
-./test-installers.sh
-```
-
-### Test Edilen Paketler
-
-- ✅ **Windows x64 EXE** - PE format, signature validation, installer type
-- ✅ **macOS Intel DMG** - Yapı, mount/unmount, backend doğrulama
-- ✅ **macOS ARM64 DMG** - Yapı, mount/unmount, backend doğrulama
-- ✅ **Linux ARM64 AppImage** - Dosya tipi, izinler, mimari
-- ✅ **Linux Debian Package** - Paket formatı, mimari
-
-### Test Sonuçları
-
-Test sonuçları otomatik olarak şu klasörlere kaydedilir:
-- **Test Logs**: `test/results/test-results-YYYYMMDD-HHMMSS.txt`
-- **Detaylı Raporlar**: `test/reports/test-report-YYYYMMDD-HHMMSS.md`
-
-### Test Kapsamı
-
-- 35 otomatik test (tüm platformlar)
-- Dosya varlığı ve okunabilirlik
-- Windows PE executable ve NSIS installer doğrulama
-- DMG yapı doğrulama ve checksum
-- App bundle bütünlük kontrolü
-- Backend executable doğrulama
-- Mimari ve platform uyumluluğu
-
-Detaylar için: `test/` klasörüne bakın.
-
-## 🤝 Katkıda Bulunma
-
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit yapın (`git commit -m 'Add amazing feature'`)
-4. Push yapın (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
-
-## 📞 İletişim
-
-- **Website**: [akkistech.com](https://akkistech.com)
-- **E-posta**: support@akkistech.com
-- **GitHub**: [github.com/akkistech/optiviera](https://github.com/akkistech/optiviera)
-
-## 📄 Lisans
-
-Bu proje Akkis Technologies (AkkisTech) tarafından lisanslanmıştır.
-
-**Copyright © 2025 Akkis Technologies (AkkisTech) - Kerim Akkis**
-
-### Lisans Koşulları
-- ✅ **Trial**: 1 yıl ücretsiz kullanım
-- ✅ **Ticari Kullanım**: Lisans satın alındıktan sonra
-- ✅ **Dağıtım**: Lisanslı kullanıcılar için
-- ❌ **Reverse Engineering**: Yasak
-- ❌ **Kaynak Kod Dağıtımı**: Yasak
+**Kerim Akkış**
+- GitHub: [@kerimakkis](https://github.com/kerimakkis)
+- Email: support@akkistech.com
 
 ---
 
-**Optiviera ERP** - Küçük işletmeler için modern ERP çözümü 🚀
+## 🙏 Acknowledgments
+
+- Original Optiviera Desktop App (archived in `/Optiviera`)
+- Built with ASP.NET Core & Vue.js
+- Multi-tenant architecture inspired by modern SaaS best practices
+
+---
+
+**Note:** This project is in active development. The Desktop App code is preserved in the `Optiviera/` directory for reference.
