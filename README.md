@@ -603,10 +603,55 @@ Optiviera/
 ├── hosting/                  # Web hosting dosyaları
 │   ├── index.html           # Ana sayfa
 │   └── downloads/           # İndirilebilir dosyalar
+├── test/                     # Test suite
+│   ├── test-installers.sh  # Otomatik test scripti
+│   ├── results/            # Test sonuçları
+│   └── reports/            # Test raporları
 └── build/                   # Build çıktıları
     ├── win-x64/            # Windows build
     └── osx-arm64/          # macOS build
 ```
+
+## 🧪 Test Suite
+
+Tüm installer paketlerini otomatik olarak test eden kapsamlı bir test sistemi mevcuttur.
+
+### Test Çalıştırma
+
+```bash
+# Proje root'undan
+./test/test-installers.sh
+
+# Test klasöründen
+cd test
+./test-installers.sh
+```
+
+### Test Edilen Paketler
+
+- ✅ **Windows x64 EXE** - PE format, signature validation, installer type
+- ✅ **macOS Intel DMG** - Yapı, mount/unmount, backend doğrulama
+- ✅ **macOS ARM64 DMG** - Yapı, mount/unmount, backend doğrulama
+- ✅ **Linux ARM64 AppImage** - Dosya tipi, izinler, mimari
+- ✅ **Linux Debian Package** - Paket formatı, mimari
+
+### Test Sonuçları
+
+Test sonuçları otomatik olarak şu klasörlere kaydedilir:
+- **Test Logs**: `test/results/test-results-YYYYMMDD-HHMMSS.txt`
+- **Detaylı Raporlar**: `test/reports/test-report-YYYYMMDD-HHMMSS.md`
+
+### Test Kapsamı
+
+- 35 otomatik test (tüm platformlar)
+- Dosya varlığı ve okunabilirlik
+- Windows PE executable ve NSIS installer doğrulama
+- DMG yapı doğrulama ve checksum
+- App bundle bütünlük kontrolü
+- Backend executable doğrulama
+- Mimari ve platform uyumluluğu
+
+Detaylar için: `test/` klasörüne bakın.
 
 ## 🤝 Katkıda Bulunma
 

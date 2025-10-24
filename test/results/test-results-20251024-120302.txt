@@ -1,0 +1,143 @@
+╔══════════════════════════════════════════════════════════════╗
+║   OPTIVIERA ERP v1.0.0 - INSTALLER TEST REPORT             ║
+╚══════════════════════════════════════════════════════════════╝
+
+Test Date: 2025-10-24 12:03:02
+Test Directory: /Users/kerimakkis/Projects/Optiviera/hosting/downloads
+
+═══════════════════════════════════════════════════════════════
+
+
+═══ Windows EXE - Verification (NOT TESTING) ═══
+[INFO] Verifying Windows .exe is untouched...
+[PASS] Windows .exe exists and was NOT modified
+[INFO]   Size: 129 MB
+[INFO]   Modified: 2025-10-22 13:20:36
+[WARN] ⚠️  This file was NOT tested (as requested)
+
+═══ macOS Intel (x64) DMG Package ═══
+[INFO] Testing: macOS Intel DMG
+[PASS] File exists: macOS Intel DMG
+[PASS] File is readable: macOS Intel DMG
+[INFO] Size check: macOS Intel DMG
+[INFO]   Expected: ~188 MB (±10%)
+[INFO]   Actual: 187 MB
+[INFO]   Accepted range: 169-206 MB
+[PASS] Size OK: 187 MB (within acceptable range)
+[INFO] Testing DMG structure: macOS Intel DMG
+[PASS] DMG structure is valid: macOS Intel DMG
+[INFO] DMG Info:
+[INFO]   Format Description: UDIF, nur Lesen, komprimiert (zlib)
+[INFO]   Checksum Type: CRC32
+[INFO]   Size Information:
+[INFO]   Checksum Value: $09FABC44
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $E7DF2DC7
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $00000000
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $EF8339D3
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $AC359260
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $AC359260
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $6E4211E1
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $C1872816
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $00000000
+[INFO]   Format: UDZO
+[INFO]   	Checksummed: true
+[INFO] Testing DMG mount/unmount: macOS Intel DMG
+[PASS] DMG mounted successfully: macOS Intel DMG
+[PASS] Found .app bundle in DMG
+[INFO] App bundle: OptivieraERP.app
+[PASS] Info.plist found
+[PASS] Main executable found
+[PASS] Backend package found (app.asar)
+[PASS] Backend Optiviera executable found in asar
+[PASS] DMG unmounted successfully: macOS Intel DMG
+
+═══ macOS ARM64 (Apple Silicon) DMG Package ═══
+[INFO] Testing: macOS ARM64 DMG
+[PASS] File exists: macOS ARM64 DMG
+[PASS] File is readable: macOS ARM64 DMG
+[INFO] Size check: macOS ARM64 DMG
+[INFO]   Expected: ~180 MB (±10%)
+[INFO]   Actual: 180 MB
+[INFO]   Accepted range: 162-198 MB
+[PASS] Size OK: 180 MB (within acceptable range)
+[INFO] Testing DMG structure: macOS ARM64 DMG
+[PASS] DMG structure is valid: macOS ARM64 DMG
+[INFO] DMG Info:
+[INFO]   Format Description: UDIF, nur Lesen, komprimiert (zlib)
+[INFO]   Checksum Type: CRC32
+[INFO]   Size Information:
+[INFO]   Checksum Value: $7579B3E4
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $1D008A49
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $00000000
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $F7269A6E
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $4FE867AB
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $4FE867AB
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $BFB6D7CE
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $3EFF9D80
+[INFO]   		Checksum Type: CRC32
+[INFO]   		Checksum Value: $00000000
+[INFO]   Format: UDZO
+[INFO]   	Checksummed: true
+[INFO] Testing DMG mount/unmount: macOS ARM64 DMG
+[PASS] DMG mounted successfully: macOS ARM64 DMG
+[PASS] Found .app bundle in DMG
+[INFO] App bundle: OptivieraERP.app
+[PASS] Info.plist found
+[PASS] Main executable found
+[PASS] Backend package found (app.asar)
+[PASS] Backend Optiviera executable found in asar
+[PASS] DMG unmounted successfully: macOS ARM64 DMG
+
+═══ Linux ARM64 AppImage Package ═══
+[INFO] Testing: Linux AppImage
+[PASS] File exists: Linux AppImage
+[PASS] File is readable: Linux AppImage
+[INFO] Size check: Linux AppImage
+[INFO]   Expected: ~172 MB (±10%)
+[INFO]   Actual: 171 MB
+[INFO]   Accepted range: 154-189 MB
+[PASS] Size OK: 171 MB (within acceptable range)
+[INFO] Testing AppImage structure: Linux AppImage
+[PASS] AppImage is executable: Linux AppImage
+[PASS] AppImage has correct file type
+[INFO] AppImage --appimage-help not available (normal on macOS)
+
+═══ Linux ARM64 Debian Package ═══
+[INFO] Testing: Linux Debian Package
+[PASS] File exists: Linux Debian Package
+[PASS] File is readable: Linux Debian Package
+[INFO] Size check: Linux Debian Package
+[INFO]   Expected: ~113 MB (±10%)
+[INFO]   Actual: 112 MB
+[INFO]   Accepted range: 101-124 MB
+[PASS] Size OK: 112 MB (within acceptable range)
+[INFO] Testing Debian package structure: Linux Debian Package
+[WARN] dpkg-deb not available - skipping detailed tests
+[INFO] Install: brew install dpkg
+
+═══ TEST SUMMARY ═══
+
+═══════════════════════════════════════════════════════════════
+TEST SUMMARY
+═══════════════════════════════════════════════════════════════
+Total Tests: 31
+Passed: 31
+Failed: 0
+
+✅ ALL TESTS PASSED!
+
