@@ -1,0 +1,28 @@
+{
+  "name": "optiviera-frontend",
+  "version": "1.0.0",
+  "description": "Optiviera SaaS Frontend - Nuxt 3 + PrimeVue",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@primevue/themes": "^4.0.0",
+    "nuxt": "^3.13.0",
+    "primevue": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@pinia/nuxt": "^0.5.1",
+    "pinia": "^2.1.7",
+    "sass": "^1.69.5"
+  }
+}

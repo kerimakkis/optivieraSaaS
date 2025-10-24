@@ -1,0 +1,26 @@
+// Main stylesheet
+:root {
+  --primary-color: #3B82F6;
+  --surface-ground: #f8f9fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--surface-ground);
+}
+
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card-container {
+  margin-bottom: 2rem;
+}
