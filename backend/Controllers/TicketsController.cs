@@ -1,282 +1,336 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Optiviera.Data;
 using Optiviera.Models;
-using Optiviera.Services.Interfaces;
+using System.Security.Claims;
 
 namespace Optiviera.Controllers
 {
-    public class TicketsController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
+    public class TicketsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<WaveUser> _userManager;
-        private readonly ITTicketService _ticketService;
+        private readonly ILogger<TicketsController> _logger;
 
-        public TicketsController(ApplicationDbContext context, UserManager<WaveUser> userManager, ITTicketService ticketService)
+        public TicketsController(ApplicationDbContext context, ILogger<TicketsController> logger)
         {
             _context = context;
-            _userManager = userManager;
-            _ticketService = ticketService;
+            _logger = logger;
         }
 
-
-        // GET: Tickets
-        [Authorize(Roles = "Admin, Manager")]
-        public async Task<IActionResult> Index()
+        private int GetTenantId()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
-
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Tickets - MY TICKETS
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> MyTickets()
-        {
-            var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
-
-            WaveUser user = await _userManager.GetUserAsync(User);
-
-            List<Ticket> tickets = new List<Ticket>();
-
-            foreach (var t in applicationDbContext)
+            var tenantId = HttpContext.Items["TenantId"];
+            if (tenantId == null)
             {
-                if (t.SupportId == user.Id)
+                throw new UnauthorizedAccessException("Tenant ID not found");
+            }
+            return (int)tenantId;
+        }
+
+        private string GetUserId()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? throw new UnauthorizedAccessException("User ID not found");
+        }
+
+        /// <summary>
+        /// Get all tickets for the current tenant
+        /// </summary>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<TicketDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var tenantId = GetTenantId();
+
+            var tickets = await _context.Tickets
+                .Where(t => t.TenantId == tenantId)
+                .Include(t => t.Priority)
+                .Include(t => t.Technician)
+                .Include(t => t.Support)
+                .OrderByDescending(t => t.Created)
+                .Select(t => new TicketDto
                 {
-
-                    tickets.Add(t);
-                }
-                else if (t.TechnicianId == user.Id)
-                {
-                    tickets.Add(t);
-                }
-            }
-            return View(tickets);
-        }
-
-        // GET: Tickets/Details/5
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
-
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-                return View(ticket);
-        }
-
-        // GET: Tickets/Create
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Create()
-        {
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name");
-            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName");
-            return View();
-        }
-
-        // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Created,Schedule,PriorityId,TechnicianId,SupportId")] Ticket ticket)
-        {
-            WaveUser user = await _userManager.GetUserAsync(User);
-
-            ticket.SupportId = user.Id;
-
-            ticket.Created = DateTimeOffset.Now;
-
-            _context.Add(ticket);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(MyTickets));
-
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
-            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
-            return View(ticket);
-        }
-
-        // GET: Tickets/Edit/5
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
-            ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
-            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
-            return View(ticket);
-        }
-
-        // POST: Tickets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Created,Schedule,IsArchived,Status,PriorityId,TechnicianId,SupportId")] Ticket ticket)
-        {
-            if (id != ticket.Id)
-            {
-                return NotFound();
-            }
-
-                try
-                {
-                    ticket.Created = DateTimeOffset.Now;
-
-                    _context.Update(ticket);
-
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TicketExists(ticket.Id))
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    Status = t.Status,
+                    Priority = t.Priority != null ? new PriorityDto
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            if (User.IsInRole("Admin"))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else if ((User.IsInRole("Manager")))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else
-                return RedirectToAction(nameof(MyTickets));
+                        Id = t.Priority.Id,
+                        Name = t.Priority.Name
+                    } : null,
+                    CustomerFirstName = t.CFirstName,
+                    CustomerLastName = t.CLastName,
+                    CustomerPhone = t.CPhone,
+                    CustomerAddress = t.CAddress,
+                    CustomerCity = t.CCity,
+                    CustomerState = t.CState,
+                    CustomerZip = t.CZip,
+                    Created = t.Created,
+                    Schedule = t.Schedule,
+                    IsArchived = t.IsArchived,
+                    TechnicianName = t.Technician != null ? t.Technician.FullName : null,
+                    SupportName = t.Support != null ? t.Support.FullName : null
+                })
+                .ToListAsync();
 
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
-            ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
-            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
-            return View(ticket);
+            return Ok(tickets);
         }
 
-        // Ticket Comment
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note,UserId")] Comment comment)
+        /// <summary>
+        /// Get a specific ticket by ID
+        /// </summary>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(TicketDetailDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(int id)
         {
-            comment.UserId = _userManager.GetUserId(User);
-            comment.Created = DateTimeOffset.Now;
-
-
-            await _ticketService.AddTicketCommentAsync(comment);
-
-            Ticket ticket = await _ticketService.GetTicketByIdAsync(comment.TicketId);
-
-            ticket.Comments.Add(comment);
-
-            return RedirectToAction("Details", new { id = comment.TicketId });
-        }
-        // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var tenantId = GetTenantId();
 
             var ticket = await _context.Tickets
+                .Where(t => t.TenantId == tenantId && t.Id == id)
                 .Include(t => t.Priority)
-                .Include(t => t.Support)
                 .Include(t => t.Technician)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(t => t.Support)
+                .Include(t => t.Comments)
+                    .ThenInclude(c => c.User)
+                .FirstOrDefaultAsync();
+
             if (ticket == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Ticket not found" });
             }
 
-            return View(ticket);
-        }
-
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var ticket = await _context.Tickets.FindAsync(id);
-
-            ticket.IsArchived = true;
-
-            _context.Tickets.Update(ticket);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: Tickets/Retore/5
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Restore(int? id)
-        {
-            if (id == null)
+            var result = new TicketDetailDto
             {
-                return NotFound();
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                Status = ticket.Status,
+                Priority = ticket.Priority != null ? new PriorityDto
+                {
+                    Id = ticket.Priority.Id,
+                    Name = ticket.Priority.Name
+                } : null,
+                CustomerFirstName = ticket.CFirstName,
+                CustomerLastName = ticket.CLastName,
+                CustomerPhone = ticket.CPhone,
+                CustomerAddress = ticket.CAddress,
+                CustomerCity = ticket.CCity,
+                CustomerState = ticket.CState,
+                CustomerZip = ticket.CZip,
+                Created = ticket.Created,
+                Schedule = ticket.Schedule,
+                IsArchived = ticket.IsArchived,
+                TechnicianName = ticket.Technician != null ? ticket.Technician.FullName : null,
+                SupportName = ticket.Support != null ? ticket.Support.FullName : null,
+                Comments = ticket.Comments.Select(c => new CommentDto
+                {
+                    Id = c.Id,
+                    Note = c.Note,
+                    Created = c.Created,
+                    UserName = c.User != null ? c.User.FullName : "Unknown"
+                }).ToList()
+            };
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Create a new ticket
+        /// </summary>
+        [HttpPost]
+        [ProducesResponseType(typeof(TicketDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] CreateTicketRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
+
+            var tenantId = GetTenantId();
+
+            var ticket = new Ticket
+            {
+                TenantId = tenantId,
+                Title = request.Title,
+                Description = request.Description,
+                CFirstName = request.CustomerFirstName,
+                CLastName = request.CustomerLastName,
+                CPhone = request.CustomerPhone,
+                CAddress = request.CustomerAddress,
+                CCity = request.CustomerCity,
+                CState = request.CustomerState,
+                CZip = request.CustomerZip,
+                Status = request.Status ?? Enums.TicketStatus.Open,
+                PriorityId = request.PriorityId,
+                TechnicianId = request.TechnicianId,
+                SupportId = request.SupportId,
+                Created = DateTimeOffset.UtcNow,
+                Schedule = request.Schedule ?? DateTimeOffset.UtcNow,
+                IsArchived = false
+            };
+
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Ticket created: {TicketId} by TenantId: {TenantId}", ticket.Id, tenantId);
+
+            return CreatedAtAction(nameof(GetById), new { id = ticket.Id }, new TicketDto
+            {
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                Status = ticket.Status,
+                CustomerFirstName = ticket.CFirstName,
+                CustomerLastName = ticket.CLastName,
+                Created = ticket.Created
+            });
+        }
+
+        /// <summary>
+        /// Update an existing ticket
+        /// </summary>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateTicketRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var tenantId = GetTenantId();
 
             var ticket = await _context.Tickets
-                .Include(t => t.Priority)
-                .Include(t => t.Support)
-                .Include(t => t.Technician)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Where(t => t.TenantId == tenantId && t.Id == id)
+                .FirstOrDefaultAsync();
+
             if (ticket == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Ticket not found" });
             }
 
-            return View(ticket);
-        }
+            ticket.Title = request.Title ?? ticket.Title;
+            ticket.Description = request.Description ?? ticket.Description;
+            ticket.Status = request.Status ?? ticket.Status;
+            ticket.PriorityId = request.PriorityId ?? ticket.PriorityId;
+            ticket.TechnicianId = request.TechnicianId ?? ticket.TechnicianId;
+            ticket.SupportId = request.SupportId ?? ticket.SupportId;
+            ticket.Schedule = request.Schedule ?? ticket.Schedule;
+            ticket.IsArchived = request.IsArchived ?? ticket.IsArchived;
 
-        // POST: Tickets/Restore/5
-        [HttpPost, ActionName("Restore")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> RestoreConfirmed(int id)
-        {
-            var ticket = await _context.Tickets.FindAsync(id);
-
-            ticket.IsArchived = false;
-
-            _context.Tickets.Update(ticket);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            _logger.LogInformation("Ticket updated: {TicketId} by TenantId: {TenantId}", id, tenantId);
+
+            return NoContent();
         }
 
-        private bool TicketExists(int id)
+        /// <summary>
+        /// Delete a ticket
+        /// </summary>
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
         {
-            return _context.Tickets.Any(e => e.Id == id);
+            var tenantId = GetTenantId();
+
+            var ticket = await _context.Tickets
+                .Where(t => t.TenantId == tenantId && t.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (ticket == null)
+            {
+                return NotFound(new { message = "Ticket not found" });
+            }
+
+            _context.Tickets.Remove(ticket);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Ticket deleted: {TicketId} by TenantId: {TenantId}", id, tenantId);
+
+            return NoContent();
         }
+    }
+
+    // DTOs
+    public class TicketDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public Enums.TicketStatus Status { get; set; }
+        public PriorityDto? Priority { get; set; }
+        public string CustomerFirstName { get; set; } = string.Empty;
+        public string CustomerLastName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerAddress { get; set; } = string.Empty;
+        public string CustomerCity { get; set; } = string.Empty;
+        public string CustomerState { get; set; } = string.Empty;
+        public string CustomerZip { get; set; } = string.Empty;
+        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Schedule { get; set; }
+        public bool IsArchived { get; set; }
+        public string? TechnicianName { get; set; }
+        public string? SupportName { get; set; }
+    }
+
+    public class TicketDetailDto : TicketDto
+    {
+        public List<CommentDto> Comments { get; set; } = new();
+    }
+
+    public class PriorityDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+    }
+
+    public class CommentDto
+    {
+        public int Id { get; set; }
+        public string Note { get; set; } = string.Empty;
+        public DateTimeOffset Created { get; set; }
+        public string UserName { get; set; } = string.Empty;
+    }
+
+    public class CreateTicketRequest
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string CustomerFirstName { get; set; } = string.Empty;
+        public string CustomerLastName { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string CustomerAddress { get; set; } = string.Empty;
+        public string CustomerCity { get; set; } = string.Empty;
+        public string CustomerState { get; set; } = string.Empty;
+        public string CustomerZip { get; set; } = string.Empty;
+        public Enums.TicketStatus? Status { get; set; }
+        public int PriorityId { get; set; }
+        public string? TechnicianId { get; set; }
+        public string? SupportId { get; set; }
+        public DateTimeOffset? Schedule { get; set; }
+    }
+
+    public class UpdateTicketRequest
+    {
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public Enums.TicketStatus? Status { get; set; }
+        public int? PriorityId { get; set; }
+        public string? TechnicianId { get; set; }
+        public string? SupportId { get; set; }
+        public DateTimeOffset? Schedule { get; set; }
+        public bool? IsArchived { get; set; }
     }
 }

@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Optiviera-DFAC6070-16F4-44DD-BB6C-7BE3DEA1A219</UserSecretsId>
-    <ApplicationIcon>wwwroot\wave.ico</ApplicationIcon>
     <AssemblyName>Optiviera</AssemblyName>
     <RootNamespace>Optiviera</RootNamespace>
 
@@ -20,22 +19,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\wave.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <!-- ASP.NET Core -->
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+
+    <!-- JWT Authentication -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
+
+    <!-- Entity Framework Core - MySQL -->
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
+    <!-- Swagger/OpenAPI -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+
+    <!-- Code Generation -->
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
-    <PackageReference Include="Npgsql" Version="8.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

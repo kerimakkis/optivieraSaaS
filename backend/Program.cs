@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Optiviera.Data;
+using Optiviera.Middleware;
 using Optiviera.Models;
 using Optiviera.Services;
 using Optiviera.Services.Interfaces;
@@ -69,6 +70,7 @@ builder.Services.AddCors(options =>
 });
 
 // Application Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<ITRolesService, RolesService>();
 
@@ -171,6 +173,9 @@ app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Tenant Middleware - Must be after Authentication
+app.UseTenantMiddleware();
 
 app.MapControllers();
 
