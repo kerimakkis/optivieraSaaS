@@ -1,6 +1,20 @@
 import { defineStore } from 'pinia'
 import type { User, AuthResponse, LoginCredentials, RegisterData } from '~/types'
 
+// Helper to convert PascalCase response to camelCase
+function normalizeUser(user: any): User {
+  return {
+    id: user.Id || user.id,
+    email: user.Email || user.email,
+    firstName: user.FirstName || user.firstName,
+    lastName: user.LastName || user.lastName,
+    fullName: user.FullName || user.fullName,
+    tenantId: user.TenantId || user.tenantId,
+    roles: user.Roles || user.roles || [],
+    createdAt: user.CreatedAt || user.createdAt
+  }
+}
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as User | null,
@@ -20,25 +34,44 @@ export const useAuthStore = defineStore('auth', {
       this.loading = true
       this.error = null
 
-      try {
-        const config = useRuntimeConfig()
-        const response = await $fetch<AuthResponse>(`${config.public.apiBase}/auth/login`, {
-          method: 'POST',
-          body: credentials
-        })
+      const { withLoading } = useApiLoading()
 
-        this.token = response.token
-        this.user = response.user
+      try {
+        const response = await withLoading(async () => {
+          const config = useRuntimeConfig()
+          return await $fetch<AuthResponse>(`${config.public.apiBase}/auth/login`, {
+            method: 'POST',
+            body: credentials,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+        }, 'Signing in...')
+
+        // Backend sends PascalCase (Token, User), handle both cases
+        const token = (response as any).Token || (response as any).token
+        const userRaw = (response as any).User || (response as any).user
+
+        if (!token || !userRaw) {
+          console.error('Invalid response - token:', !!token, 'user:', !!userRaw, 'response:', response)
+          throw new Error('Invalid response from server')
+        }
+
+        const user = normalizeUser(userRaw)
+
+        this.token = token
+        this.user = user
 
         // Store token in localStorage
         if (process.client) {
-          localStorage.setItem('token', response.token)
-          localStorage.setItem('user', JSON.stringify(response.user))
+          localStorage.setItem('token', token)
+          localStorage.setItem('user', JSON.stringify(user))
         }
 
-        return response
+        return { token, user }
       } catch (error: any) {
-        this.error = error.data?.message || 'Login failed'
+        console.error('Login error:', error)
+        this.error = error.data?.message || error.message || 'Login failed'
         throw error
       } finally {
         this.loading = false
@@ -49,23 +82,33 @@ export const useAuthStore = defineStore('auth', {
       this.loading = true
       this.error = null
 
-      try {
-        const config = useRuntimeConfig()
-        const response = await $fetch<AuthResponse>(`${config.public.apiBase}/auth/register`, {
-          method: 'POST',
-          body: data
-        })
+      const { withLoading } = useApiLoading()
 
-        this.token = response.token
-        this.user = response.user
+      try {
+        const response = await withLoading(async () => {
+          const config = useRuntimeConfig()
+          return await $fetch<AuthResponse>(`${config.public.apiBase}/auth/register`, {
+            method: 'POST',
+            body: data
+          })
+        }, 'Creating account...')
+
+        // Backend sends PascalCase (Token, User), handle both cases
+        const token = (response as any).Token || (response as any).token
+        const userRaw = (response as any).User || (response as any).user
+
+        const user = normalizeUser(userRaw)
+
+        this.token = token
+        this.user = user
 
         // Store token in localStorage
         if (process.client) {
-          localStorage.setItem('token', response.token)
-          localStorage.setItem('user', JSON.stringify(response.user))
+          localStorage.setItem('token', token)
+          localStorage.setItem('user', JSON.stringify(user))
         }
 
-        return response
+        return { token, user }
       } catch (error: any) {
         this.error = error.data?.message || 'Registration failed'
         throw error
@@ -112,9 +155,17 @@ export const useAuthStore = defineStore('auth', {
         const token = localStorage.getItem('token')
         const userStr = localStorage.getItem('user')
 
-        if (token && userStr) {
-          this.token = token
-          this.user = JSON.parse(userStr)
+        if (token && userStr && userStr !== 'undefined' && userStr !== 'null') {
+          try {
+            this.token = token
+            this.user = JSON.parse(userStr)
+          } catch (error) {
+            // Clear invalid data
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            this.token = null
+            this.user = null
+          }
         }
       }
     }

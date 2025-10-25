@@ -1,7 +1,31 @@
-// Main stylesheet
+/* =========================================
+   OPTIVIERA CUSTOM COLOR PALETTE
+   Exact colors from original Optiviera Desktop App
+   ========================================= */
+
 :root {
-  --primary-color: #3B82F6;
-  --surface-ground: #f8f9fa;
+  // Optiviera Brand Colors (from original Optiviera Desktop App)
+  --optiviera-navy: #05445e;           // Navy Blue - Primary Dark
+  --optiviera-blue-grotto: #189ab4;    // Blue Grotto - Primary
+  --optiviera-blue-green: #75e6da;     // Blue Green - Accent
+  --optiviera-baby-blue: #d4f1f4;      // Baby Blue - Light Background
+
+  // Shorthand aliases for convenience
+  --optiviera-blue: #189ab4;
+  --optiviera-green: #75e6da;
+  --optiviera-light: #d4f1f4;
+
+  // PrimeVue Integration
+  --primary-color: #189ab4;
+  --primary-color-text: #ffffff;
+  --surface-ground: #d4f1f4;
+  --surface-section: #ffffff;
+  --surface-card: #ffffff;
+  --surface-overlay: #ffffff;
+  --surface-border: #75e6da;
+  --surface-hover: #f5f9fa;
+  --text-color: #05445e;
+  --text-color-secondary: #6c757d;
 }
 
 * {
@@ -13,6 +37,7 @@ body {
   padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--surface-ground);
+  color: var(--text-color);
 }
 
 .page-container {
@@ -23,4 +48,561 @@ body {
 
 .card-container {
   margin-bottom: 2rem;
+}
+
+// Optiviera Branding
+.optiviera-gradient {
+  background: linear-gradient(135deg, var(--optiviera-navy) 0%, var(--optiviera-blue-grotto) 100%);
+}
+
+.optiviera-gradient-light {
+  background: linear-gradient(135deg, var(--optiviera-blue-grotto) 0%, var(--optiviera-blue-green) 100%);
+}
+
+.optiviera-gradient-full {
+  background: linear-gradient(135deg, var(--optiviera-navy) 0%, var(--optiviera-blue-grotto) 50%, var(--optiviera-blue-green) 100%);
+}
+
+/* =========================================
+   MODERN BUTTON STYLES
+   ========================================= */
+
+// PrimeVue Button Overrides - Modern rounded style
+:deep(.p-button) {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  font-family: 'Montserrat', 'Inter', sans-serif !important;
+  letter-spacing: 0.3px !important;
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  &:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(24, 154, 180, 0.2), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+}
+
+// Primary Button
+:deep(.p-button:not(.p-button-outlined):not(.p-button-text):not(.p-button-secondary):not(.p-button-success):not(.p-button-info):not(.p-button-warn):not(.p-button-danger)) {
+  background: linear-gradient(135deg, var(--optiviera-blue-grotto), var(--optiviera-blue-green)) !important;
+  border: none !important;
+  color: white !important;
+
+  &:hover {
+    background: linear-gradient(135deg, var(--optiviera-blue-green), var(--optiviera-blue-grotto)) !important;
+  }
+}
+
+// Secondary Button
+:deep(.p-button-secondary) {
+  background: var(--optiviera-navy) !important;
+  border: none !important;
+
+  &:hover {
+    background: var(--optiviera-blue-grotto) !important;
+  }
+}
+
+// Success Button
+:deep(.p-button-success) {
+  background: linear-gradient(135deg, #56cc9d, #6cc3d5) !important;
+  border: none !important;
+}
+
+// Info Button
+:deep(.p-button-info) {
+  background: var(--optiviera-blue-grotto) !important;
+  border: none !important;
+
+  &:hover {
+    background: var(--optiviera-navy) !important;
+  }
+}
+
+// Warning Button
+:deep(.p-button-warn) {
+  background: linear-gradient(135deg, #ffce67, #ff7851) !important;
+  border: none !important;
+}
+
+// Danger Button
+:deep(.p-button-danger) {
+  background: linear-gradient(135deg, #ff7851, #e83e8c) !important;
+  border: none !important;
+}
+
+// Outlined Buttons
+:deep(.p-button-outlined) {
+  background: transparent !important;
+  border: 2px solid var(--optiviera-blue-grotto) !important;
+  color: var(--optiviera-blue-grotto) !important;
+
+  &:hover {
+    background: var(--optiviera-blue-grotto) !important;
+    color: white !important;
+  }
+
+  &.p-button-secondary {
+    border-color: var(--optiviera-navy) !important;
+    color: var(--optiviera-navy) !important;
+
+    &:hover {
+      background: var(--optiviera-navy) !important;
+      color: white !important;
+    }
+  }
+}
+
+// Text Buttons
+:deep(.p-button-text) {
+  background: transparent !important;
+  border: none !important;
+  color: var(--optiviera-blue-grotto) !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background: rgba(24, 154, 180, 0.1) !important;
+    box-shadow: none !important;
+  }
+}
+
+// Rounded Buttons (icon buttons)
+:deep(.p-button-rounded) {
+  border-radius: 50% !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  padding: 0 !important;
+}
+
+// Small Buttons
+:deep(.p-button-sm) {
+  font-size: 0.875rem !important;
+  padding: 0.5rem 1rem !important;
+}
+
+// Large Buttons
+:deep(.p-button-lg) {
+  font-size: 1.125rem !important;
+  padding: 1rem 2rem !important;
+}
+
+// Loading State
+:deep(.p-button .p-button-loading-icon) {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Button Icons
+:deep(.p-button .p-button-icon) {
+  font-size: 1.1em !important;
+}
+
+// Disabled State
+:deep(.p-button:disabled) {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* =========================================
+   MODERN INPUT & FORM STYLES
+   ========================================= */
+
+// InputText
+:deep(.p-inputtext) {
+  border-radius: 10px !important;
+  border: 2px solid #e5e7eb !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.3s ease !important;
+  font-family: 'Montserrat', 'Inter', sans-serif !important;
+
+  &:hover {
+    border-color: var(--optiviera-blue-green) !important;
+  }
+
+  &:focus {
+    border-color: var(--optiviera-blue-grotto) !important;
+    box-shadow: 0 0 0 3px rgba(24, 154, 180, 0.1) !important;
+  }
+}
+
+// Password
+:deep(.p-password) {
+  width: 100%;
+
+  .p-inputtext {
+    border-radius: 10px !important;
+    width: 100%;
+  }
+}
+
+// Dropdown
+:deep(.p-dropdown) {
+  border-radius: 10px !important;
+  border: 2px solid #e5e7eb !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-color: var(--optiviera-blue-green) !important;
+  }
+
+  &.p-focus {
+    border-color: var(--optiviera-blue-grotto) !important;
+    box-shadow: 0 0 0 3px rgba(24, 154, 180, 0.1) !important;
+  }
+}
+
+// Calendar
+:deep(.p-calendar) {
+  .p-inputtext {
+    border-radius: 10px !important;
+  }
+}
+
+// Textarea
+:deep(.p-textarea) {
+  border-radius: 10px !important;
+  border: 2px solid #e5e7eb !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.3s ease !important;
+  font-family: 'Montserrat', 'Inter', sans-serif !important;
+
+  &:hover {
+    border-color: var(--optiviera-blue-green) !important;
+  }
+
+  &:focus {
+    border-color: var(--optiviera-blue-grotto) !important;
+    box-shadow: 0 0 0 3px rgba(24, 154, 180, 0.1) !important;
+  }
+}
+
+// Checkbox
+:deep(.p-checkbox) {
+  .p-checkbox-box {
+    border-radius: 6px !important;
+    border: 2px solid #e5e7eb !important;
+    transition: all 0.3s ease !important;
+
+    &.p-highlight {
+      background: linear-gradient(135deg, var(--optiviera-blue-grotto), var(--optiviera-blue-green)) !important;
+      border-color: transparent !important;
+    }
+  }
+}
+
+/* =========================================
+   MODERN CARD STYLES
+   ========================================= */
+
+:deep(.p-card) {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(117, 230, 218, 0.2) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    transform: translateY(-2px);
+  }
+
+  .p-card-title {
+    color: var(--optiviera-navy) !important;
+    font-weight: 700 !important;
+    font-family: 'Montserrat', sans-serif !important;
+  }
+
+  .p-card-subtitle {
+    color: var(--text-color-secondary) !important;
+  }
+}
+
+/* =========================================
+   MODERN TAG STYLES
+   ========================================= */
+
+:deep(.p-tag) {
+  border-radius: 8px !important;
+  padding: 0.4rem 0.75rem !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.3px !important;
+}
+
+/* =========================================
+   MODERN DATATABLE STYLES
+   ========================================= */
+
+:deep(.p-datatable) {
+  .p-datatable-thead > tr > th {
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: 700 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .p-datatable-tbody > tr {
+    transition: all 0.2s ease !important;
+
+    &:hover {
+      background-color: rgba(117, 230, 218, 0.08) !important;
+    }
+  }
+
+  .p-paginator {
+    border-radius: 0 0 12px 12px !important;
+
+    .p-paginator-page,
+    .p-paginator-next,
+    .p-paginator-prev,
+    .p-paginator-first,
+    .p-paginator-last {
+      border-radius: 8px !important;
+      transition: all 0.2s ease !important;
+
+      &:hover {
+        background: rgba(24, 154, 180, 0.1) !important;
+      }
+
+      &.p-highlight {
+        background: linear-gradient(135deg, var(--optiviera-blue-grotto), var(--optiviera-blue-green)) !important;
+        color: white !important;
+      }
+    }
+  }
+}
+
+/* =========================================
+   MODERN DIALOG STYLES
+   ========================================= */
+
+:deep(.p-dialog) {
+  border-radius: 20px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
+
+  .p-dialog-header {
+    border-radius: 20px 20px 0 0 !important;
+    background: linear-gradient(135deg, var(--optiviera-navy), var(--optiviera-blue-grotto)) !important;
+    color: white !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+  }
+
+  .p-dialog-footer {
+    border-radius: 0 0 20px 20px !important;
+  }
+}
+
+/* =========================================
+   MODERN TOOLTIP STYLES
+   ========================================= */
+
+:deep(.p-tooltip) {
+  .p-tooltip-text {
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.85rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+/* =========================================
+   RESPONSIVE BREAKPOINTS
+   ========================================= */
+
+// Mobile First Approach
+// xs: 0-575px (default)
+// sm: 576px-767px
+// md: 768px-991px
+// lg: 992px-1199px
+// xl: 1200px+
+
+/* Mobile Optimization (up to 767px) */
+@media (max-width: 767px) {
+  // Typography
+  h1, .h1 { font-size: 1.75rem !important; }
+  h2, .h2 { font-size: 1.5rem !important; }
+  h3, .h3 { font-size: 1.25rem !important; }
+
+  // Spacing
+  .page-container {
+    padding: 1rem !important;
+  }
+
+  // Buttons
+  :deep(.p-button) {
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  :deep(.p-button-sm) {
+    padding: 0.5rem 0.875rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  // Cards
+  :deep(.p-card) {
+    border-radius: 12px !important;
+    margin-bottom: 1rem !important;
+  }
+
+  // DataTable - Make scrollable on mobile
+  :deep(.p-datatable) {
+    font-size: 0.85rem !important;
+
+    .p-datatable-wrapper {
+      overflow-x: auto !important;
+    }
+
+    .p-datatable-thead > tr > th {
+      padding: 0.75rem 0.5rem !important;
+      font-size: 0.85rem !important;
+    }
+
+    .p-datatable-tbody > tr > td {
+      padding: 0.75rem 0.5rem !important;
+    }
+  }
+
+  // Forms - Full width on mobile
+  :deep(.p-inputtext),
+  :deep(.p-dropdown),
+  :deep(.p-calendar),
+  :deep(.p-textarea) {
+    font-size: 0.95rem !important;
+  }
+
+  // Dialog - Full screen on mobile
+  :deep(.p-dialog) {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 0.5rem !important;
+
+    .p-dialog-header {
+      padding: 1rem !important;
+      font-size: 1.1rem !important;
+    }
+
+    .p-dialog-content {
+      padding: 1rem !important;
+    }
+
+    .p-dialog-footer {
+      padding: 1rem !important;
+      gap: 0.5rem !important;
+
+      button {
+        flex: 1 !important;
+        font-size: 0.9rem !important;
+      }
+    }
+  }
+
+  // Hide less important columns on mobile
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Tablet (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .page-container {
+    padding: 1.5rem !important;
+  }
+
+  :deep(.p-datatable) {
+    font-size: 0.9rem !important;
+  }
+
+  :deep(.p-dialog) {
+    width: 85vw !important;
+    max-width: 700px !important;
+  }
+}
+
+/* Desktop (992px+) */
+@media (min-width: 992px) {
+  :deep(.p-dialog) {
+    min-width: 500px !important;
+  }
+}
+
+/* Touch Device Optimization */
+@media (hover: none) and (pointer: coarse) {
+  // Increase touch targets
+  :deep(.p-button) {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  :deep(.p-checkbox .p-checkbox-box) {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  :deep(.p-inputtext),
+  :deep(.p-dropdown),
+  :deep(.p-calendar) {
+    min-height: 44px !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  :deep(.p-button),
+  :deep(.no-print) {
+    display: none !important;
+  }
+
+  :deep(.p-card) {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  // Future dark mode implementation
+  // body {
+  //   background-color: #1a1a1a;
+  //   color: #ffffff;
+  // }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :deep(.p-button) {
+    border: 2px solid currentColor !important;
+  }
+
+  :deep(.p-card) {
+    border: 2px solid currentColor !important;
+  }
 }

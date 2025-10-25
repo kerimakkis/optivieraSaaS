@@ -11,6 +11,18 @@ export interface User {
   createdAt: string
 }
 
+// Backend sends PascalCase, so we need to handle both
+export interface UserResponse {
+  Id: string
+  Email: string
+  FirstName: string
+  LastName: string
+  FullName: string
+  TenantId: number
+  Roles: string[]
+  CreatedAt: string
+}
+
 export interface AuthResponse {
   token: string
   user: User

@@ -6,16 +6,20 @@ export default defineNuxtConfig({
 
   modules: [
     '@pinia/nuxt',
-    'nuxt-primevue'
+    '@primevue/nuxt-module'
   ],
 
   primevue: {
     options: {
-      theme: 'aura',
+      theme: {
+        preset: 'Aura',
+        options: {
+          prefix: 'p',
+          darkModeSelector: '.dark',
+          cssLayer: false
+        }
+      },
       ripple: true
-    },
-    components: {
-      include: ['Button', 'InputText', 'Password', 'Card', 'DataTable', 'Column', 'Dialog', 'Toast', 'Toolbar', 'Menu', 'Badge', 'Avatar', 'Dropdown', 'Calendar', 'Textarea', 'Tag', 'ProgressSpinner']
     }
   },
 
@@ -36,12 +40,14 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Modern ticket management system for businesses' }
+        { name: 'description', content: 'Modern IT helpdesk & ticket management system' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap' }
       ]
-    }
+    },
+    pageTransition: { name: 'page', mode: 'out-in' }
   },
 
   typescript: {
