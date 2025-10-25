@@ -2,52 +2,124 @@
 
 **Multi-tenant IT Helpdesk & Ticketing Platform**
 
-![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
+![Status](https://img.shields.io/badge/Status-Active%20Development-green)
 ![Platform](https://img.shields.io/badge/Platform-SaaS%20Web%20App-blue)
 ![Backend](https://img.shields.io/badge/Backend-ASP.NET%20Core%208.0-purple)
-![Frontend](https://img.shields.io/badge/Frontend-Nuxt%203-green)
+![Frontend](https://img.shields.io/badge/Frontend-Nuxt%203-00DC82)
+![Database](https://img.shields.io/badge/Database-MySQL%208.0-4479A1)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-Optiviera is being transformed from a desktop Electron application to a modern SaaS platform with multi-tenant architecture.
+Modern, cloud-based helpdesk and ticketing system with **multi-tenant architecture**. Transformed from a desktop Electron application to a scalable SaaS platform.
 
 ---
 
 ## 🚀 Project Status
 
-**Current Phase:** Desktop → SaaS Transformation (In Progress)
+**Current Phase:** SaaS Platform - Phase 1 Complete ✅
 
-### ✅ Completed
-- [x] Multi-tenant database models (Tenant, TenantId integration)
-- [x] Backend Web API infrastructure (JWT, CORS, Swagger)
-- [x] Project structure reorganization
-- [x] SQLite → MySQL migration preparation
+### ✅ Completed (Phase 1)
 
-### 🔄 In Progress
-- [ ] Backend packages update (MySQL, JWT)
-- [ ] Auth Service (JWT token generation)
-- [ ] Tenant Middleware
-- [ ] Auth API Controllers (Login/Register)
-- [ ] Tickets API endpoints
-- [ ] Nuxt 3 Frontend setup
+**Backend (ASP.NET Core 8.0)**
+- [x] Multi-tenant database architecture (Tenant, TenantId integration)
+- [x] MySQL database migration (EF Core)
+- [x] JWT authentication & authorization
+- [x] REST API Controllers (Auth, Tickets, Comments, Priorities, Users)
+- [x] Tenant Middleware (automatic context extraction)
+- [x] Role-based access control (Admin, Manager, Employee)
+- [x] Shared DTOs architecture
+- [x] Swagger/OpenAPI documentation
+- [x] CORS configuration
+- [x] Comprehensive logging
+
+**Frontend (Nuxt 3 + Vue 3)**
+- [x] Nuxt 3 project setup with TypeScript
+- [x] PrimeVue 4 UI library integration
+- [x] Authentication system (Login/Register)
+- [x] Pinia state management
+- [x] Route middleware (auth, guest)
+- [x] Protected dashboard
+- [x] Type-safe API integration
+- [x] Responsive design
+
+### 🔄 In Progress (Phase 2)
+- [ ] Tickets management UI (list, create, edit, delete)
+- [ ] Comments UI component
+- [ ] Priority management UI
+- [ ] User management UI
+- [ ] Dashboard analytics
+- [ ] Dark mode support
 
 ---
 
 ## 📁 Project Structure
 
 ```
-optivieraSaaS/
-├── backend/                    # ASP.NET Core Web API
-│   ├── Controllers/            # API Controllers
-│   ├── Models/                 # Domain Models (Tenant, Ticket, Comment, Priority, WaveUser)
-│   ├── Data/                   # DbContext, SeedData
+OptivieraSaaS/
+├── backend/                    # ASP.NET Core 8.0 Web API
+│   ├── Controllers/            # REST API Controllers
+│   │   ├── AuthController.cs       # Authentication (register, login, me)
+│   │   ├── TicketsController.cs    # Ticket CRUD with tenant isolation
+│   │   ├── CommentsController.cs   # Comment management
+│   │   ├── PrioritiesController.cs # Priority management (Admin)
+│   │   └── UsersController.cs      # User management (Admin/Manager)
+│   ├── DTOs/                   # Data Transfer Objects
+│   │   ├── AuthDTOs.cs            # Login, Register, AuthResponse
+│   │   ├── TicketDTOs.cs          # Ticket-related DTOs
+│   │   ├── CommentDTOs.cs         # Comment DTOs
+│   │   ├── PriorityDTOs.cs        # Priority DTOs
+│   │   └── UserDTOs.cs            # User DTOs
+│   ├── Models/                 # Domain Models
+│   │   ├── Tenant.cs              # Multi-tenant model
+│   │   ├── WaveUser.cs            # User with TenantId
+│   │   ├── Ticket.cs              # Ticket with TenantId
+│   │   ├── Comment.cs             # Comment with TenantId
+│   │   ├── Priority.cs            # Priority with TenantId
+│   │   └── Enums/                 # Enumerations (TicketStatus, Roles)
+│   ├── Data/                   # Database Context
+│   │   ├── ApplicationDbContext.cs
+│   │   ├── ApplicationDbContextFactory.cs
+│   │   └── SeedData.cs            # Demo data seeding
 │   ├── Services/               # Business Logic
-│   ├── Middleware/             # Tenant Middleware (upcoming)
-│   └── Program.cs              # Application Entry Point
+│   │   ├── AuthService.cs         # JWT token generation
+│   │   ├── TicketService.cs       # Ticket operations
+│   │   └── Interfaces/            # Service contracts
+│   ├── Middleware/             # Custom Middleware
+│   │   └── TenantMiddleware.cs    # Tenant context extraction
+│   ├── Migrations/             # EF Core Migrations
+│   ├── Program.cs              # Application Entry Point
+│   ├── appsettings.json        # Configuration
+│   ├── DATABASE_SETUP.md       # Database setup guide
+│   └── .env.example            # Environment variables template
 │
-├── frontend/                   # Nuxt 3 + Vue 3 (upcoming)
-│   └── [To be created]
+├── frontend/                   # Nuxt 3 + Vue 3 + PrimeVue
+│   ├── pages/                  # File-based routing
+│   │   ├── index.vue              # Landing page
+│   │   ├── login.vue              # Login page
+│   │   ├── register.vue           # Registration page
+│   │   └── dashboard/
+│   │       └── index.vue          # Dashboard home
+│   ├── layouts/                # Layout templates
+│   │   └── default.vue            # Default layout
+│   ├── stores/                 # Pinia stores
+│   │   └── auth.ts                # Authentication store
+│   ├── middleware/             # Route middleware
+│   │   ├── auth.ts                # Protected route guard
+│   │   └── guest.ts               # Guest route guard
+│   ├── components/             # Vue components
+│   ├── composables/            # Composition API utilities
+│   ├── types/                  # TypeScript definitions
+│   │   └── index.ts               # All type definitions
+│   ├── assets/                 # Styles and assets
+│   │   └── css/
+│   │       └── main.scss          # Global styles
+│   ├── public/                 # Static files
+│   ├── nuxt.config.ts          # Nuxt configuration
+│   ├── package.json            # Dependencies
+│   ├── tsconfig.json           # TypeScript config
+│   ├── .env.example            # Environment variables template
+│   └── README.md               # Frontend documentation
 │
-└── Optiviera/                  # Legacy Desktop App (Archive)
+└── optiviera/                  # Legacy Desktop App (Archive - DO NOT MODIFY)
     └── [Original Electron project]
 ```
 
@@ -57,163 +129,247 @@ optivieraSaaS/
 
 ### Backend
 - **Framework:** ASP.NET Core 8.0 Web API
-- **Database:** MySQL (migrating from SQLite)
-- **ORM:** Entity Framework Core
-- **Authentication:** JWT Bearer Tokens
-- **API Documentation:** Swagger/OpenAPI
-- **Architecture:** Multi-Tenant SaaS
+- **Database:** MySQL 8.0
+- **ORM:** Entity Framework Core with Pomelo MySQL provider
+- **Authentication:** JWT Bearer Tokens (HS256)
+- **Authorization:** Role-based (Admin, Manager, Employee)
+- **API Documentation:** Swagger/OpenAPI (Swashbuckle)
+- **Architecture:** Multi-Tenant SaaS with data isolation
 
-### Frontend (Planned)
-- **Framework:** Nuxt 3 + Vue 3
-- **UI Library:** PrimeVue
-- **State Management:** Pinia
-- **HTTP Client:** Axios
-- **Styling:** Tailwind CSS
+### Frontend
+- **Framework:** Nuxt 3.13 (Vue 3 Composition API)
+- **UI Library:** PrimeVue 4.0 with Aura theme
+- **State Management:** Pinia 2.1
+- **Language:** TypeScript (strict mode)
+- **HTTP Client:** Nuxt $fetch (built-in)
+- **Icons:** PrimeIcons 7.0
+- **Styling:** SCSS + PrimeVue theming
+- **Deployment:** Netlify (static generation)
 
 ---
 
 ## 🏗️ Multi-Tenant Architecture
 
 ### Core Entities
-All entities include `TenantId` for data isolation:
+All entities include `TenantId` for complete data isolation:
 
-- **Tenant** - Company/Organization
-- **WaveUser** - Users (scoped to Tenant)
+- **Tenant** - Company/Organization (root entity)
+- **WaveUser** - Users (scoped to Tenant, includes roles)
 - **Ticket** - Helpdesk tickets (scoped to Tenant)
 - **Comment** - Ticket comments (scoped to Tenant)
 - **Priority** - Priority levels (scoped to Tenant)
 
 ### Database Relationships
 ```
-Tenant (1) ─── (N) WaveUser
-         └─── (N) Ticket
-               └─── (N) Comment
-         └─── (N) Priority
+Tenant (1) ─┬─ (N) WaveUser
+            ├─ (N) Ticket ──── (N) Comment
+            └─ (N) Priority
 ```
+
+### Tenant Isolation
+- **Database Level:** TenantId foreign keys on all entities
+- **Application Level:** TenantMiddleware extracts TenantId from JWT
+- **Query Level:** All queries automatically filtered by TenantId
+- **Index Level:** Composite indexes on (TenantId, Id) for performance
 
 ---
 
 ## 🔧 Getting Started
 
 ### Prerequisites
-- .NET 8.0 SDK
-- MySQL 8.0+
-- Node.js 18+ (for frontend)
+- **.NET 8.0 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **MySQL 8.0+** - [Installation Guide](backend/DATABASE_SETUP.md)
+- **Node.js 18+** - [Download](https://nodejs.org/)
+- **npm** or **yarn**
 
-### Backend Setup
+### Quick Start
 
-1. **Clone the repository**
+#### 1. Clone the repository
 ```bash
 git clone git@github.com:kerimakkis/optivieraSaaS.git
-cd optivieraSaaS/backend
+cd OptivieraSaaS
 ```
 
-2. **Update database connection**
-Edit `appsettings.json`:
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Port=3306;Database=optiviera_saas;Uid=root;Pwd=yourpassword;"
-  }
-}
-```
+#### 2. Backend Setup
 
-3. **Install packages** (when ready)
 ```bash
-dotnet restore
-```
+cd backend
 
-4. **Run migrations** (upcoming)
-```bash
+# Install MySQL and create database
+mysql -u root -p -e "CREATE DATABASE optiviera_saas_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# Update connection string in appsettings.Development.json
+# Set your MySQL password
+
+# Apply migrations
 dotnet ef database update
-```
 
-5. **Run the API**
-```bash
+# Run backend API
 dotnet run
+
+# API will be available at:
+# http://localhost:5000
+# Swagger UI: http://localhost:5000/swagger
 ```
 
-API will be available at: `https://localhost:5001`
-Swagger UI: `https://localhost:5001/swagger`
+#### 3. Frontend Setup
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Frontend will be available at:
+# http://localhost:3000
+```
+
+#### 4. Login with Demo Account
+
+After running migrations, a demo account is created:
+- **Email:** admin@optiviera.com
+- **Password:** Admin123!
+- **Company:** Demo Company
 
 ---
 
-## 📚 API Endpoints (Planned)
+## 📚 API Endpoints
 
 ### Authentication
 ```
 POST   /api/auth/register       # Create new tenant & admin user
 POST   /api/auth/login          # Get JWT token
-POST   /api/auth/refresh        # Refresh token
+GET    /api/auth/me             # Get current user info
 ```
 
-### Tickets
+### Tickets (Requires Auth)
 ```
 GET    /api/tickets             # List all tickets (tenant-scoped)
-GET    /api/tickets/{id}        # Get ticket details
+GET    /api/tickets/{id}        # Get ticket details with comments
 POST   /api/tickets             # Create new ticket
 PUT    /api/tickets/{id}        # Update ticket
-DELETE /api/tickets/{id}        # Delete ticket
+DELETE /api/tickets/{id}        # Delete ticket (Admin only)
 ```
 
-### Comments
+### Comments (Requires Auth)
 ```
-GET    /api/tickets/{id}/comments    # List comments
-POST   /api/tickets/{id}/comments    # Add comment
+GET    /api/tickets/{ticketId}/comments       # List comments
+GET    /api/tickets/{ticketId}/comments/{id}  # Get comment
+POST   /api/tickets/{ticketId}/comments       # Add comment
+PUT    /api/tickets/{ticketId}/comments/{id}  # Update own comment
+DELETE /api/tickets/{ticketId}/comments/{id}  # Delete own comment
 ```
 
-### Priorities
+### Priorities (Requires Auth)
 ```
-GET    /api/priorities          # List priorities
-POST   /api/priorities          # Create priority
-PUT    /api/priorities/{id}     # Update priority
-DELETE /api/priorities/{id}     # Delete priority
+GET    /api/priorities          # List priorities (tenant-scoped)
+GET    /api/priorities/{id}     # Get priority
+POST   /api/priorities          # Create priority (Admin only)
+PUT    /api/priorities/{id}     # Update priority (Admin only)
+DELETE /api/priorities/{id}     # Delete priority (Admin only)
+```
+
+### Users (Requires Admin/Manager)
+```
+GET    /api/users               # List users in tenant
+GET    /api/users/{id}          # Get user details
+POST   /api/users               # Create user (Admin only, respects MaxUsers)
+PUT    /api/users/{id}          # Update user (Admin only)
+DELETE /api/users/{id}          # Delete user (Admin only)
 ```
 
 ---
 
-## 🔐 Authentication
+## 🔐 Authentication & Authorization
 
-The platform uses **JWT Bearer Token** authentication:
+### JWT Token Flow
+1. **Register/Login** → Receive JWT token
+2. **Store Token** → Frontend stores in localStorage
+3. **API Requests** → Include in `Authorization: Bearer {token}` header
+4. **Token Validation** → Backend validates and extracts claims
+5. **Tenant Context** → TenantMiddleware extracts TenantId from token
 
-1. **Register:** Create a new tenant account
-2. **Login:** Get JWT token
-3. **API Calls:** Include token in `Authorization: Bearer {token}` header
-4. **Token includes:** UserId, TenantId, Email, Role
+### JWT Token Claims
+```json
+{
+  "nameid": "user-id",
+  "email": "user@company.com",
+  "name": "John Doe",
+  "TenantId": "123",
+  "FirstName": "John",
+  "LastName": "Doe",
+  "role": "Admin"
+}
+```
+
+### Roles & Permissions
+- **Admin** - Full access to all resources, user management
+- **Manager** - View users, manage tickets, manage priorities
+- **Employee** - Create and view tickets, add comments
 
 ---
 
 ## 🎯 Roadmap
 
-### Phase 1: Backend Foundation ✅ (Current)
-- [x] Multi-tenant models
-- [x] Web API infrastructure
-- [ ] JWT authentication service
-- [ ] Auth API endpoints
-- [ ] Tenant middleware
-- [ ] Tickets API endpoints
+### Phase 1: Foundation ✅ (COMPLETED)
+- [x] Multi-tenant backend architecture
+- [x] MySQL database with migrations
+- [x] JWT authentication & authorization
+- [x] REST API controllers (Auth, Tickets, Comments, Priorities, Users)
+- [x] Tenant middleware & data isolation
+- [x] Frontend Nuxt 3 setup
+- [x] Authentication UI (Login/Register)
+- [x] Protected routing
+- [x] State management with Pinia
 
-### Phase 2: Frontend Development
-- [ ] Nuxt 3 project setup
-- [ ] PrimeVue integration
-- [ ] Login/Register pages
-- [ ] Dashboard
-- [ ] Tickets module
-- [ ] Comments module
+### Phase 2: Core Features 🔄 (CURRENT)
+- [ ] Tickets management UI
+  - [ ] Tickets list with filters
+  - [ ] Ticket detail view
+  - [ ] Create ticket form
+  - [ ] Update ticket
+  - [ ] Ticket status workflow
+- [ ] Comments UI
+  - [ ] Comment list component
+  - [ ] Add comment form
+  - [ ] Real-time comment updates
+- [ ] Priority management UI
+- [ ] User management UI
+- [ ] Dashboard with analytics
 
 ### Phase 3: Advanced Features
 - [ ] Real-time notifications (SignalR)
-- [ ] File uploads
-- [ ] Email notifications
-- [ ] Reporting & Analytics
-- [ ] User management
-- [ ] Role-based permissions
+- [ ] File attachments for tickets
+- [ ] Email notifications (SendGrid/SMTP)
+- [ ] Advanced search & filtering
+- [ ] Reporting & analytics dashboard
+- [ ] Audit logs
+- [ ] Activity timeline
+- [ ] Export to PDF/Excel
+- [ ] Dark mode theme
 
-### Phase 4: Deployment
-- [ ] Backend deployment (AkkisHost)
+### Phase 4: Enterprise Features
+- [ ] Multi-language support (i18n)
+- [ ] SLA management
+- [ ] Custom fields
+- [ ] Workflow automation
+- [ ] API rate limiting
+- [ ] Webhooks
+- [ ] SSO integration (OAuth, SAML)
+- [ ] Mobile app (Vue + Capacitor)
+
+### Phase 5: Deployment & DevOps
+- [ ] Backend deployment (AkkisHost/Azure)
 - [ ] Frontend deployment (Netlify/Vercel)
-- [ ] CI/CD pipeline
+- [ ] CI/CD pipeline (GitHub Actions)
 - [ ] Production database setup
+- [ ] Monitoring & logging (Application Insights)
+- [ ] Backup strategy
+- [ ] Performance optimization
+- [ ] Security audit
 
 ---
 
@@ -229,55 +385,152 @@ dotnet run
 # Run with hot reload
 dotnet watch run
 
-# Run tests (upcoming)
+# Build for production
+dotnet build -c Release
+
+# Run tests
 dotnet test
+
+# Create migration
+dotnet ef migrations add MigrationName
+
+# Apply migrations
+dotnet ef database update
+
+# Rollback migration
+dotnet ef database update PreviousMigrationName
 ```
 
-### Frontend Development (upcoming)
+### Frontend Development
 ```bash
-cd frontend/optiviera-web
+cd frontend
 
 # Install dependencies
 npm install
 
-# Run dev server
+# Run dev server (http://localhost:3000)
 npm run dev
 
 # Build for production
 npm run build
+
+# Preview production build
+npm run preview
+
+# Generate static site
+npm run generate
+
+# Type checking
+npm run type-check
 ```
 
 ---
 
 ## 📝 Environment Variables
 
-### Backend
-Create `appsettings.Development.json`:
+### Backend (`appsettings.Development.json`)
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Port=3306;Database=optiviera_saas_dev;Uid=root;Pwd=dev123;"
+    "DefaultConnection": "Server=localhost;Port=3306;Database=optiviera_saas_dev;Uid=root;Pwd=yourpassword;"
   },
   "Jwt": {
-    "SecretKey": "YourDevelopmentSecretKey32CharsMin!",
-    "Issuer": "http://localhost:5001",
-    "Audience": "http://localhost:3000",
+    "SecretKey": "YourSuperSecretKeyMinimum32CharactersLong123456789!",
+    "Issuer": "https://api.optiviera.com",
+    "Audience": "https://app.optiviera.com",
     "ExpiryInDays": 7
+  },
+  "Cors": {
+    "AllowedOrigins": [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://app.optiviera.com"
+    ]
   }
 }
 ```
 
-### Frontend (upcoming)
-Create `.env`:
+### Frontend (`.env`)
+```env
+NUXT_PUBLIC_API_BASE=http://localhost:5000/api
 ```
-API_BASE_URL=http://localhost:5001/api
+
+---
+
+## 🚀 Deployment
+
+### Backend (AkkisHost/Azure)
+```bash
+cd backend
+
+# Publish for production
+dotnet publish -c Release -o ./publish
+
+# Deploy to server
+# Upload publish folder to server
+# Configure reverse proxy (nginx/IIS)
+# Set production connection string
+# Enable HTTPS
 ```
+
+### Frontend (Netlify)
+```bash
+cd frontend
+
+# Build static site
+npm run generate
+
+# Deploy to Netlify
+# dist/ folder is ready for deployment
+# Configure environment variables in Netlify
+```
+
+---
+
+## 📖 Documentation
+
+- [Backend API Documentation](backend/README.md)
+- [Frontend Documentation](frontend/README.md)
+- [Database Setup Guide](backend/DATABASE_SETUP.md)
+- [API Reference](http://localhost:5000/swagger) (when backend is running)
+
+---
+
+## 🧪 Testing
+
+### Demo Account
+After seeding, use these credentials:
+- **Email:** admin@optiviera.com
+- **Password:** Admin123!
+- **Role:** Admin
+- **Tenant:** Demo Company
+
+### API Testing
+- **Swagger UI:** http://localhost:5000/swagger
+- **Postman Collection:** (Coming soon)
 
 ---
 
 ## 🤝 Contributing
 
-This project is currently under active development. Contributions will be welcomed once the foundation is complete.
+This project is currently under active development. Contributions are welcome!
+
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Commit Convention
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation changes
+- `style:` Code style changes
+- `refactor:` Code refactoring
+- `test:` Test changes
+- `chore:` Build/tooling changes
 
 ---
 
@@ -292,15 +545,33 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Kerim Akkış**
 - GitHub: [@kerimakkis](https://github.com/kerimakkis)
 - Email: support@akkistech.com
+- Website: [akkistech.com](https://akkistech.com)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Original Optiviera Desktop App (archived in `/Optiviera`)
-- Built with ASP.NET Core & Vue.js
-- Multi-tenant architecture inspired by modern SaaS best practices
+- Original Optiviera Desktop App (archived in `/optiviera/`)
+- ASP.NET Core Team for excellent framework
+- Nuxt & Vue.js teams for amazing frontend tools
+- PrimeVue for beautiful UI components
+- Open source community
 
 ---
 
-**Note:** This project is in active development. The Desktop App code is preserved in the `Optiviera/` directory for reference.
+## 📊 Project Stats
+
+- **Lines of Code:** ~15,000+
+- **API Endpoints:** 25+
+- **Database Tables:** 10+
+- **Frontend Pages:** 4+ (growing)
+- **Commits:** 10+
+- **Development Time:** Active
+
+---
+
+**Note:** This project is in active development. The original Desktop App is preserved in `optiviera/` directory for reference only. **DO NOT modify files in `optiviera/` directory.**
+
+---
+
+**Built with ❤️ using ASP.NET Core 8.0, Nuxt 3, and modern web technologies**
